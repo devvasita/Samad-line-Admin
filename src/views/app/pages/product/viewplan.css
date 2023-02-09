@@ -1,0 +1,153 @@
+.addplan {
+  width: 95%;
+  /* height: 150px; */
+  /* display: flex; */
+  /* text-align: center; */
+  border-radius: 15px;
+  /* align-items: center; */
+  /* justify-content: space-between; */
+  padding: 1rem;
+  margin: 10px auto;
+  box-shadow: 0px 16px 16px rgba(50, 50, 71, 0.08),
+    0px 24px 32px rgba(50, 50, 71, 0.08);
+  /* margin: 10px; */
+}
+/* .loan {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+       */
+
+.ruleengine {
+  width: 95%;
+
+  /* height: 150px; */
+  /* display: flex; */
+  /* text-align: center; */
+  border-radius: 15px;
+  /* align-items: center; */
+  /* justify-content: space-between; */
+  padding: 1rem;
+  margin: 50px auto;
+  box-shadow: 0px 16px 16px rgba(50, 50, 71, 0.08),
+    0px 24px 32px rgba(50, 50, 71, 0.08);
+}
+.error {
+  font-size: x-small;
+  color: red;
+}
+
+.fieldviewplan {
+  margin-top: 50px;
+  display: flex;
+  /* flex-direction: column; */
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.fieldboxviewplan {
+  /* display: flex; */
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: nowrap;
+  padding: 15px;
+  /* margin: 0 auto; */
+  width: 33%;
+}
+.fieldboxviewplan span {
+  width: 40%;
+  font-size: 14px;
+  font-weight: 700;
+  color: #666666;
+}
+.textfieldaddplan {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+}
+.textfieldaddplan div input {
+  -webkit-text-fill-color: black !important;
+}
+.select div {
+  padding: 8.5px 14px;
+}
+.selectdate div input {
+  padding: 8.5px 14px;
+}
+.minmax {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.minmax span {
+  width: 30%;
+}
+.css-1f3jfv7-MuiFormControlLabel-root .MuiFormControlLabel-label {
+  width: 100px;
+  display: flex;
+  align-items: center;
+}
+.cardProfile {
+  width: 75%;
+  height: 100px;
+  padding: 15px;
+  font-size: 1.1rem;
+  align-items: center;
+  border-radius: 15px;
+  display: flex;
+  justify-content: space-between;
+  background: white;
+  box-shadow: 0 1px 15px rgb(0 0 0 / 4%), 0 1px 6px rgb(0 0 0 / 4%);
+}
+.left {
+  display: flex;
+  align-items: center;
+}
+.right {
+  display: flex;
+  justify-content: end;
+}
+.left ul {
+  margin-bottom: 0;
+}
+
+.right ul {
+  list-style: none;
+  text-align: start;
+  margin-bottom: 0;
+}
+.status {
+  margin-right: 30px;
+}
+.status li {
+  display: flex;
+  align-items: center;
+}
+.status-text {
+  margin-left: 10px;
+}
+
+.customerdetails {
+  margin-right: 30px;
+}
+.customerdetails li {
+  display: flex;
+  align-items: center;
+}
+.customerdetails .status-text {
+  margin-left: 10px;
+}
+
+@media only screen and (max-width: 992px) {
+  .fieldboxviewplan {
+    width: 50%;
+  }
+}
+@media only screen and (max-width: 550px) {
+  .fieldboxviewplan {
+    width: 100%;
+  }
+}

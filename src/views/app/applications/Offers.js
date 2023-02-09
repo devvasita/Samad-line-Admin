@@ -1,0 +1,214 @@
+import React, { useState } from 'react';
+import {
+  Row,
+  Card,
+  CardBody,
+  Pagination,
+  PaginationItem,
+  PaginationLink,
+  Button,
+} from 'reactstrap';
+import LinesEllipsis from 'react-lines-ellipsis';
+import responsiveHOC from 'react-lines-ellipsis/lib/responsiveHOC';
+import { useHistory } from 'react-router-dom';
+import { Separator, Colxx } from 'components/common/CustomBootstrap';
+import offersData from 'data/Offers';
+// import PreviewIcon from '@mui/icons-material/Preview';
+// import EditIcon from '@mui/icons-material/Edit';
+// import DeleteIcon from '@mui/icons-material/Delete';
+import { Menu, MenuItem } from '@mui/material';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import IntlMessages from 'helpers/IntlMessages';
+
+const ResponsiveEllipsis = responsiveHOC()(LinesEllipsis);
+
+function Offers() {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const history = useHistory();
+
+  const handleAddOffer = () => {
+    history.push(`/app/applications/addoffer`);
+  };
+  const handleEditOffer = () => {
+    history.push(`/app/applications/editOffer`);
+  };
+  const handleViewOffer = () => {
+    history.push(`/app/applications/viewOffer`);
+  };
+  const open = Boolean(anchorEl);
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  return (
+    <>
+      <Row>
+        <Colxx xxs="12">
+          <div className="d-flex justify-content-between mb-4">
+            <h1>Offers</h1>
+            <Button size="sm" color="primary" outline onClick={handleAddOffer}>
+              <IntlMessages id="+ Add Offer" />
+            </Button>
+          </div>
+          <Separator className="mb-4" />
+        </Colxx>
+
+        {offersData.map((offersItem) => {
+          return (
+            <Colxx
+              xxs="12"
+              lg="4"
+              className="mb-5"
+              key={`offersItem_${offersItem.id}`}
+            >
+              <Card
+                className="flex-row listing-card-container"
+                style={{ borderRadius: '0.75rem' }}
+              >
+                <div className="w-40 position-relative">
+                  <img
+                    className="card-img-left"
+                    src={offersItem.thumb}
+                    alt="Card cap"
+                  />
+                </div>
+                <div className="w-60 d-flex align-items-center">
+                  <CardBody>
+                    <ResponsiveEllipsis
+                      className="mb-3 listing-heading font-weight-bold"
+                      text={offersItem.title}
+                      maxLine="2"
+                      trimRight
+                      basedOn="words"
+                      component="h3"
+                    />
+
+                    <ResponsiveEllipsis
+                      className="listing-desc text-muted"
+                      text={offersItem.description}
+                      maxLine="2"
+                      trimRight
+                      basedOn="words"
+                      component="p"
+                    />
+                    <div
+                      className="listing-heading"
+                      style={{ color: '#6fb327' }}
+                    >
+                      <h5>
+                        <b>{offersItem.discount} off</b>
+                      </h5>
+                    </div>
+
+                    <small>
+                      <b>Valid till 29th Dec, 2022 </b>
+                    </small>
+                  </CardBody>
+                </div>
+
+                <MoreVertIcon
+                  onClick={(e) => handleClick(e)}
+                  size="small"
+                  sx={{
+                    position: 'absolute',
+                    right: 10,
+                    top: 10,
+                    cursor: 'pointer',
+                    '&:hover': { color: '#6fb327' },
+                  }}
+                />
+                <Menu
+                  anchorEl={anchorEl}
+                  id="account-menu"
+                  open={open}
+                  onClose={handleClose}
+                  onClick={handleClose}
+                  PaperProps={{
+                    elevation: 0,
+                    sx: {
+                      overflow: 'visible',
+                      mt: 1.5,
+                      border: '1px solid',
+                      borderColor: 'rgba(58,58,58,.15)',
+                      '& .MuiAvatar-root': {
+                        width: 32,
+                        height: 32,
+                        ml: -0.5,
+                        mr: 1,
+                      },
+                      '&:before': {
+                        content: '""',
+                        display: 'block',
+                        position: 'absolute',
+                        top: 0,
+                        right: 14,
+                        width: 10,
+                        height: 10,
+                        bgcolor: 'background.paper',
+                        transform: 'translateY(-50%) rotate(45deg)',
+                        zIndex: 0,
+                      },
+                    },
+                  }}
+                  transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                  anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                >
+                  <MenuItem onClick={handleEditOffer}>
+                    <i
+                      className="iconsminds-file-edit"
+                      style={{ color: '#6fb327', marginRight: '5px' }}
+                    />
+                    Edit
+                  </MenuItem>
+                  <MenuItem onClick={handleViewOffer}>
+                    <i
+                      className="simple-icon-eye"
+                      style={{ color: '#6fb327', marginRight: '5px' }}
+                    />
+                    <span style={{ marginLeft: '5px' }}>View</span>
+                  </MenuItem>
+                  <MenuItem>
+                    <i
+                      className="iconsminds-delete-file"
+                      style={{ color: '#6fb327', marginRight: '5px' }}
+                    />
+                    Delete
+                  </MenuItem>
+                </Menu>
+              </Card>
+            </Colxx>
+          );
+        })}
+      </Row>
+      <Row>
+        <Colxx xxs="12">
+          <Pagination listClassName="justify-content-center">
+            <PaginationItem>
+              <PaginationLink className="prev" href="#">
+                <i className="simple-icon-arrow-left" />
+              </PaginationLink>
+            </PaginationItem>
+            <PaginationItem active>
+              <PaginationLink href="#">1</PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink href="#">2</PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink href="#">3</PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink className="next" href="#">
+                <i className="simple-icon-arrow-right" />
+              </PaginationLink>
+            </PaginationItem>
+          </Pagination>
+        </Colxx>
+      </Row>
+    </>
+  );
+}
+
+export default Offers;

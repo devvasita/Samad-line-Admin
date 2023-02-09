@@ -1,0 +1,32 @@
+.plan {
+  width: 95%;
+  /* height: 150px; */
+  /* display: flex; */
+  /* text-align: center; */
+  overflow: auto !important;
+  border-radius: 15px;
+  /* align-items: center; */
+  /* justify-content: space-between; */
+  padding: 1rem;
+  margin: 10px auto;
+  box-shadow: 0px 16px 16px rgba(50, 50, 71, 0.08),
+    0px 24px 32px rgba(50, 50, 71, 0.08);
+  /* margin: 10px; */
+}
+.loan {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.switch {
+  text-align: -webkit-center;
+}
+.page div {
+  align-items: baseline;
+}
+.css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root:hover {
+  background-color: #6fb327 !important;
+  color: white;
+  border-radius: 10px;
+}
