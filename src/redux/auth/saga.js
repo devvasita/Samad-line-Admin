@@ -1,5 +1,4 @@
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
-import { auth } from 'helpers/Firebase';
 import { adminRoot, currentUser } from 'constants/defaultValues';
 import { setCurrentUser } from 'helpers/Utils';
 import {
@@ -26,12 +25,9 @@ export function* watchLoginUser() {
   yield takeEvery(LOGIN_USER, loginWithEmailPassword);
 }
 
-const loginWithEmailPasswordAsync = async (mobile, password) =>
-  // eslint-disable-next-line no-return-await
-  await auth
-    .signInWithEmailAndPassword(mobile, password)
-    .then((user) => user)
-    .catch((error) => error);
+const loginWithEmailPasswordAsync = async (mobile, password) => {
+  console.log({ mobile, password });
+};
 
 function* loginWithEmailPassword({ payload }) {
   const { mobile, password } = payload.user;
@@ -57,11 +53,12 @@ export function* watchRegisterUser() {
 }
 
 const registerWithEmailPasswordAsync = async (email, password) =>
-  // eslint-disable-next-line no-return-await
-  await auth
-    .createUserWithEmailAndPassword(email, password)
-    .then((user) => user)
-    .catch((error) => error);
+  console.log({ email, password });
+// eslint-disable-next-line no-return-await
+// await auth
+//   .createUserWithEmailAndPassword(email, password)
+//   .then((user) => user)
+//   .catch((error) => error);
 
 function* registerWithEmailPassword({ payload }) {
   const { email, password } = payload.user;
@@ -91,10 +88,10 @@ export function* watchLogoutUser() {
 }
 
 const logoutAsync = async (history) => {
-  await auth
-    .signOut()
-    .then((user) => user)
-    .catch((error) => error);
+  // await auth
+  //   .signOut()
+  //   .then((user) => user)
+  //   .catch((error) => error);
   history.push('/');
 };
 
@@ -110,11 +107,12 @@ export function* watchForgotPassword() {
 }
 
 const forgotPasswordAsync = async (email) => {
+  console.log({ email });
   // eslint-disable-next-line no-return-await
-  return await auth
-    .sendPasswordResetEmail(email)
-    .then((user) => user)
-    .catch((error) => error);
+  // return await auth
+  //   .sendPasswordResetEmail(email)
+  //   .then((user) => user)
+  //   .catch((error) => error);
 };
 
 function* forgotPassword({ payload }) {
@@ -137,11 +135,12 @@ export function* watchResetPassword() {
 }
 
 const resetPasswordAsync = async (resetPasswordCode, newPassword) => {
+  console.log({ resetPasswordCode, newPassword });
   // eslint-disable-next-line no-return-await
-  return await auth
-    .confirmPasswordReset(resetPasswordCode, newPassword)
-    .then((user) => user)
-    .catch((error) => error);
+  // return await auth
+  //   .confirmPasswordReset(resetPasswordCode, newPassword)
+  //   .then((user) => user)
+  //   .catch((error) => error);
 };
 
 function* resetPassword({ payload }) {
