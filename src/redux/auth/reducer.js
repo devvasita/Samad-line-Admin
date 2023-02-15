@@ -1,4 +1,3 @@
-import { getCurrentUser } from 'helpers/Utils';
 import { isAuthGuardActive, currentUser } from 'constants/defaultValues';
 import {
   LOGIN_USER,
@@ -17,10 +16,13 @@ import {
   OTP_VERIFY,
   OTP_VERIFY_SUCCESS,
   OTP_VERIFY_ERROR,
+  GET_USER_DETAILS_SUCCESS,
+  GET_USER_DETAILS_ERROR,
+  GET_USER_DETAILS,
 } from '../contants';
 
 const INIT_STATE = {
-  currentUser: isAuthGuardActive ? currentUser : getCurrentUser(),
+  currentUser: isAuthGuardActive ? currentUser : null,
   forgotUserMail: '',
   newPassword: '',
   resetPasswordCode: '',
@@ -30,6 +32,23 @@ const INIT_STATE = {
 
 export default (state = INIT_STATE, action) => {
   switch (action.type) {
+    case GET_USER_DETAILS:
+      return { ...state, loading: true, error: '' };
+    case GET_USER_DETAILS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        currentUser: action.payload,
+        error: '',
+      };
+    case GET_USER_DETAILS_ERROR:
+      console.log({ action });
+      return {
+        ...state,
+        loading: false,
+        currentUser: null,
+        error: action.payload.message,
+      };
     case LOGIN_USER:
       return { ...state, loading: true, error: '' };
     case LOGIN_USER_SUCCESS:

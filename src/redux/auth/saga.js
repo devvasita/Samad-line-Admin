@@ -2,12 +2,14 @@ import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 import { auth } from 'helpers/Firebase';
 import { adminRoot, currentUser } from 'constants/defaultValues';
 import { setCurrentUser } from 'helpers/Utils';
+import API from 'helpers/API';
 import {
   LOGIN_USER,
   REGISTER_USER,
   LOGOUT_USER,
   FORGOT_PASSWORD,
   RESET_PASSWORD,
+  GET_USER_DETAILS,
 } from '../contants';
 
 import {
@@ -19,7 +21,32 @@ import {
   forgotPasswordError,
   resetPasswordSuccess,
   resetPasswordError,
+  getUserDetailSuccess,
+  getUserDetailsError,
 } from './actions';
+
+const getUSerDetailsAsync = async () => {
+  const res = await API.get('/user/profile');
+  return res;
+};
+
+export function* getUserWorker() {
+  try {
+    const { data } = yield call(getUSerDetailsAsync);
+    if (data) {
+      yield put(getUserDetailSuccess(data));
+    } else {
+      yield put(getUserDetailsError('token expired'));
+    }
+  } catch (error) {
+    console.log({ error });
+    yield put(getUserDetailsError('something went wrong'));
+  }
+}
+
+export function* watchGetUser() {
+  yield takeEvery(GET_USER_DETAILS, getUserWorker);
+}
 
 export function* watchLoginUser() {
   // eslint-disable-next-line no-use-before-define
@@ -169,5 +196,6 @@ export default function* rootSaga() {
     fork(watchRegisterUser),
     fork(watchForgotPassword),
     fork(watchResetPassword),
+    fork(watchGetUser),
   ]);
 }

@@ -15,7 +15,22 @@ import {
   OTP_VERIFY,
   OTP_VERIFY_SUCCESS,
   OTP_VERIFY_ERROR,
+  GET_USER_DETAILS,
+  GET_USER_DETAILS_SUCCESS,
+  GET_USER_DETAILS_ERROR,
 } from '../contants';
+
+export const getUserDetails = () => ({
+  type: GET_USER_DETAILS,
+});
+export const getUserDetailSuccess = (user) => ({
+  type: GET_USER_DETAILS_SUCCESS,
+  payload: user,
+});
+export const getUserDetailsError = (message) => ({
+  type: GET_USER_DETAILS_ERROR,
+  payload: { message },
+});
 
 export const loginUser = (user, history) => ({
   type: LOGIN_USER,
