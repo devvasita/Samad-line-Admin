@@ -1,12 +1,14 @@
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 import { adminRoot, currentUser } from 'constants/defaultValues';
 import { setCurrentUser } from 'helpers/Utils';
+import API from 'helpers/API';
 import {
   LOGIN_USER,
   REGISTER_USER,
   LOGOUT_USER,
   FORGOT_PASSWORD,
   RESET_PASSWORD,
+  GET_USER_DETAILS,
 } from '../contants';
 
 import {
@@ -18,7 +20,32 @@ import {
   forgotPasswordError,
   resetPasswordSuccess,
   resetPasswordError,
+  getUserDetailSuccess,
+  getUserDetailsError,
 } from './actions';
+
+const getUSerDetailsAsync = async () => {
+  const res = await API.get('/user/profile');
+  return res;
+};
+
+export function* getUserWorker() {
+  try {
+    const { data } = yield call(getUSerDetailsAsync);
+    if (data) {
+      yield put(getUserDetailSuccess(data));
+    } else {
+      yield put(getUserDetailsError('token expired'));
+    }
+  } catch (error) {
+    console.log({ error });
+    yield put(getUserDetailsError('something went wrong'));
+  }
+}
+
+export function* watchGetUser() {
+  yield takeEvery(GET_USER_DETAILS, getUserWorker);
+}
 
 export function* watchLoginUser() {
   // eslint-disable-next-line no-use-before-define
@@ -26,7 +53,7 @@ export function* watchLoginUser() {
 }
 
 const loginWithEmailPasswordAsync = async (mobile, password) => {
-  console.log({ mobile, password });
+  console.log(mobile, password);
 };
 
 function* loginWithEmailPassword({ payload }) {
@@ -52,13 +79,9 @@ export function* watchRegisterUser() {
   yield takeEvery(REGISTER_USER, registerWithEmailPassword);
 }
 
-const registerWithEmailPasswordAsync = async (email, password) =>
+const registerWithEmailPasswordAsync = async (email, password) => {
   console.log({ email, password });
-// eslint-disable-next-line no-return-await
-// await auth
-//   .createUserWithEmailAndPassword(email, password)
-//   .then((user) => user)
-//   .catch((error) => error);
+};
 
 function* registerWithEmailPassword({ payload }) {
   const { email, password } = payload.user;
@@ -88,10 +111,6 @@ export function* watchLogoutUser() {
 }
 
 const logoutAsync = async (history) => {
-  // await auth
-  //   .signOut()
-  //   .then((user) => user)
-  //   .catch((error) => error);
   history.push('/');
 };
 
@@ -107,12 +126,8 @@ export function* watchForgotPassword() {
 }
 
 const forgotPasswordAsync = async (email) => {
-  console.log({ email });
   // eslint-disable-next-line no-return-await
-  // return await auth
-  //   .sendPasswordResetEmail(email)
-  //   .then((user) => user)
-  //   .catch((error) => error);
+  console.log(email);
 };
 
 function* forgotPassword({ payload }) {
@@ -135,12 +150,8 @@ export function* watchResetPassword() {
 }
 
 const resetPasswordAsync = async (resetPasswordCode, newPassword) => {
-  console.log({ resetPasswordCode, newPassword });
   // eslint-disable-next-line no-return-await
-  // return await auth
-  //   .confirmPasswordReset(resetPasswordCode, newPassword)
-  //   .then((user) => user)
-  //   .catch((error) => error);
+  console.log({ resetPasswordCode, newPassword });
 };
 
 function* resetPassword({ payload }) {
@@ -168,5 +179,6 @@ export default function* rootSaga() {
     fork(watchRegisterUser),
     fork(watchForgotPassword),
     fork(watchResetPassword),
+    fork(watchGetUser),
   ]);
 }

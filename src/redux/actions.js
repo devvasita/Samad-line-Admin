@@ -7,6 +7,7 @@ export {
 } from './menu/actions';
 export { changeLocale } from './settings/actions';
 export {
+  getUserDetails,
   resetPassword,
   resetPasswordSuccess,
   forgotPassword,
