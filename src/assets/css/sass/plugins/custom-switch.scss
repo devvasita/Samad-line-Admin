@@ -33,6 +33,10 @@
     background: $theme-color-2 !important;
     border: 1px solid $theme-color-2 !important;
   }
+        &.rc-switch-checked.custom-switch-red {
+          background: red !important;
+          border: 1px solid red!important;
+        }
 
   &.custom-switch-primary-inverse {
     border: 1px solid $separator-color !important;

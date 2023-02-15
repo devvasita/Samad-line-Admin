@@ -63,7 +63,7 @@ const ForgotPassword = ({
 
   return (
     <Row className="h-100">
-      <Colxx xxs="12" md="10" className="mx-auto my-auto">
+      <Colxx xxs="12" sm="12" md="12" lg="6" className="mx-auto my-auto">
         <Card className="auth-card">
           {/* <div className="position-relative image-side ">
             <></>
@@ -116,7 +116,7 @@ const ForgotPassword = ({
                       className={`btn-shadow btn-multiple-state ${
                         loading ? 'show-spinner' : ''
                       }`}
-                      size="lg"
+                      size="sm"
                     >
                       <span className="spinner d-inline-block">
                         <span className="bounce1" />

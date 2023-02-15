@@ -137,38 +137,6 @@ function ViewOffer() {
               </CardBody>
             </div>
           </Card>
-          {/* <Card
-            className="d-flex flex-row mb-4"
-            style={{ borderRadius: '0.75rem' }}
-          >
-            <i
-              rounded
-              style={{
-                fontSize: '30px',
-                margin: 'auto 10px',
-                color: '#6fb327',
-              }}
-              className="iconsminds-pricing m-4 display-6"
-            />
-
-            <div className=" d-flex flex-grow-1 min-width-zero">
-              <CardBody className="p-0 align-self-center d-flex flex-column flex-lg-row justify-content-between min-width-zero">
-                <div className="min-width-zero">
-                  <CardSubtitle
-                    className="truncate mb-1"
-                    style={{ fontSize: '17px' }}
-                  >
-                    Price
-                  </CardSubtitle>
-
-                  <CardText className="mb-2">
-                    <b>₹ 45000/-</b>
-                  </CardText>
-                </div>
-              </CardBody>
-            </div>
-          </Card> */}
-
           <Card
             className="d-flex flex-row mb-4"
             style={{ borderRadius: '0.75rem' }}

@@ -32,7 +32,7 @@ function ChangePassword() {
 
   return (
     <Row className="h-100">
-      <Colxx xxs="12" md="10" className="mx-auto my-auto">
+      <Colxx xxs="12" sm="12" md="12" lg="6" className="mx-auto my-auto">
         <Card className="auth-card">
           <div className="form-side">
             <span className="logo-single" />
@@ -85,13 +85,13 @@ function ChangePassword() {
                   </FormGroup>
 
                   <div className="d-flex justify-content-between align-items-center">
-                    <NavLink to="/user/login">
+                    <NavLink to="/">
                       <IntlMessages id="user.login-title" />
                     </NavLink>
                     <Button
                       color="primary"
                       className={`btn-shadow btn-multiple-state `}
-                      size="lg"
+                      size="sm"
                     >
                       <span className="spinner d-inline-block">
                         <span className="bounce1" />

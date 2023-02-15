@@ -137,7 +137,7 @@ function DataListPages() {
               <TableCell align="center">View</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
+          <TableBody style={{ padding: '10px' }}>
             {dataList
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((userData) => (

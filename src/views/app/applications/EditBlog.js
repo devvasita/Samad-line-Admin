@@ -86,11 +86,6 @@ function EditBlog() {
   const [file, setFile] = useState();
   const classes = useStyles();
 
-  const hiddenFileInput = React.useRef(null);
-  const handleClick = () => {
-    hiddenFileInput.current.click();
-  };
-
   function handleChange(e) {
     setFile(URL.createObjectURL(e.target.files[0]));
   }
@@ -130,18 +125,17 @@ function EditBlog() {
               {/* <DropzoneExample /> */}
               <div>
                 {!file ? (
-                  <div
-                    onClick={handleClick}
-                    onKeyDown={handleClick}
-                    aria-hidden="true"
-                    className={classes.image}
-                  >
+                  <div aria-hidden="true" className={classes.image}>
                     <IconButton
                       color="primary"
                       aria-label="upload picture"
                       component="label"
-                      style={{ margin: 'auto' }}
-                      ref={hiddenFileInput}
+                      style={{
+                        margin: 'auto',
+                        borderRadius: 0,
+                        width: '100%',
+                        height: '100%',
+                      }}
                     >
                       <input
                         hidden
@@ -208,7 +202,7 @@ function EditBlog() {
               />
               <div style={{ textAlign: 'end', margin: '15px 0px 15px 0px' }}>
                 <Button color="primary" type="submit">
-                  Update
+                  Submit
                 </Button>
                 <NavLink to="./blog">
                   <Button

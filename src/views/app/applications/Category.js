@@ -54,115 +54,116 @@ function Category() {
             <IntlMessages id="+ Add Category" />
           </Button>
         </div>
-        <Separator className="mb-5" />
-        <Card className="mb-4 rounded">
-          <Modal
-            isOpen={modalRight}
-            centered
-            toggle={() => setModalRight(!modalRight)}
-            style={{
-              boxShadow: 'none',
-            }}
-          >
-            <ModalBody>
-              <ModalHeader style={{ padding: '5px 0px 5px 0px' }}>
-                Add Category
-              </ModalHeader>
-              <Label className="mt-4">
-                <IntlMessages id="Upload Image :" />
-              </Label>
-              <div>
-                {!file ? (
-                  <div className="modelCategory">
-                    <IconButton
-                      color="primary"
-                      aria-label="upload picture"
-                      component="label"
-                      style={{ margin: 'auto' }}
+        <Separator className="mb-4" />
+      </Colxx>
+      <Card className="mb-4">
+        <Modal
+          isOpen={modalRight}
+          centered
+          toggle={() => setModalRight(!modalRight)}
+          style={{
+            boxShadow: 'none',
+          }}
+        >
+          <ModalBody>
+            <ModalHeader style={{ padding: '5px 0px 5px 0px' }}>
+              Add Category
+            </ModalHeader>
+            <Label className="mt-4">
+              <IntlMessages id="Upload Image :" />
+            </Label>
+            <div>
+              {!file ? (
+                <div className="modelCategory">
+                  <IconButton
+                    color="primary"
+                    aria-label="upload picture"
+                    component="label"
+                    style={{ margin: 'auto' }}
+                  >
+                    <input
+                      hidden
+                      accept="image/*"
+                      type="file"
+                      onChange={handleChange}
+                    />
+                    <img
+                      src="/assets/uploadicon.svg"
+                      alt=""
+                      style={{ height: '35px' }}
+                    />
+                  </IconButton>
+                </div>
+              ) : (
+                <div>
+                  {file ? (
+                    <div
+                      style={{
+                        position: 'relative',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        margin: 'auto',
+                        width: '50%',
+                        height: '115px',
+                      }}
                     >
-                      <input
-                        hidden
-                        accept="image/*"
-                        type="file"
-                        onChange={handleChange}
+                      <CancelIcon
+                        onClick={handleCancelImage}
+                        style={{
+                          position: 'absolute',
+                          top: 0,
+                          right: '-25px',
+                          cursor: 'pointer',
+                        }}
                       />
                       <img
-                        src="/assets/uploadicon.svg"
+                        src={file}
                         alt=""
-                        style={{ height: '35px' }}
-                      />
-                    </IconButton>
-                  </div>
-                ) : (
-                  <div>
-                    {file ? (
-                      <div
                         style={{
-                          position: 'relative',
-                          display: 'flex',
-                          justifyContent: 'center',
-                          margin: 'auto',
-                          width: '50%',
-                          height: '115px',
+                          objectFit: 'contain',
+                          borderRadius: '10px',
+                          height: '100%',
+                          width: '100%',
+                          border: '1px solid',
+                          boxShadow:
+                            '0px 16px 16px rgb(50 50 71 / 8%), 0px 24px 32px rgb(50 50 71 / 8%)',
                         }}
-                      >
-                        <CancelIcon
-                          onClick={handleCancelImage}
-                          style={{
-                            position: 'absolute',
-                            top: 0,
-                            right: '-25px',
-                            cursor: 'pointer',
-                          }}
-                        />
-                        <img
-                          src={file}
-                          alt=""
-                          style={{
-                            objectFit: 'contain',
-                            borderRadius: '10px',
-                            height: '100%',
-                            width: '100%',
-                            border: '1px solid',
-                            boxShadow:
-                              '0px 16px 16px rgb(50 50 71 / 8%), 0px 24px 32px rgb(50 50 71 / 8%)',
-                          }}
-                        />
-                      </div>
-                    ) : null}
-                  </div>
-                )}
-              </div>
+                      />
+                    </div>
+                  ) : null}
+                </div>
+              )}
+            </div>
 
-              <Label className="mt-4">
-                <IntlMessages id="Title :" />
-              </Label>
+            <Label className="mt-4">
+              <IntlMessages id="Title :" />
+            </Label>
 
-              <Input
-                type="text"
-                defaultValue={state.title}
-                onChange={(event) =>
-                  setState({ ...state, title: event.target.value })
-                }
-              />
-            </ModalBody>
-            <ModalFooter style={{ borderTop: 'none' }}>
-              <Button
-                className="primary-new"
-                onClick={() => setModalRight(false)}
-              >
-                Add
-              </Button>{' '}
-              <Button
-                className="secondary-new"
-                onClick={() => setModalRight(false)}
-              >
-                Cancel
-              </Button>
-            </ModalFooter>
-          </Modal>
-        </Card>
-      </Colxx>
+            <Input
+              type="text"
+              defaultValue={state.title}
+              onChange={(event) =>
+                setState({ ...state, title: event.target.value })
+              }
+            />
+          </ModalBody>
+          <ModalFooter style={{ borderTop: 'none' }}>
+            <Button
+              className="primary-new"
+              onClick={() => setModalRight(false)}
+            >
+              Submit
+            </Button>{' '}
+            <Button
+              className="secondary-new"
+              onClick={() => setModalRight(false)}
+            >
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
+      </Card>
+
       <Colxx xxs="12">
         <CardTitle className="mb-4">
           <IntlMessages id="Category" />

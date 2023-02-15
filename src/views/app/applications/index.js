@@ -48,11 +48,19 @@ const SurveyDetail = React.lazy(() =>
 const Chat = React.lazy(() =>
   import(/* webpackChunkName: "application-chat" */ './chat')
 );
-
+const AddProduct = React.lazy(() =>
+  import(/* webpackChunkName: "application-chat" */ './AddProduct')
+);
+const EditProduct = React.lazy(() =>
+  import(/* webpackChunkName: "application-chat" */ './EditProduct')
+);
 const Product = React.lazy(() =>
   import(/* webpackChunkName: "application-todo" */ './Product')
 );
 
+const ViewProduct = React.lazy(() =>
+  import(/* webpackChunkName: "application-todo" */ './ViewProduct')
+);
 const Orders = React.lazy(() =>
   import(/* webpackChunkName: "application-todo" */ './Orders')
 );
@@ -95,6 +103,15 @@ const Applications = ({ match }) => (
         render={(props) => <AddOffer {...props} />}
       />
       <Route
+        path={`${match.url}/addProduct`}
+        render={(props) => <AddProduct {...props} />}
+      />
+
+      <Route
+        path={`${match.url}/editProduct`}
+        render={(props) => <EditProduct {...props} />}
+      />
+      <Route
         path={`${match.url}/editOffer`}
         render={(props) => <EditOffer {...props} />}
       />
@@ -124,6 +141,10 @@ const Applications = ({ match }) => (
       <Route
         path={`${match.url}/product`}
         render={(props) => <Product {...props} />}
+      />
+      <Route
+        path={`${match.url}/viewproduct`}
+        render={(props) => <ViewProduct {...props} />}
       />
       <Route
         path={`${match.url}/orders`}

@@ -94,10 +94,7 @@ function AddOffer() {
   const [startDate, setStartDate] = useState(new Date());
 
   const [file, setFile] = useState();
-  const hiddenFileInput = React.useRef(null);
-  const handleClick = () => {
-    hiddenFileInput.current.click();
-  };
+
   function handleChange(e) {
     setFile(URL.createObjectURL(e.target.files[0]));
   }
@@ -150,18 +147,17 @@ function AddOffer() {
 
             <div>
               {!file ? (
-                <div
-                  onClick={handleClick}
-                  onKeyDown={handleClick}
-                  aria-hidden="true"
-                  className={classes.image}
-                >
+                <div aria-hidden="true" className={classes.image}>
                   <IconButton
                     color="primary"
                     aria-label="upload picture"
                     component="label"
-                    style={{ margin: 'auto' }}
-                    ref={hiddenFileInput}
+                    style={{
+                      margin: 'auto',
+                      borderRadius: 0,
+                      width: '100%',
+                      height: '100%',
+                    }}
                   >
                     <input
                       hidden
@@ -223,7 +219,7 @@ function AddOffer() {
               {({ errors, touched }) => (
                 <Form className="av-tooltip tooltip-label-right mt-4">
                   <Row>
-                    <Colxx lg="6" xs="12">
+                    <Colxx lg="6" xs="12" sm="6">
                       <FormGroup>
                         <Label>Title</Label>
                         <Field className="form-control" name="name" />
@@ -233,26 +229,8 @@ function AddOffer() {
                           </div>
                         )}
                       </FormGroup>
-
-                      <FormGroup>
-                        <Label>Flat/Percentage(%)</Label>
-                        <Select
-                          className="react-select react-select__single-value"
-                          classNamePrefix="react-select"
-                          options={options}
-                          name="select"
-                          // isMulti={isMulti}
-                          // onChange={handleChangeselect}
-                          // onBlur={handleBlur}
-                        />
-                        {errors.select && touched.select ? (
-                          <div className="invalid-feedback d-block">
-                            {errors.select}
-                          </div>
-                        ) : null}
-                      </FormGroup>
                     </Colxx>
-                    <Colxx lg="6" xs="12">
+                    <Colxx lg="6" xs="12" sm="6">
                       <FormGroup>
                         <Label>Valid Till</Label>
                         <div>
@@ -287,6 +265,29 @@ function AddOffer() {
                           </div>
                         )}
                       </FormGroup>
+                    </Colxx>
+                  </Row>
+                  <Row>
+                    <Colxx lg="6" xs="12" sm="6">
+                      <FormGroup>
+                        <Label>Flat/Percentage(%)</Label>
+                        <Select
+                          className="react-select react-select__single-value"
+                          classNamePrefix="react-select"
+                          options={options}
+                          name="select"
+                          // isMulti={isMulti}
+                          // onChange={handleChangeselect}
+                          // onBlur={handleBlur}
+                        />
+                        {errors.select && touched.select ? (
+                          <div className="invalid-feedback d-block">
+                            {errors.select}
+                          </div>
+                        ) : null}
+                      </FormGroup>
+                    </Colxx>
+                    <Colxx lg="6" xs="12" sm="6">
                       <FormGroup>
                         <Label>Value</Label>
                         <Field className="form-control" name="value" />
@@ -314,7 +315,7 @@ function AddOffer() {
             />
             <div style={{ textAlign: 'end', margin: '15px 0px 15px 0px' }}>
               <Button color="primary" type="submit">
-                Upload
+                Submit
               </Button>
 
               <NavLink to="./Offers">

@@ -77,7 +77,7 @@ const ResetPassword = ({
 
   return (
     <Row className="h-100">
-      <Colxx xxs="12" md="10" className="mx-auto my-auto">
+      <Colxx xxs="12" sm="12" md="12" lg="6" className="mx-auto my-auto">
         <Card className="auth-card">
           <div className="position-relative image-side ">
             <p className="text-white h2">MAGIC IS IN THE DETAILS</p>
@@ -105,7 +105,7 @@ const ResetPassword = ({
             >
               {({ errors, touched }) => (
                 <Form className="av-tooltip tooltip-label-bottom">
-                    <FormGroup className="form-group has-float-label">
+                  <FormGroup className="form-group has-float-label">
                     <Label>
                       <IntlMessages id="Old Password" />
                     </Label>
@@ -150,7 +150,7 @@ const ResetPassword = ({
                       className={`btn-shadow btn-multiple-state ${
                         loading ? 'show-spinner' : ''
                       }`}
-                      size="lg"
+                      size="sm"
                     >
                       <span className="spinner d-inline-block">
                         <span className="bounce1" />

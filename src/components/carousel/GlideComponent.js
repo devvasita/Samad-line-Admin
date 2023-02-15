@@ -50,23 +50,6 @@ function GlideComponent(props) {
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
   }, []);
 
-  const renderDots = () => {
-    const total = React.Children.count(props.children);
-    const dots = [];
-    // eslint-disable-next-line no-plusplus
-    for (let i = 0; i < total; i++) {
-      dots.push(
-        <button
-          type="button"
-          className="glide__bullet slider-dot"
-          key={i}
-          data-glide-dir={`=${i}`}
-        />
-      );
-    }
-    return dots;
-  };
-
   return (
     <div>
       {/* eslint-disable-next-line no-return-assign */}
@@ -82,21 +65,16 @@ function GlideComponent(props) {
               type="button"
               className="glide__arrow glide__arrow--left left-arrow btn btn-link"
               data-glide-dir="<"
+              style={{ left: '-30px' }}
             >
               <i className="simple-icon-arrow-left" />
             </button>
-
-            <div
-              className="glide__bullets slider-dot-container"
-              data-glide-el="controls[nav]"
-            >
-              {renderDots()}
-            </div>
 
             <button
               type="button"
               className="glide__arrow glide__arrow--right right-arrow btn btn-link"
               data-glide-dir=">"
+              style={{ right: '-30px' }}
             >
               <i className="simple-icon-arrow-right" />
             </button>

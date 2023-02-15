@@ -11,7 +11,9 @@ const ParchaseCard = ({ className = 'mb-4', title, value, icon }) => {
           <p className="card-text font-weight-semibold mb-0">
             <IntlMessages id={title} />
           </p>
-          <p className="lead text-center">{value}</p>
+          <p className="lead text-center" style={{ fontSize: '12px' }}>
+            {value}
+          </p>
         </CardBody>
       </Card>
     </div>

@@ -91,7 +91,7 @@ function Brand() {
 
         <Separator className="mb-4" />
       </Colxx>
-      <Card className="mb-4 rounded">
+      <Card className="mb-4">
         <Modal
           centered
           backdrop="static"
@@ -201,7 +201,7 @@ function Brand() {
               // style={{ background: '#007bff', border: 'none' }}
               onClick={() => setModalLong(false)}
             >
-              Add
+              Submit
             </Button>{' '}
             <Button
               outline

@@ -4,6 +4,7 @@
 .table th,
 .table td {
   border-color: $separator-color-light !important;
+  vertical-align: middle;
 }
 
 .table .thead-light th {

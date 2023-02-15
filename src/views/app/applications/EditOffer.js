@@ -92,10 +92,6 @@ function EditOffer() {
   const [startDate, setStartDate] = useState(new Date());
   const [file, setFile] = useState();
 
-  const hiddenFileInput = React.useRef(null);
-  const handleClick = () => {
-    hiddenFileInput.current.click();
-  };
   const classes = useStyles();
 
   function handleChange(e) {
@@ -135,18 +131,12 @@ function EditOffer() {
             {/* <DropzoneExample /> */}
             <div>
               {!file ? (
-                <div
-                  onClick={handleClick}
-                  onKeyDown={handleClick}
-                  aria-hidden="true"
-                  className={classes.image}
-                >
+                <div aria-hidden="true" className={classes.image}>
                   <IconButton
                     color="primary"
                     aria-label="upload picture"
                     component="label"
                     style={{ margin: 'auto' }}
-                    ref={hiddenFileInput}
                   >
                     <input
                       hidden
@@ -203,9 +193,9 @@ function EditOffer() {
               onSubmit={onSubmit}
             >
               {({ errors, touched }) => (
-                <Form className="av-tooltip tooltip-label-right">
+                <Form className="av-tooltip tooltip-label-right mt-4">
                   <Row>
-                    <Colxx lg="6" xs="12">
+                    <Colxx lg="6" xs="12" sm="6">
                       <FormGroup>
                         <Label>Title</Label>
                         <Field className="form-control" name="name" />
@@ -215,26 +205,8 @@ function EditOffer() {
                           </div>
                         )}
                       </FormGroup>
-
-                      <FormGroup>
-                        <Label>Flat/Percentage(%)</Label>
-                        <Select
-                          className="react-select react-select__single-value"
-                          classNamePrefix="react-select"
-                          options={options}
-                          name="select"
-                          // isMulti={isMulti}
-                          // onChange={handleChangeselect}
-                          // onBlur={handleBlur}
-                        />
-                        {errors.select && touched.select ? (
-                          <div className="invalid-feedback d-block">
-                            {errors.select}
-                          </div>
-                        ) : null}
-                      </FormGroup>
                     </Colxx>
-                    <Colxx lg="6" xs="12">
+                    <Colxx lg="6" xs="12" sm="6">
                       <FormGroup>
                         <Label>Valid Till</Label>
                         <div>
@@ -269,6 +241,29 @@ function EditOffer() {
                           </div>
                         )}
                       </FormGroup>
+                    </Colxx>
+                  </Row>
+                  <Row>
+                    <Colxx lg="6" xs="12" sm="6">
+                      <FormGroup>
+                        <Label>Flat/Percentage(%)</Label>
+                        <Select
+                          className="react-select react-select__single-value"
+                          classNamePrefix="react-select"
+                          options={options}
+                          name="select"
+                          // isMulti={isMulti}
+                          // onChange={handleChangeselect}
+                          // onBlur={handleBlur}
+                        />
+                        {errors.select && touched.select ? (
+                          <div className="invalid-feedback d-block">
+                            {errors.select}
+                          </div>
+                        ) : null}
+                      </FormGroup>
+                    </Colxx>
+                    <Colxx lg="6" xs="12" sm="6">
                       <FormGroup>
                         <Label>Value</Label>
                         <Field className="form-control" name="value" />
@@ -296,7 +291,7 @@ function EditOffer() {
             />
             <div style={{ textAlign: 'end', margin: '15px 0px 15px 0px' }}>
               <Button color="primary" type="submit">
-                Update
+                Submit
               </Button>
               <NavLink to="./Offers">
                 <Button

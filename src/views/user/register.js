@@ -31,7 +31,7 @@ const Register = ({ history }) => {
 
   return (
     <Row className="h-100">
-      <Colxx xxs="12" md="10" className="mx-auto my-auto">
+      <Colxx xxs="12" sm="12" md="12" lg="6" className="mx-auto my-auto">
         <Card className="auth-card">
           <div className="position-relative image-side ">
             <p className="text-white h2">MAGIC IS IN THE DETAILS</p>
@@ -77,7 +77,7 @@ const Register = ({ history }) => {
                 <Button
                   color="primary"
                   className="btn-shadow"
-                  size="lg"
+                  size="sm"
                   onClick={() => onUserRegister()}
                 >
                   <IntlMessages id="user.register-button" />
