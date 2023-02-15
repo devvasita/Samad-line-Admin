@@ -12,10 +12,9 @@ import {
   RESET_PASSWORD,
   RESET_PASSWORD_SUCCESS,
   RESET_PASSWORD_ERROR,
-
   OTP_VERIFY,
   OTP_VERIFY_SUCCESS,
-  OTP_VERIFY_ERROR
+  OTP_VERIFY_ERROR,
 } from '../contants';
 
 export const loginUser = (user, history) => ({
@@ -31,7 +30,6 @@ export const loginUserError = (message) => ({
   payload: { message },
 });
 
-
 export const verifyOtp = (otpValues, history) => ({
   type: OTP_VERIFY,
   payload: { otpValues, history },
@@ -45,7 +43,6 @@ export const verifyOtpError = (message) => ({
   payload: { message },
 });
 
-
 export const forgotPassword = (forgotUserMail, history) => ({
   type: FORGOT_PASSWORD,
   payload: { forgotUserMail, history },
@@ -58,9 +55,6 @@ export const forgotPasswordError = (message) => ({
   type: FORGOT_PASSWORD_ERROR,
   payload: { message },
 });
-
-
-
 
 export const resetPassword = ({ resetPasswordCode, newPassword, history }) => ({
   type: RESET_PASSWORD,

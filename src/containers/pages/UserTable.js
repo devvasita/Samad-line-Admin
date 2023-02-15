@@ -10,10 +10,11 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  Button,
 } from '@mui/material';
 import { H1, H2 } from 'app/components/Typography';
 import React, { useEffect, useState } from 'react';
-import { Button } from '@mui/material';
+
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import PreviewIcon from '@mui/icons-material/Preview';
 import EditIcon from '@mui/icons-material/Edit';
@@ -224,11 +225,9 @@ function PersonalLoan() {
           transformOrigin={{ horizontal: 'right', vertical: 'top' }}
           anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
-         
           <MenuItem onClick={() => handleView(userId)}>
             <PreviewIcon style={{ marginRight: '6px' }} /> View
           </MenuItem>
-          
         </Menu>
       </Box>
     </Container>

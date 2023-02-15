@@ -16,8 +16,7 @@ import {
   RESET_PASSWORD_ERROR,
   OTP_VERIFY,
   OTP_VERIFY_SUCCESS,
-  OTP_VERIFY_ERROR
-
+  OTP_VERIFY_ERROR,
 } from '../contants';
 
 const INIT_STATE = {
@@ -47,25 +46,20 @@ export default (state = INIT_STATE, action) => {
         currentUser: null,
         error: action.payload.message,
       };
-      case OTP_VERIFY:
+    case OTP_VERIFY:
       return { ...state, loading: true, error: '' };
-      case OTP_VERIFY_SUCCESS:
+    case OTP_VERIFY_SUCCESS:
       return {
         ...state,
-        loading: false,       
+        loading: false,
         error: '',
       };
-      case OTP_VERIFY_ERROR:
+    case OTP_VERIFY_ERROR:
       return {
         ...state,
-        loading: false, 
+        loading: false,
         error: action.payload.message,
       };
-
-
-
-
-
 
     case FORGOT_PASSWORD:
       return { ...state, loading: true, error: '' };

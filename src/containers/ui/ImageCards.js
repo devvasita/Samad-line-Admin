@@ -45,16 +45,15 @@ const ImageCards = () => {
               </div>
               <CardBody>
                 <CardSubtitle className="mb-4 font-weight-bold font-size-11">
-                 <h1>Home Food</h1> 
+                  <h1>Home Food</h1>
                 </CardSubtitle>
                 {/* <CardText className="text-muted text-small mb-0 font-weight-light">
                   09.04.2018
                 </CardText> */}
                 <div className="d-flex justify-content-end">
-                <Button className='mr-1'>Edit</Button>
-                <Button>Delete</Button>
+                  <Button className="mr-1">Edit</Button>
+                  <Button>Delete</Button>
                 </div>
-                
               </CardBody>
             </Card>
           </Colxx>
