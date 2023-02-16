@@ -32,7 +32,6 @@ const ViewUnauthorized = React.lazy(() =>
 );
 
 const App = ({ locale }) => {
-  console.log({ locale });
   const direction = getDirection();
   const currentAppLocale = AppLocale[locale];
   useEffect(() => {

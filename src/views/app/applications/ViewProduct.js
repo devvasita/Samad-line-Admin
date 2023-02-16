@@ -6,31 +6,11 @@ import {
   CardBody,
   CardSubtitle,
   CardText,
-  // Button,
   CardTitle,
 } from 'reactstrap';
-// import SingleLightbox from 'components/pages/SingleLightbox';
-// import ThumbnailImage from 'components/cards/ThumbnailImage';
-// import { NavLink } from 'react-router-dom';
-// import { makeStyles } from '@mui/styles';
 import GlideComponentThumbs from 'components/carousel/GlideComponentThumbs';
 import IntlMessages from 'helpers/IntlMessages';
 import GlideComponent from 'components/carousel/GlideComponent';
-
-// const useStyles = makeStyles({
-//   cancel: {
-//     border: '1px solid #6c757d',
-//     background: 'none',
-//     color: '#6c757d',
-//     padding: '0.5rem 1.25rem 0.5rem 1.25rem',
-//     borderRadius: '50px',
-//     marginLeft: '10px',
-//     '&:hover': {
-//       background: '#6c757d',
-//       border: '1px solid #6c757d',
-//     },
-//   },
-// });
 
 export const detailImages = [
   {
@@ -74,7 +54,6 @@ export const detailImages = [
     img: '/assets/img/products/img3.jpg',
   },
 ];
-
 export const detailThumbs = [
   {
     id: 'thumb1',
@@ -120,7 +99,7 @@ export const detailThumbs = [
 export const items = [
   {
     id: 1,
-    title: '1 Homemade Cheesecake with Fresh Berries and Mint',
+    title: '1 Homemade Cheesecake with Flowers',
     img: '/assets/img/cards/sim1.webp',
     detail: '10.12.2019',
     category: 'Cupcakes',
@@ -138,7 +117,7 @@ export const items = [
   },
   {
     id: 2,
-    title: '2 Wedding Cake with Flowers Macarons and Blueberries',
+    title: '2 Wedding Cake with Flowers Macarons ',
     img: '/assets/img/cards/sim2.webp',
     detail: '01.06.2019',
     category: 'Cakes',
@@ -156,11 +135,11 @@ export const items = [
   },
   {
     id: 3,
-    title: '3 Cheesecake with Chocolate Cookies and Cream Biscuits',
+    title: '3 Cheesecake with Chocolate Cookies ',
     img: '/assets/img/cards/sim3.webp',
     detail: '27.05.2019',
     category: 'Cupcakes',
-    color: 'Blue',
+    color: 'Black-red',
     badges: [
       {
         color: 'secondary',
@@ -170,11 +149,11 @@ export const items = [
   },
   {
     id: 4,
-    title: '4 Homemade Cheesecake with Fresh Berries and Mint',
+    title: '4 Homemade Cheesecake with Flowers',
     img: '/assets/img/cards/sim4.webp',
     detail: '10.12.2019',
     category: 'Cakes',
-    color: 'Green',
+    color: 'Gold Black',
     badges: [
       {
         color: 'primary',
@@ -184,11 +163,11 @@ export const items = [
   },
   {
     id: 5,
-    title: '5 Cheesecake with Chocolate Cookies and Cream Biscuits',
+    title: '5 Cheesecake with Chocolate Cookies ',
     img: '/assets/img/cards/sim5.webp',
     detail: '27.05.2019',
     category: 'Cupcakes',
-    color: 'Dark Blue',
+    color: 'White',
     badges: [
       {
         color: 'theme-3',
@@ -197,17 +176,28 @@ export const items = [
     ],
   },
 ];
-
 const BasicCarouselItem = ({ title, img, detail }) => {
   return (
     <div className="glide-item">
       <Card className="flex-row d-block" style={{ borderRadius: '0.75rem' }}>
-        <div className="w-100 position-relative h-50">
+        <div className="w-100 position-relative h-50 p-2">
           <img className="card-img-left" src={img} alt={title} />
         </div>
         <div className="w-100">
           <CardBody>
-            <span className="mb-4">{title}</span>
+            <p
+              className="mb-4 truncate"
+              style={{
+                display: '-webkit-box',
+                webkitlineClamp: '4',
+                overflow: 'hidden',
+                webkitLineClamp: '2',
+                webkitBoxOrient: 'vertical',
+                whiteSpace: 'normal',
+              }}
+            >
+              {title}
+            </p>
             <footer>
               <p className="text-muted text-small mb-0 font-weight-light">
                 {detail}
@@ -220,28 +210,7 @@ const BasicCarouselItem = ({ title, img, detail }) => {
   );
 };
 
-const SingleCarouselItem = ({ title, img }) => {
-  return (
-    <div className="glide-item">
-      <Card className="flex-row" style={{ borderRadius: '0.75rem' }}>
-        <img
-          className="list-thumbnail responsive border-0 card-img-left"
-          src={img}
-          alt={title}
-        />
-        <div className="pl-2 d-flex flex-grow-1 min-width-zero">
-          <CardBody className="align-self-center d-flex flex-column flex-lg-row justify-content-between min-width-zero">
-            <p className="list-item-heading mb-1 truncate">{title}</p>
-          </CardBody>
-        </div>
-      </Card>
-    </div>
-  );
-};
-
 function ViewProduct() {
-  // const classes = useStyles();
-
   return (
     <>
       <Row>
@@ -251,7 +220,7 @@ function ViewProduct() {
         </Colxx>
       </Row>
       <CardTitle style={{ padding: '5px' }}>
-        <h2>MUSCLEBLAZE Beginner&apos;s Whey Protein(2 kg) </h2>
+        <h2>MUSCLEBLAZE Beginner&apos;s Whey Protein(2 kg)</h2>
       </CardTitle>
 
       <Row>
@@ -290,12 +259,11 @@ function ViewProduct() {
                 <div className="d-flex align-items-center mb-2">
                   <img
                     src="/assets/img/products/veg-icon.svg"
-                    alt="Chitr - Veg Symbol - Svg - Veg And Non Veg Icons@pngkey.com"
+                    alt="Chitr - Veg Symbol - Svg - Veg And Non Veg mailto:icons@pngkey.com"
                     style={{
                       height: '30px',
                       width: '30px',
                       marginRight: '5px',
-                      // marginTop: '10px',
                     }}
                   />
                   <h5 style={{ marginBottom: '0px' }}>
@@ -420,7 +388,7 @@ function ViewProduct() {
                       </CardSubtitle>
 
                       <CardText className="mb-2" style={{ color: '#6fb327' }}>
-                        <b>500₹</b>
+                        <b>₹500</b>
                       </CardText>
                     </div>
                   </CardBody>
@@ -453,7 +421,7 @@ function ViewProduct() {
                       </CardSubtitle>
 
                       <CardText className="mb-2" style={{ color: '#6fb327' }}>
-                        <b>400₹</b>
+                        <b>₹400</b>
                       </CardText>
                     </div>
                   </CardBody>
@@ -567,17 +535,23 @@ function ViewProduct() {
                   <CardTitle>
                     <IntlMessages id="Other Color" />
                   </CardTitle>
+
                   <GlideComponent
                     settings={{
                       gap: 5,
-                      perView: 1,
+                      perView: 2,
                       type: 'carousel',
+                      breakpoints: {
+                        480: { perView: 1 },
+                        800: { perView: 2 },
+                        1200: { perView: 3 },
+                      },
                     }}
                   >
                     {items.map((item) => {
                       return (
                         <div key={item.id}>
-                          <SingleCarouselItem {...item} />
+                          <BasicCarouselItem {...item} />
                         </div>
                       );
                     })}
@@ -620,11 +594,10 @@ function ViewProduct() {
           </Row>
         </Colxx>
       </Row>
-
       <Row>
-        <Colxx xxs="12">
+        <Colxx xxs="12" className="mt-3">
           <CardTitle>
-            <IntlMessages id="Simmilar Product" />
+            <h3>Suggested Product:</h3>
           </CardTitle>
         </Colxx>
         <Colxx xxs="12" className="pl-0 pr-0 mb-5">
