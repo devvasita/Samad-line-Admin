@@ -95,14 +95,16 @@ function* loginWithPhoneNumberPassword({ payload }) {
       password
     );
     const {
-      data: { success },
+      data: { message },
+      status,
     } = loginUser;
-    if (success) {
+
+    if (status === 200) {
       yield call(GenerateOtpAsync, mobileNo);
       localStorage.setItem('mobileNo', mobileNo);
       history.push('/user/otp');
     } else {
-      yield put(loginUserError(loginUser.message));
+      yield put(loginUserError(message));
     }
   } catch (error) {
     yield put(loginUserError(error));
@@ -115,11 +117,11 @@ export function* watchLoginUser() {
 
 const verifyOtpAsync = async (mobileNo, otp) => {
   try {
-    const { data } = await API.post('/user/verify-otp', {
+    const { data, status } = await API.post('/user/verify-otp', {
       mobileNo,
       otp,
     });
-    return data;
+    return { data, status };
   } catch (error) {
     return error;
   }
@@ -131,15 +133,18 @@ function* verifyOtp({ payload }) {
   } = payload;
 
   try {
-    const { success, token, user } = yield call(verifyOtpAsync, mobileNo, otp);
-    if (success && token) {
+    const {
+      data: { success, token, user, message },
+      status,
+    } = yield call(verifyOtpAsync, mobileNo, otp);
+    if (status === 200 && success) {
       yield put(verifyOtpSuccess());
       localStorage.setItem('auth_token', token);
       localStorage.removeItem('mobileNo');
       yield put(getUserDetailSuccess(user));
       history.push('/app/dashboards/ecommerce');
     } else {
-      yield put(verifyOtpError('invalid OTP'));
+      yield put(verifyOtpError(message));
     }
   } catch (error) {
     yield put(verifyOtpError('something went wrong please try again'));
