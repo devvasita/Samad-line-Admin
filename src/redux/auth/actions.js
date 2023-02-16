@@ -20,8 +20,9 @@ import {
   GET_USER_DETAILS_ERROR,
 } from '../contants';
 
-export const getUserDetails = () => ({
+export const getUserDetails = (history) => ({
   type: GET_USER_DETAILS,
+  payload: { history },
 });
 export const getUserDetailSuccess = (user) => ({
   type: GET_USER_DETAILS_SUCCESS,
@@ -49,9 +50,8 @@ export const verifyOtp = (otpValues, history) => ({
   type: OTP_VERIFY,
   payload: { otpValues, history },
 });
-export const verifyOtpSuccess = (otpValues) => ({
+export const verifyOtpSuccess = () => ({
   type: OTP_VERIFY_SUCCESS,
-  payload: otpValues,
 });
 export const verifyOtpError = (message) => ({
   type: OTP_VERIFY_ERROR,

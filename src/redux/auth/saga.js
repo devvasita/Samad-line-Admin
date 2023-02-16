@@ -1,4 +1,11 @@
-import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
+import {
+  all,
+  call,
+  fork,
+  put,
+  takeEvery,
+  takeLatest,
+} from 'redux-saga/effects';
 import { adminRoot, currentUser } from 'constants/defaultValues';
 import { setCurrentUser } from 'helpers/Utils';
 import API from 'helpers/API';
@@ -9,10 +16,10 @@ import {
   FORGOT_PASSWORD,
   RESET_PASSWORD,
   GET_USER_DETAILS,
+  OTP_VERIFY,
 } from '../contants';
 
 import {
-  loginUserSuccess,
   loginUserError,
   registerUserSuccess,
   registerUserError,
@@ -22,23 +29,31 @@ import {
   resetPasswordError,
   getUserDetailSuccess,
   getUserDetailsError,
+  verifyOtpSuccess,
+  verifyOtpError,
 } from './actions';
 
 const getUSerDetailsAsync = async () => {
-  const res = await API.get('/user/profile');
-  return res;
+  try {
+    const res = await API.get('/user/profile');
+    return res;
+  } catch (error) {
+    return error;
+  }
 };
 
-export function* getUserWorker() {
+export function* getUserWorker({ payload }) {
+  const { history } = payload;
   try {
     const { data } = yield call(getUSerDetailsAsync);
     if (data) {
       yield put(getUserDetailSuccess(data));
     } else {
+      history.push('/');
       yield put(getUserDetailsError('token expired'));
     }
   } catch (error) {
-    console.log({ error });
+    history.push('/');
     yield put(getUserDetailsError('something went wrong'));
   }
 }
@@ -47,24 +62,44 @@ export function* watchGetUser() {
   yield takeEvery(GET_USER_DETAILS, getUserWorker);
 }
 
-export function* watchLoginUser() {
-  // eslint-disable-next-line no-use-before-define
-  yield takeEvery(LOGIN_USER, loginWithEmailPassword);
-}
-
-const loginWithEmailPasswordAsync = async (mobile, password) => {
-  console.log(mobile, password);
+const loginWithPhoneNumberPasswordAsync = async (mobileNo, password) => {
+  try {
+    const res = await API.post('/user/login', {
+      mobileNo,
+      password,
+    });
+    return res;
+  } catch (error) {
+    return error;
+  }
 };
 
-function* loginWithEmailPassword({ payload }) {
-  const { mobile, password } = payload.user;
+const GenerateOtpAsync = async (mobileNo) => {
+  try {
+    const res = await API.post('/user/generate-otp', {
+      mobileNo,
+    });
+    return res;
+  } catch (error) {
+    return error;
+  }
+};
+
+function* loginWithPhoneNumberPassword({ payload }) {
+  const { mobileNo, password } = payload.user;
   const { history } = payload;
   try {
-    const loginUser = yield call(loginWithEmailPasswordAsync, mobile, password);
-    if (!loginUser.message) {
-      const item = { uid: loginUser.user.uid, ...currentUser };
-      setCurrentUser(item);
-      yield put(loginUserSuccess(item));
+    const loginUser = yield call(
+      loginWithPhoneNumberPasswordAsync,
+      mobileNo,
+      password
+    );
+    const {
+      data: { success },
+    } = loginUser;
+    if (success) {
+      yield call(GenerateOtpAsync, mobileNo);
+      localStorage.setItem('mobileNo', mobileNo);
       history.push('/user/otp');
     } else {
       yield put(loginUserError(loginUser.message));
@@ -72,6 +107,46 @@ function* loginWithEmailPassword({ payload }) {
   } catch (error) {
     yield put(loginUserError(error));
   }
+}
+
+export function* watchLoginUser() {
+  yield takeLatest(LOGIN_USER, loginWithPhoneNumberPassword);
+}
+
+const verifyOtpAsync = async (mobileNo, otp) => {
+  try {
+    const { data } = await API.post('/user/verify-otp', {
+      mobileNo,
+      otp,
+    });
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+function* verifyOtp({ payload }) {
+  const {
+    otpValues: { mobileNo, otp },
+    history,
+  } = payload;
+
+  try {
+    const { success, token, user } = yield call(verifyOtpAsync, mobileNo, otp);
+    if (success && token) {
+      yield put(verifyOtpSuccess());
+      localStorage.setItem('auth_token', token);
+      localStorage.removeItem('mobileNo');
+      yield put(getUserDetailSuccess(user));
+      history.push('/app/dashboards/ecommerce');
+    } else {
+      yield put(verifyOtpError('invalid OTP'));
+    }
+  } catch (error) {
+    yield put(verifyOtpError('something went wrong please try again'));
+  }
+}
+export function* watchVerifyOtp() {
+  yield takeEvery(OTP_VERIFY, verifyOtp);
 }
 
 export function* watchRegisterUser() {
@@ -117,6 +192,7 @@ const logoutAsync = async (history) => {
 function* logout({ payload }) {
   const { history } = payload;
   setCurrentUser();
+  localStorage.clear();
   yield call(logoutAsync, history);
 }
 
@@ -180,5 +256,6 @@ export default function* rootSaga() {
     fork(watchForgotPassword),
     fork(watchResetPassword),
     fork(watchGetUser),
+    fork(watchVerifyOtp),
   ]);
 }

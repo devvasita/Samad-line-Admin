@@ -1,14 +1,19 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { Route, Redirect } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Route, Redirect, useHistory } from 'react-router-dom';
 import { getUserDetails } from 'redux/actions';
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   const dispatch = useDispatch();
+  const history = useHistory();
+  const {
+    authUser: { currentUser },
+  } = useSelector((state) => state);
 
   useEffect(() => {
-    dispatch(getUserDetails());
-  }, [dispatch]);
+    console.log({ currentUser });
+    if (!currentUser) dispatch(getUserDetails(history));
+  }, [dispatch, history]);
 
   const token = localStorage.getItem('auth_token');
   const setComponent = (props) => {
