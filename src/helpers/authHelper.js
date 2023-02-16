@@ -1,42 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
-import { isAuthGuardActive } from 'constants/defaultValues';
-import { getCurrentUser } from './Utils';
+import { getUserDetails } from 'redux/actions';
 
-const ProtectedRoute = ({
-  component: Component,
-  roles = undefined,
-  ...rest
-}) => {
+const ProtectedRoute = ({ component: Component, ...rest }) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getUserDetails());
+  }, [dispatch]);
+
+  const token = localStorage.getItem('auth_token');
   const setComponent = (props) => {
-    if (isAuthGuardActive) {
-      const currentUser = getCurrentUser();
-      if (currentUser) {
-        if (roles) {
-          if (roles.includes(currentUser.role)) {
-            return <Component {...props} />;
-          }
-          return (
-            <Redirect
-              to={{
-                pathname: '/unauthorized',
-                state: { from: props.location },
-              }}
-            />
-          );
-        }
-        return <Component {...props} />;
-      }
-      return (
-        <Redirect
-          to={{
-            pathname: '/user/login',
-            state: { from: props.location },
-          }}
-        />
-      );
+    if (token) {
+      return <Component {...props} />;
     }
-    return <Component {...props} />;
+    return (
+      <Redirect
+        to={{
+          pathname: '/',
+          state: { from: props.location },
+        }}
+      />
+    );
   };
 
   return <Route {...rest} render={setComponent} />;

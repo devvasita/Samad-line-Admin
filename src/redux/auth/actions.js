@@ -12,11 +12,25 @@ import {
   RESET_PASSWORD,
   RESET_PASSWORD_SUCCESS,
   RESET_PASSWORD_ERROR,
-
   OTP_VERIFY,
   OTP_VERIFY_SUCCESS,
-  OTP_VERIFY_ERROR
+  OTP_VERIFY_ERROR,
+  GET_USER_DETAILS,
+  GET_USER_DETAILS_SUCCESS,
+  GET_USER_DETAILS_ERROR,
 } from '../contants';
+
+export const getUserDetails = () => ({
+  type: GET_USER_DETAILS,
+});
+export const getUserDetailSuccess = (user) => ({
+  type: GET_USER_DETAILS_SUCCESS,
+  payload: user,
+});
+export const getUserDetailsError = (message) => ({
+  type: GET_USER_DETAILS_ERROR,
+  payload: { message },
+});
 
 export const loginUser = (user, history) => ({
   type: LOGIN_USER,
@@ -31,7 +45,6 @@ export const loginUserError = (message) => ({
   payload: { message },
 });
 
-
 export const verifyOtp = (otpValues, history) => ({
   type: OTP_VERIFY,
   payload: { otpValues, history },
@@ -45,7 +58,6 @@ export const verifyOtpError = (message) => ({
   payload: { message },
 });
 
-
 export const forgotPassword = (forgotUserMail, history) => ({
   type: FORGOT_PASSWORD,
   payload: { forgotUserMail, history },
@@ -58,9 +70,6 @@ export const forgotPasswordError = (message) => ({
   type: FORGOT_PASSWORD_ERROR,
   payload: { message },
 });
-
-
-
 
 export const resetPassword = ({ resetPasswordCode, newPassword, history }) => ({
   type: RESET_PASSWORD,

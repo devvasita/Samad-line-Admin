@@ -4,7 +4,7 @@ const data = [
   {
     id: 'dashboards',
     icon: 'simple-icon-basket-loaded',
-    label: 'Dashboard',
+    label: 'menu.dashboards',
     to: `${adminRoot}/dashboards/ecommerce`,
     // roles: [UserRole.Admin, UserRole.Editor],
     // subs: [
