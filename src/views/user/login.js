@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Row, Card, CardTitle, Label, FormGroup, Button } from 'reactstrap';
 import { NavLink, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -9,33 +9,31 @@ import { NotificationManager } from 'components/common/react-notifications';
 import { Colxx } from 'components/common/CustomBootstrap';
 import IntlMessages from 'helpers/IntlMessages';
 import { loginUser } from 'redux/actions';
-import { TextField, InputAdornment, IconButton } from '@mui/material';
+import { InputAdornment, IconButton } from '@mui/material';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 
-const validatePassword = (value) => {
-  let error;
-  if (!value) {
-    error = 'Please enter your password';
-  } else if (value.length < 4) {
-    error = 'Value must be longer than 3 characters';
-  }
-  return error;
-};
+// const validatePassword = (value) => {
+//   console.log({ value });
+//   let error;
+//   if (!value) {
+//     error = 'Please enter your password';
+//   } else if (value.length < 4) {
+//     error = 'Value must be longer than 3 characters';
+//   }
+//   return error;
+// };
 
-const validateEmail = (value) => {
-  let error;
-  if (!value) {
-    error = 'Please enter Mobile Number';
-  } else if (!/^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/.test(value)) {
-    error = 'Invalid Mobile Number';
-  }
-  return error;
-};
+// const validateEmail = (value) => {
+//   let error;
+//   if (!value) {
+//     error = 'Please enter Mobile Number';
+//   } else if (!/^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/.test(value)) {
+//     error = 'Invalid Mobile Number';
+//   }
+//   return error;
+// };
 
-const Login = ({ loading, error }) => {
-  const [mobile] = useState('9999999999');
-  const [password] = useState('gogo123');
-
+const Login = ({ loading, error, loginUserAction }) => {
   const [showPassword, setShowPassword] = React.useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -53,13 +51,15 @@ const Login = ({ loading, error }) => {
   const onUserLogin = (values) => {
     if (!loading) {
       if (values.mobile !== '' && values.password !== '') {
-        // loginUserAction(values, history);
-        history.push('/user/otp');
+        loginUserAction(
+          { mobileNo: values.mobile, password: values.password },
+          history
+        );
       }
     }
   };
 
-  const initialValues = { mobile, password };
+  const initialValues = { mobile: '', password: '' };
 
   return (
     <Row className="h-100">
@@ -81,10 +81,9 @@ const Login = ({ loading, error }) => {
                       <Field
                         className="form-control"
                         name="mobile"
-                        validate={validateEmail}
-                        component={TextField}
+                        // validate={validateEmail}
+                        // component={TextField}
                         size="small"
-                        value={mobile}
                         InputProps={{
                           endAdornment: (
                             <InputAdornment
@@ -110,9 +109,8 @@ const Login = ({ loading, error }) => {
                         className="form-control"
                         type={showPassword ? 'text' : 'password'}
                         name="password"
-                        validate={validatePassword}
-                        component={TextField}
-                        value={password}
+                        // validate={validatePassword}
+                        // component={TextField}
                         size="small"
                         InputProps={{
                           endAdornment: (

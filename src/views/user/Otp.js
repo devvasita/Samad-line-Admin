@@ -1,36 +1,39 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Row, Card, CardTitle, Label, FormGroup, Button } from 'reactstrap';
 import { Formik, Form, Field } from 'formik';
 import { Colxx } from 'components/common/CustomBootstrap';
 import IntlMessages from 'helpers/IntlMessages';
 import { NavLink, useHistory } from 'react-router-dom';
+import { verifyOtp } from 'redux/auth/actions';
+import { useDispatch } from 'react-redux';
 
-const validateEmail = (value) => {
-  let error;
-  if (!value) {
-    error = 'Please enter your OTP';
-  } else if (
-    !/(?=.*?\d)^\$?(([1-9]\d{0,2}(,\d{3})*)|\d+)?(\.\d{1,2})?$/.test(value)
-  ) {
-    error = 'Invalid email address';
-  } else if (value !== '987654') {
-    error = 'Invalid OTP';
-  }
-  return error;
-};
+// const validateEmail = (value) => {
+//   let error;
+//   if (!value) {
+//     error = 'Please enter your OTP';
+//   } else if (
+//     !/(?=.*?\d)^\$?(([1-9]\d{0,2}(,\d{3})*)|\d+)?(\.\d{1,2})?$/.test(value)
+//   ) {
+//     error = 'Invalid email address';
+//   } else if (value !== '987654') {
+//     error = 'Invalid OTP';
+//   }
+//   return error;
+// };
 
-function Otp({ loading }) {
+const Otp = ({ loading }) => {
+  const dispatch = useDispatch();
   const history = useHistory();
-  const [otp] = useState('987654');
+  const mobileNo = localStorage.getItem('mobileNo') ?? 0;
+
   const onVerifyOtp = (values) => {
     if (!loading) {
       if (values.otp !== '') {
-        history.push('/app/dashboards/ecommerce');
-        // forgotPasswordAction(values, history);
+        dispatch(verifyOtp({ mobileNo, otp: values.otp }, history));
       }
     }
   };
-  const initialValues = { otp };
+  const initialValues = { otp: '' };
   return (
     <Row className="h-100">
       <Colxx xxs="12" sm="12" md="12" lg="6" className="mx-auto my-auto">
@@ -46,6 +49,7 @@ function Otp({ loading }) {
             </CardTitle>
             <CardTitle className="mb-4">
               <IntlMessages id="user.otp-dec" />
+              {localStorage.getItem('mobileNo')}
             </CardTitle>
 
             <Formik initialValues={initialValues} onSubmit={onVerifyOtp}>
@@ -59,7 +63,8 @@ function Otp({ loading }) {
                     <Field
                       className="form-control"
                       name="otp"
-                      validate={validateEmail}
+                      type="number"
+                      // validate={validateEmail}
                       maxlength={6}
                     />
                     {errors.otp && touched.otp && (
@@ -168,6 +173,6 @@ function Otp({ loading }) {
       </Colxx>
     </Row>
   );
-}
+};
 
 export default Otp;

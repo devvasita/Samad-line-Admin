@@ -43,7 +43,6 @@ export default (state = INIT_STATE, action) => {
         error: '',
       };
     case GET_USER_DETAILS_ERROR:
-      console.log({ action });
       return {
         ...state,
         loading: false,

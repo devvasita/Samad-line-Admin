@@ -51,7 +51,7 @@ module.exports = {
   'user.phone': 'Mobile Number',
   'user.otp': 'OTP',
   'user.otp-title': 'OTP Verification',
-  'user.otp-dec': 'We have sent an OTP via SMS on : 9999999999',
+  'user.otp-dec': 'We have sent an OTP via SMS on : ',
   'user.password': 'Password',
   'user.back-to-login-question': 'Back to Login',
   'user.forgot-password-question': 'Forget password?',
