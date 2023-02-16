@@ -39,7 +39,6 @@ const ListPageListing = ({
         if (displayMode === 'thumblist') {
           return (
             <>
-              
               <ThumbListView
                 key={product.id}
                 product={product}
@@ -72,8 +71,5 @@ const ListPageListing = ({
     </Row>
   );
 };
-
-
-
 
 export default React.memo(ListPageListing);

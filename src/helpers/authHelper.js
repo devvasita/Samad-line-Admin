@@ -6,8 +6,8 @@ import { getUserDetails } from 'redux/actions';
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   const dispatch = useDispatch();
 
-  useEffect(async () => {
-    await dispatch(getUserDetails());
+  useEffect(() => {
+    dispatch(getUserDetails());
   }, [dispatch]);
 
   const token = localStorage.getItem('auth_token');

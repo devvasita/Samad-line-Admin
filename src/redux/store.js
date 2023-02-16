@@ -1,4 +1,5 @@
-import { createStore, applyMiddleware, compose } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import createSagaMiddleware from 'redux-saga';
 import reducers from './reducers';
 import sagas from './sagas';
@@ -6,23 +7,23 @@ import sagas from './sagas';
 const sagaMiddleware = createSagaMiddleware();
 
 const middlewares = [sagaMiddleware];
-let devtools = (x) => x;
+// let devtools = (x) => x;
 
-if (
-  process &&
-  process.env.NODE_ENV !== 'production' &&
-  process.browser &&
-  window.__REDUX_DEVTOOLS_EXTENSION__
-) {
-  devtools = window.__REDUX_DEVTOOLS_EXTENSION__();
-}
+// if (
+//   process &&
+//   process.env.NODE_ENV !== 'production' &&
+//   process.browser &&
+//   window.__REDUX_DEVTOOLS_EXTENSION__
+// ) {
+//   devtools = window.__REDUX_DEVTOOLS_EXTENSION__();
+// }
 
 // eslint-disable-next-line import/prefer-default-export
 export function configureStore(initialState) {
   const store = createStore(
     reducers,
     initialState,
-    compose(applyMiddleware(...middlewares), devtools)
+    composeWithDevTools(applyMiddleware(...middlewares))
   );
 
   sagaMiddleware.run(sagas);
