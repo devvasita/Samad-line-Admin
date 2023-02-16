@@ -7,16 +7,6 @@ import sagas from './sagas';
 const sagaMiddleware = createSagaMiddleware();
 
 const middlewares = [sagaMiddleware];
-// let devtools = (x) => x;
-
-// if (
-//   process &&
-//   process.env.NODE_ENV !== 'production' &&
-//   process.browser &&
-//   window.__REDUX_DEVTOOLS_EXTENSION__
-// ) {
-//   devtools = window.__REDUX_DEVTOOLS_EXTENSION__();
-// }
 
 // eslint-disable-next-line import/prefer-default-export
 export function configureStore(initialState) {

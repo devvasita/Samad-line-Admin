@@ -10,8 +10,4 @@ export default axios.create({
     'Access-Control-Allow-Origin': '*',
     Authorization: `Bearer ${localStorage.getItem('auth_token')}`,
   },
-  // validateStatus: (status) => {
-  //   console.log({ status });
-  //   // if (status === 401) window.location.href = '/';
-  // },
 });
