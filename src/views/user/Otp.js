@@ -24,12 +24,15 @@ import { useDispatch } from 'react-redux';
 const Otp = ({ loading }) => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const mobileNo = localStorage.getItem('mobileNo') ?? 0;
+
+  const { mobileNo, resetPass } =
+    JSON.parse(localStorage.getItem('mobileNo')) ?? {};
+  console.log({ mobileNo, resetPass });
 
   const onVerifyOtp = (values) => {
     if (!loading) {
       if (values.otp !== '') {
-        dispatch(verifyOtp({ mobileNo, otp: values.otp }, history));
+        dispatch(verifyOtp({ mobileNo, otp: values.otp, resetPass }, history));
       }
     }
   };
@@ -49,7 +52,7 @@ const Otp = ({ loading }) => {
             </CardTitle>
             <CardTitle className="mb-4">
               <IntlMessages id="user.otp-dec" />
-              {localStorage.getItem('mobileNo')}
+              {mobileNo}
             </CardTitle>
 
             <Formik initialValues={initialValues} onSubmit={onVerifyOtp}>

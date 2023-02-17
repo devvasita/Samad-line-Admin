@@ -101,7 +101,7 @@ function* loginWithPhoneNumberPassword({ payload }) {
 
     if (status === 200) {
       yield call(GenerateOtpAsync, mobileNo);
-      localStorage.setItem('mobileNo', mobileNo);
+      localStorage.setItem('mobileNo', JSON.stringify({ mobileNo }));
       history.push('/user/otp');
     } else {
       yield put(loginUserError(message));
@@ -128,7 +128,7 @@ const verifyOtpAsync = async (mobileNo, otp) => {
 };
 function* verifyOtp({ payload }) {
   const {
-    otpValues: { mobileNo, otp },
+    otpValues: { mobileNo, otp, resetPass },
     history,
   } = payload;
 
@@ -139,10 +139,13 @@ function* verifyOtp({ payload }) {
     } = yield call(verifyOtpAsync, mobileNo, otp);
     if (status === 200 && success) {
       yield put(verifyOtpSuccess());
-      localStorage.setItem('auth_token', token);
       localStorage.removeItem('mobileNo');
-      yield put(getUserDetailSuccess(user));
-      history.push('/app/dashboards/ecommerce');
+      if (resetPass) history.push(`/user/reset-password/${token}`);
+      else {
+        localStorage.setItem('auth_token', token);
+        yield put(getUserDetailSuccess(user));
+        history.push('/app/dashboards/ecommerce');
+      }
     } else {
       yield put(verifyOtpError(message));
     }
@@ -206,19 +209,18 @@ export function* watchForgotPassword() {
   yield takeEvery(FORGOT_PASSWORD, forgotPassword);
 }
 
-const forgotPasswordAsync = async (email) => {
-  // eslint-disable-next-line no-return-await
-  console.log(email);
-};
-
 function* forgotPassword({ payload }) {
-  const { email } = payload.forgotUserMail;
+  const { mobileNo, history } = payload;
   try {
-    const forgotPasswordStatus = yield call(forgotPasswordAsync, email);
-    if (!forgotPasswordStatus) {
-      yield put(forgotPasswordSuccess('success'));
+    const {
+      status,
+      data: { message },
+    } = yield call(GenerateOtpAsync, mobileNo);
+    if (status === 200) {
+      yield put(forgotPasswordSuccess('OTP sent successfully to your number'));
+      history.push('/user/otp');
     } else {
-      yield put(forgotPasswordError(forgotPasswordStatus.message));
+      yield put(forgotPasswordError(message));
     }
   } catch (error) {
     yield put(forgotPasswordError(error));
@@ -230,23 +232,29 @@ export function* watchResetPassword() {
   yield takeEvery(RESET_PASSWORD, resetPassword);
 }
 
-const resetPasswordAsync = async (resetPasswordCode, newPassword) => {
-  // eslint-disable-next-line no-return-await
-  console.log({ resetPasswordCode, newPassword });
+const resetPasswordAsync = async (token, newPassword) => {
+  try {
+    const res = await API.post(`/user/password/${token}`, {
+      password: newPassword,
+    });
+    return res;
+  } catch (error) {
+    return error;
+  }
 };
 
 function* resetPassword({ payload }) {
-  const { newPassword, resetPasswordCode } = payload;
+  const { newPassword, token } = payload;
   try {
-    const resetPasswordStatus = yield call(
-      resetPasswordAsync,
-      resetPasswordCode,
-      newPassword
-    );
-    if (!resetPasswordStatus) {
-      yield put(resetPasswordSuccess('success'));
+    const {
+      status,
+      data: { message, success },
+    } = yield call(resetPasswordAsync, token, newPassword);
+    if (status === 200 && success) {
+      yield put(resetPasswordSuccess(message));
+      window.location.href = '/';
     } else {
-      yield put(resetPasswordError(resetPasswordStatus.message));
+      yield put(resetPasswordError(message));
     }
   } catch (error) {
     yield put(resetPasswordError(error));

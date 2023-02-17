@@ -51,7 +51,7 @@ const User = ({ match }) => {
             render={(props) => <ForgotPassword {...props} />}
           />
           <Route
-            path={`${match.url}/reset-password`}
+            path={`${match.url}/reset-password/:token`}
             render={(props) => <ResetPassword {...props} />}
           />
           <Redirect to="/error" />

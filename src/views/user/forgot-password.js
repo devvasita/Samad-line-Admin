@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Row, Card, CardTitle, Label, FormGroup, Button } from 'reactstrap';
 import { NavLink } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { Colxx } from 'components/common/CustomBootstrap';
 import IntlMessages from 'helpers/IntlMessages';
 import { forgotPassword } from 'redux/actions';
-import { TextField, InputAdornment } from '@mui/material';
+import { InputAdornment } from '@mui/material';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import { NotificationManager } from 'components/common/react-notifications';
 
@@ -28,12 +28,18 @@ const ForgotPassword = ({
   error,
   forgotPasswordAction,
 }) => {
-  const [phone] = useState('9999999999');
-
   const onForgotPassword = (values) => {
+    console.log({ values });
     if (!loading) {
-      if (values.phone !== '') {
-        forgotPasswordAction(values, history);
+      if (values.mobile !== '') {
+        localStorage.setItem(
+          'mobileNo',
+          JSON.stringify({
+            mobileNo: values.mobile,
+            resetPass: true,
+          })
+        );
+        forgotPasswordAction(values.mobile, history);
       }
     }
   };
@@ -59,7 +65,7 @@ const ForgotPassword = ({
       );
   }, [error, forgotUserMail, loading]);
 
-  const initialValues = { phone };
+  const initialValues = { mobile: '' };
 
   return (
     <Row className="h-100">
@@ -85,10 +91,8 @@ const ForgotPassword = ({
                     <Field
                       className="form-control"
                       name="mobile"
-                      component={TextField}
                       validate={validatemobile}
                       size="small"
-                      value={phone}
                       InputProps={{
                         endAdornment: (
                           <InputAdornment

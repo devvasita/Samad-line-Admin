@@ -58,26 +58,26 @@ export const verifyOtpError = (message) => ({
   payload: { message },
 });
 
-export const forgotPassword = (forgotUserMail, history) => ({
+export const forgotPassword = (mobileNo, history) => ({
   type: FORGOT_PASSWORD,
-  payload: { forgotUserMail, history },
+  payload: { mobileNo, history },
 });
-export const forgotPasswordSuccess = (forgotUserMail) => ({
+export const forgotPasswordSuccess = (mobileNo) => ({
   type: FORGOT_PASSWORD_SUCCESS,
-  payload: forgotUserMail,
+  payload: mobileNo,
 });
 export const forgotPasswordError = (message) => ({
   type: FORGOT_PASSWORD_ERROR,
   payload: { message },
 });
 
-export const resetPassword = ({ resetPasswordCode, newPassword, history }) => ({
+export const resetPassword = ({ token, newPassword, history }) => ({
   type: RESET_PASSWORD,
-  payload: { resetPasswordCode, newPassword, history },
+  payload: { token, newPassword, history },
 });
 export const resetPasswordSuccess = (newPassword) => ({
   type: RESET_PASSWORD_SUCCESS,
-  payload: newPassword,
+  payload: { newPassword },
 });
 export const resetPasswordError = (message) => ({
   type: RESET_PASSWORD_ERROR,
