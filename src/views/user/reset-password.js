@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Row, Card, CardTitle, Label, FormGroup, Button } from 'reactstrap';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
 import { connect } from 'react-redux';
 import { Colxx } from 'components/common/CustomBootstrap';
@@ -18,45 +18,43 @@ const validateNewPassword = (values) => {
 };
 
 const ResetPassword = ({
-  location,
   history,
   loading,
-  error,
+  // error,
   resetPasswordAction,
 }) => {
-  const [newPassword] = useState('');
-  const [newPasswordAgain] = useState('');
-
-  useEffect(() => {
-    if (error) {
-      NotificationManager.warning(
-        error,
-        'Forgot Password Error',
-        3000,
-        null,
-        null,
-        ''
-      );
-    } else if (!loading && newPassword === 'success')
-      NotificationManager.success(
-        'Please login with your new password.',
-        'Reset Password Success',
-        3000,
-        null,
-        null,
-        ''
-      );
-  }, [error, loading, newPassword]);
+  const { token } = useParams();
+  // useEffect(() => {
+  //   if (error) {
+  //     NotificationManager.warning(
+  //       error,
+  //       'Forgot Password Error',
+  //       3000,
+  //       null,
+  //       null,
+  //       ''
+  //     );
+  //   } else if (!loading)
+  //     NotificationManager.success(
+  //       'Please login with your new password.',
+  //       'Reset Password Success',
+  //       3000,
+  //       null,
+  //       null,
+  //       ''
+  //     );
+  // }, [error, loading, newPassword]);
 
   const onResetPassword = (values) => {
     if (!loading) {
-      const params = new URLSearchParams(location.search);
-      const oobCode = params.get('oobCode');
-      if (oobCode) {
-        if (values.newPassword !== '') {
+      if (token) {
+        if (
+          values.newPassword !== '' &&
+          values.newPassword === values.newPasswordAgain
+        ) {
           resetPasswordAction({
             newPassword: values.newPassword,
-            resetPasswordCode: oobCode,
+            token,
             history,
           });
         }
@@ -73,7 +71,7 @@ const ResetPassword = ({
     }
   };
 
-  const initialValues = { newPassword, newPasswordAgain };
+  const initialValues = { newPassword: '', newPasswordAgain: '' };
 
   return (
     <Row className="h-100">
@@ -105,16 +103,6 @@ const ResetPassword = ({
             >
               {({ errors, touched }) => (
                 <Form className="av-tooltip tooltip-label-bottom">
-                  <FormGroup className="form-group has-float-label">
-                    <Label>
-                      <IntlMessages id="Old Password" />
-                    </Label>
-                    <Field
-                      className="form-control"
-                      name="oldPassword"
-                      type="password"
-                    />
-                  </FormGroup>
                   <FormGroup className="form-group has-float-label">
                     <Label>
                       <IntlMessages id="user.new-password" />

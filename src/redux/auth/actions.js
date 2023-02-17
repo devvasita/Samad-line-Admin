@@ -18,6 +18,9 @@ import {
   GET_USER_DETAILS,
   GET_USER_DETAILS_SUCCESS,
   GET_USER_DETAILS_ERROR,
+  CHANGE_PASSWORD_ERROR,
+  CHANGE_PASSWORD_SUCCESS,
+  CHANGE_PASSWORD,
 } from '../contants';
 
 export const getUserDetails = (history) => ({
@@ -58,29 +61,41 @@ export const verifyOtpError = (message) => ({
   payload: { message },
 });
 
-export const forgotPassword = (forgotUserMail, history) => ({
+export const forgotPassword = (mobileNo, history) => ({
   type: FORGOT_PASSWORD,
-  payload: { forgotUserMail, history },
+  payload: { mobileNo, history },
 });
-export const forgotPasswordSuccess = (forgotUserMail) => ({
+export const forgotPasswordSuccess = (mobileNo) => ({
   type: FORGOT_PASSWORD_SUCCESS,
-  payload: forgotUserMail,
+  payload: mobileNo,
 });
 export const forgotPasswordError = (message) => ({
   type: FORGOT_PASSWORD_ERROR,
   payload: { message },
 });
 
-export const resetPassword = ({ resetPasswordCode, newPassword, history }) => ({
+export const resetPassword = ({ token, newPassword, history }) => ({
   type: RESET_PASSWORD,
-  payload: { resetPasswordCode, newPassword, history },
+  payload: { token, newPassword, history },
 });
 export const resetPasswordSuccess = (newPassword) => ({
   type: RESET_PASSWORD_SUCCESS,
-  payload: newPassword,
+  payload: { newPassword },
 });
 export const resetPasswordError = (message) => ({
   type: RESET_PASSWORD_ERROR,
+  payload: { message },
+});
+
+export const changePassword = (values, history) => ({
+  type: CHANGE_PASSWORD,
+  payload: { ...values, history },
+});
+export const changePasswordSuccess = () => ({
+  type: CHANGE_PASSWORD_SUCCESS,
+});
+export const changePasswordError = (message) => ({
+  type: CHANGE_PASSWORD_ERROR,
   payload: { message },
 });
 
