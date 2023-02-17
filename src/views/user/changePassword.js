@@ -1,34 +1,34 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Row, Card, CardTitle, Label, FormGroup, Button } from 'reactstrap';
 import { Formik, Form, Field } from 'formik';
 import { Colxx } from 'components/common/CustomBootstrap';
 import IntlMessages from 'helpers/IntlMessages';
 import { NavLink } from 'react-router-dom';
-// import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { changePassword } from 'redux/actions';
 
-function ChangePassword() {
-  const [oldPassword] = useState('');
-  const [newPassword] = useState('');
-  const [newPasswordAgain] = useState('');
-
-  const onResetPassword = () => {
-    // if (!loading) {
-    //   if (values.otp !== '') {
-    //     history.push('/app/dashboards/default')
-    //     // forgotPasswordAction(values, history);
-    //   }
-    // }
+function ChangePassword({ history }) {
+  const dispatch = useDispatch();
+  const onResetPassword = (values) => {
+    const { newPassword, oldPassword } = values;
+    if (newPassword && oldPassword) {
+      dispatch(changePassword(values, history));
+    }
   };
 
-  const validateNewPassword = () => {
-    // const { newPassword, newPasswordAgain } = values;
+  const validateNewPassword = (values) => {
+    const { newPassword, newPasswordAgain } = values;
     const errors = {};
     if (newPasswordAgain && newPassword !== newPasswordAgain) {
       errors.newPasswordAgain = 'Please check your new password';
     }
     return errors;
   };
-  const initialValues = { oldPassword, newPassword, newPasswordAgain };
+  const initialValues = {
+    oldPassword: '',
+    newPassword: '',
+    newPasswordAgain: '',
+  };
 
   return (
     <Row className="h-100">

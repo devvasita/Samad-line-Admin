@@ -19,6 +19,9 @@ import {
   GET_USER_DETAILS_SUCCESS,
   GET_USER_DETAILS_ERROR,
   GET_USER_DETAILS,
+  CHANGE_PASSWORD,
+  CHANGE_PASSWORD_ERROR,
+  CHANGE_PASSWORD_SUCCESS,
 } from '../contants';
 
 const INIT_STATE = {
@@ -129,6 +132,21 @@ export default (state = INIT_STATE, action) => {
         loading: false,
         currentUser: null,
         error: action.payload.message,
+      };
+    case CHANGE_PASSWORD:
+      return {
+        ...state,
+        loading: true,
+      };
+    case CHANGE_PASSWORD_ERROR:
+      return {
+        ...state,
+        loading: false,
+      };
+    case CHANGE_PASSWORD_SUCCESS:
+      return {
+        ...state,
+        loading: false,
       };
     case LOGOUT_USER:
       return { ...state, currentUser: null, error: '' };

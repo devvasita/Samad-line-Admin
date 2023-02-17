@@ -21,6 +21,9 @@ export {
   registerUserError,
   registerUserSuccess,
   resetPasswordError,
+  changePassword,
+  changePasswordSuccess,
+  changePasswordError,
 } from './auth/actions';
 export {
   addTodoItem,

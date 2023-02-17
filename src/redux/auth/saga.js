@@ -17,6 +17,7 @@ import {
   RESET_PASSWORD,
   GET_USER_DETAILS,
   OTP_VERIFY,
+  CHANGE_PASSWORD,
 } from '../contants';
 
 import {
@@ -31,6 +32,8 @@ import {
   getUserDetailsError,
   verifyOtpSuccess,
   verifyOtpError,
+  changePasswordError,
+  changePasswordSuccess,
 } from './actions';
 
 const getUSerDetailsAsync = async () => {
@@ -261,6 +264,35 @@ function* resetPassword({ payload }) {
   }
 }
 
+const changePasswordAsync = async (oldPassword, newPassword) => {
+  try {
+    const res = await API.put('user/password', { oldPassword, newPassword });
+    return res;
+  } catch (error) {
+    return error;
+  }
+};
+function* changePassword({ payload }) {
+  const { oldPassword, newPassword, history } = payload;
+  try {
+    const {
+      status,
+      data: { success, message },
+    } = yield call(changePasswordAsync, oldPassword, newPassword);
+    if (status === 200 && success) {
+      yield put(changePasswordSuccess());
+      history.push('/app/dashboards/default');
+    } else {
+      yield put(changePasswordError(message));
+    }
+  } catch (error) {
+    yield put(changePasswordError(error));
+  }
+}
+export function* watchChangePassword() {
+  yield takeEvery(CHANGE_PASSWORD, changePassword);
+}
+
 export default function* rootSaga() {
   yield all([
     fork(watchLoginUser),
@@ -270,5 +302,6 @@ export default function* rootSaga() {
     fork(watchResetPassword),
     fork(watchGetUser),
     fork(watchVerifyOtp),
+    fork(watchChangePassword),
   ]);
 }
