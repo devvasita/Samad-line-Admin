@@ -2,15 +2,15 @@ import {
   ADD_PRODUCT,
   ADD_PRODUCT_SUCCESS,
   ADD_PRODUCT_ERROR,
-  GET_PRODUCT,
-  GET_PRODUCT_SUCCESS,
-  GET_PRODUCT_ERROR,
   UPDATE_PRODUCT,
   UPDATE_PRODUCT_SUCCESS,
   UPDATE_PRODUCT_ERROR,
   DELETE_PRODUCT,
   DELETE_PRODUCT_SUCCESS,
   DELETE_PRODUCT_ERROR,
+  GET_PRODUCTS,
+  GET_PRODUCTS_SUCCESS,
+  GET_PRODUCTS_ERROR,
 } from '../contants';
 
 export const addProduct = (item, type) => {
@@ -30,20 +30,16 @@ export const addProductError = (message) => ({
   payload: { message },
 });
 
-export const getProduct = (type) => {
-  return {
-    type: GET_PRODUCT,
-    payload: { type },
-  };
-};
-export const getProductSuccess = (data, type) => {
-  return {
-    type: GET_PRODUCT_SUCCESS,
-    payload: { data, type },
-  };
-};
-export const getProductError = (message) => ({
-  type: GET_PRODUCT_ERROR,
+export const getProducts = () => ({
+  type: GET_PRODUCTS,
+});
+
+export const getProductSuccess = (list) => ({
+  type: GET_PRODUCTS_SUCCESS,
+  payload: list,
+});
+export const getProductsError = (message) => ({
+  type: GET_PRODUCTS_ERROR,
   payload: { message },
 });
 

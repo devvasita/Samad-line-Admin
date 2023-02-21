@@ -3,20 +3,21 @@ import {
   ADD_PRODUCT,
   ADD_PRODUCT_SUCCESS,
   ADD_PRODUCT_ERROR,
-  GET_PRODUCT,
-  GET_PRODUCT_SUCCESS,
-  GET_PRODUCT_ERROR,
   UPDATE_PRODUCT,
   UPDATE_PRODUCT_SUCCESS,
   UPDATE_PRODUCT_ERROR,
   DELETE_PRODUCT,
   DELETE_PRODUCT_SUCCESS,
   DELETE_PRODUCT_ERROR,
+  GET_PRODUCTS_ERROR,
+  GET_PRODUCTS_SUCCESS,
+  GET_PRODUCTS,
 } from '../contants';
 
 const INIT_STATE = {
-  loaded: false,
-  products: {},
+  products: null,
+  loading: false,
+  error: '',
 };
 
 export default (state = INIT_STATE, action) => {
@@ -36,24 +37,18 @@ export default (state = INIT_STATE, action) => {
     }
     case ADD_PRODUCT_ERROR:
       return { ...state, loaded: true, error: action.payload };
-    case GET_PRODUCT:
+    case GET_PRODUCTS:
       return { ...state, loading: true, error: '' };
-    case GET_PRODUCT_SUCCESS: {
-      const { data, type } = action.payload;
+    case GET_PRODUCTS_SUCCESS:
       return {
         ...state,
-        loading: false,
-        [type]: data,
-        error: '',
+        products: action.payload,
       };
-    }
-    case GET_PRODUCT_ERROR:
+    case GET_PRODUCTS_ERROR:
       return {
         ...state,
-        loading: false,
-        error: action.payload.message,
+        error: action.message,
       };
-
     case UPDATE_PRODUCT:
       return { ...state, loaded: false };
 
