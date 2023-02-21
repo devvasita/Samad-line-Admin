@@ -83,3 +83,18 @@ export {
   deleteBrandAndCategorySuccess,
   deleteBrandAndCategoryError,
 } from './brandAndCategory/actions';
+
+export {
+  addProduct,
+  addProductSuccess,
+  addProductError,
+  getProduct,
+  getProductSuccess,
+  getProductError,
+  updateProduct,
+  updateProductSuccess,
+  updateProductError,
+  deleteProduct,
+  deleteProductSuccess,
+  deleteProductError,
+} from './product/actions';
