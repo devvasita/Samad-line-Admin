@@ -16,7 +16,7 @@ import {
 
 const INIT_STATE = {
   loaded: false,
-  product: [],
+  products: {},
 };
 
 export default (state = INIT_STATE, action) => {
