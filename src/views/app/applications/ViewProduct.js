@@ -1,5 +1,6 @@
+import { useParams } from 'react-router-dom';
 import { Colxx, Separator } from 'components/common/CustomBootstrap';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Row,
   Card,
@@ -11,6 +12,8 @@ import {
 import GlideComponentThumbs from 'components/carousel/GlideComponentThumbs';
 import IntlMessages from 'helpers/IntlMessages';
 import GlideComponent from 'components/carousel/GlideComponent';
+import { getSingleProduct } from 'redux/actions';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const detailImages = [
   {
@@ -211,16 +214,29 @@ const BasicCarouselItem = ({ title, img, detail }) => {
 };
 
 function ViewProduct() {
+  const { id } = useParams();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getSingleProduct(id));
+  }, []);
+
+  const data = useSelector((state) => state?.product?.products);
+
   return (
     <>
       <Row>
         <Colxx xxs="12">
-          <h1>View Product</h1>
+          <h1>View Products</h1>
           <Separator className="mb-5" />
         </Colxx>
       </Row>
       <CardTitle style={{ padding: '5px' }}>
-        <h2>MUSCLEBLAZE Beginner&apos;s Whey Protein(2 kg)</h2>
+        <h2>
+          {data?.brand}
+          {data?.value}
+          {data?.unit}
+        </h2>
       </CardTitle>
 
       <Row>

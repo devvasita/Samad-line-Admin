@@ -11,6 +11,9 @@ import {
   GET_PRODUCTS,
   GET_PRODUCTS_SUCCESS,
   GET_PRODUCTS_ERROR,
+  GET_SINGLE_PRODUCT,
+  GET_SINGLE_PRODUCT_SUCCESS,
+  GET_SINGLE_PRODUCT_ERROR,
 } from '../contants';
 
 export const addProduct = (item, type) => {
@@ -33,13 +36,27 @@ export const addProductError = (message) => ({
 export const getProducts = () => ({
   type: GET_PRODUCTS,
 });
-
 export const getProductSuccess = (list) => ({
   type: GET_PRODUCTS_SUCCESS,
   payload: list,
 });
 export const getProductsError = (message) => ({
   type: GET_PRODUCTS_ERROR,
+  payload: { message },
+});
+
+export const getSingleProduct = (id) => {
+  return {
+    type: GET_SINGLE_PRODUCT,
+    payload: id,
+  };
+};
+export const getSingleProductSuccess = (id) => ({
+  type: GET_SINGLE_PRODUCT_SUCCESS,
+  payload: id,
+});
+export const getSingleProductError = (message) => ({
+  type: GET_SINGLE_PRODUCT_ERROR,
   payload: { message },
 });
 

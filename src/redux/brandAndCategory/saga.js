@@ -79,7 +79,6 @@ export function* watchGetBrandAndCategory() {
 }
 
 const updateBrandAndCategoryAsync = async (name, image, id, type) => {
-  console.log(name, image, id, type);
   const res = await API.put(`/${type}`, {
     name,
     image,
@@ -92,7 +91,6 @@ const updateBrandAndCategoryAsync = async (name, image, id, type) => {
 function* updateBrandAndCategoryWorker({ payload }) {
   const { name, image, id } = payload.item;
   const { type } = payload;
-  console.log(payload, 'kkkkkk');
   try {
     const { data, status } = yield call(
       updateBrandAndCategoryAsync,
@@ -101,7 +99,6 @@ function* updateBrandAndCategoryWorker({ payload }) {
       id,
       type
     );
-    console.log(data, '====');
     if (status === 201) {
       yield put(updateBrandAndCategorySuccess(data, type));
     } else {
@@ -118,20 +115,16 @@ export function* watchUpdateBrandAndCategory() {
 }
 
 const deleteBrandAndCategoryAsync = async (id, type) => {
-  console.log({ id, type });
   const res = await API.delete(`/${type}`, {
     data: {
       _id: id,
     },
   });
-  console.log(res, 'resss');
   return res;
 };
 
 function* deleteBrandAndCategoryWorker({ payload }) {
   const { id, type } = payload;
-
-  console.log(payload, 'kkkkkk');
   try {
     const { data, status } = yield call(deleteBrandAndCategoryAsync, id, type);
     if (status === 201) {

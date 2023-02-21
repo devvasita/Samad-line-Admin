@@ -12,6 +12,9 @@ import {
   GET_PRODUCTS_ERROR,
   GET_PRODUCTS_SUCCESS,
   GET_PRODUCTS,
+  GET_SINGLE_PRODUCT,
+  GET_SINGLE_PRODUCT_SUCCESS,
+  GET_SINGLE_PRODUCT_ERROR,
 } from '../contants';
 
 const INIT_STATE = {
@@ -49,6 +52,24 @@ export default (state = INIT_STATE, action) => {
         ...state,
         error: action.message,
       };
+
+    case GET_SINGLE_PRODUCT:
+      return { ...state, loading: true, error: '' };
+    case GET_SINGLE_PRODUCT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        products: action.payload,
+        error: '',
+      };
+    case GET_SINGLE_PRODUCT_ERROR:
+      return {
+        ...state,
+        loading: false,
+        products: null,
+        error: action.payload.message,
+      };
+
     case UPDATE_PRODUCT:
       return { ...state, loaded: false };
 

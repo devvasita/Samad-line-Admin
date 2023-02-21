@@ -1,17 +1,31 @@
+/* eslint no-underscore-dangle: 0 */
+
 import { Colxx, Separator } from 'components/common/CustomBootstrap';
 import IntlMessages from 'helpers/IntlMessages';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Menu, MenuItem } from '@mui/material';
 import { Button, Card, CardBody, Row, Table } from 'reactstrap';
 import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProducts } from 'redux/actions';
 
 function Product() {
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const [anchorEl, setAnchorEl] = useState(null);
-  const handleClick = (event) => {
+  const [activeProductId, setActiveProductId] = useState(null);
+
+  const handleClick = (event, id) => {
     setAnchorEl(event.currentTarget);
+    setActiveProductId(id);
   };
+
+  useEffect(() => {
+    dispatch(getProducts());
+  }, [dispatch]);
+
+  const ProductsData = useSelector((state) => state?.product?.products?.data);
 
   const open = Boolean(anchorEl);
   const handleClose = () => {
@@ -24,43 +38,43 @@ function Product() {
     history.push(`/app/applications/editProduct`);
   };
   const handleViewProduct = () => {
-    history.push(`/app/applications/viewProduct`);
+    history.push(`/app/applications/viewProduct/${activeProductId}`);
   };
-  const userAddressData = [
-    {
-      id: 1,
-      productName: 'Hp Lpatop',
-      Category: 'Laptop',
-      mrp: '65000',
-      price: '55000',
-      unit: 'gm',
-      value: '990',
-      symbol: '/assets/img/products/veg-icon.svg',
-      img: '/assets/img/products/gym1.jpg',
-    },
-    {
-      id: 1,
-      productName: 'Hp Lpatop',
-      Category: 'Laptop',
-      mrp: '65000',
-      price: '55000',
-      unit: 'gm',
-      value: '990',
-      symbol: '/assets/img/products/non-veg-icon.svg',
-      img: '/assets/img/products/gym2.jpg',
-    },
-    {
-      id: 1,
-      productName: 'Hp Lpatop',
-      Category: 'Laptop',
-      mrp: '65000',
-      price: '55000',
-      unit: 'gm',
-      value: '990',
-      symbol: '/assets/img/products/veg-icon.svg',
-      img: '/assets/img/products/gym3.jpg',
-    },
-  ];
+  // const userAddressData = [
+  //   {
+  //     id: 1,
+  //     productName: 'Hp Lpatop',
+  //     Category: 'Laptop',
+  //     mrp: '65000',
+  //     price: '55000',
+  //     unit: 'gm',
+  //     value: '990',
+  //     symbol: '/assets/img/products/veg-icon.svg',
+  //     img: '/assets/img/products/gym1.jpg',
+  //   },
+  //   {
+  //     id: 1,
+  //     productName: 'Hp Lpatop',
+  //     Category: 'Laptop',
+  //     mrp: '65000',
+  //     price: '55000',
+  //     unit: 'gm',
+  //     value: '990',
+  //     symbol: '/assets/img/products/non-veg-icon.svg',
+  //     img: '/assets/img/products/gym2.jpg',
+  //   },
+  //   {
+  //     id: 1,
+  //     productName: 'Hp Lpatop',
+  //     Category: 'Laptop',
+  //     mrp: '65000',
+  //     price: '55000',
+  //     unit: 'gm',
+  //     value: '990',
+  //     symbol: '/assets/img/products/veg-icon.svg',
+  //     img: '/assets/img/products/gym3.jpg',
+  //   },
+  // ];
   return (
     <>
       <Row>
@@ -96,41 +110,46 @@ function Product() {
                 </tr>
               </thead>
               <tbody>
-                {userAddressData.map((data) => (
-                  <tr key={data.id}>
-                    <td>
-                      <img
-                        alt="Thumbnail"
-                        src={data.img}
-                        className="list-thumbnail responsive border-0 card-img-left"
-                      />
-                    </td>
-                    <td>{data.productName}</td>
-                    <td>{data.Category}</td>
-                    <td>
-                      {data.mrp}/{data.price}
-                    </td>
-                    <td>
-                      {data.unit}/{data.value}
-                    </td>
-                    <td>
-                      <img
-                        src={data.symbol}
-                        alt="Chitr - Veg Symbol - Svg - Veg And Non Veg Icons@pngkey.com"
-                        style={{ height: '30px', width: '30px' }}
-                      />
-                    </td>
-                    <td>
-                      <i
-                        style={{ cursor: 'pointer' }}
-                        className="simple-icon-options-vertical"
-                        onClick={(e) => handleClick(e)}
-                        onKeyDown={(e) => handleClick(e)}
-                        aria-hidden="true"
-                      />
-                    </td>
-                  </tr>
-                ))}
+                {ProductsData &&
+                  ProductsData.map((data) => (
+                    <tr key={data._id}>
+                      <td>
+                        <img
+                          alt="Thumbnail"
+                          src="/assets/img/products/gym3.jpg"
+                          className="list-thumbnail responsive border-0 card-img-left"
+                        />
+                      </td>
+                      <td>{data.name}</td>
+                      <td>{data.category}</td>
+                      <td>
+                        {data.mrp}/{data.price}
+                      </td>
+                      <td>
+                        {data.unit}/{data.value}
+                      </td>
+                      <td>
+                        <img
+                          src={
+                            data.nonVeg
+                              ? `/assets/img/products/non-veg-icon.svg`
+                              : `/assets/img/products/veg-icon.svg`
+                          }
+                          alt="Chitr - Veg Symbol - Svg - Veg And Non Veg Icons@pngkey.com"
+                          style={{ height: '30px', width: '30px' }}
+                        />
+                      </td>
+                      <td>
+                        <i
+                          style={{ cursor: 'pointer' }}
+                          className="simple-icon-options-vertical"
+                          onClick={(e) => handleClick(e, data._id)}
+                          onKeyDown={(e) => handleClick(e, data._id)}
+                          aria-hidden="true"
+                        />
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </Table>
             <Menu
@@ -176,7 +195,7 @@ function Product() {
                 />
                 Edit
               </MenuItem>
-              <MenuItem onClick={handleViewProduct}>
+              <MenuItem onClick={() => handleViewProduct()}>
                 <i
                   className="simple-icon-eye"
                   style={{ color: '#6fb327', marginRight: '5px' }}

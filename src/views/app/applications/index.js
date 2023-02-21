@@ -143,7 +143,7 @@ const Applications = ({ match }) => (
         render={(props) => <Product {...props} />}
       />
       <Route
-        path={`${match.url}/viewproduct`}
+        path={`${match.url}/viewproduct/:id`}
         render={(props) => <ViewProduct {...props} />}
       />
       <Route
