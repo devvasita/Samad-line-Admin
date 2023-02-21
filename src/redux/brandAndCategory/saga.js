@@ -120,7 +120,9 @@ export function* watchUpdateBrandAndCategory() {
 const deleteBrandAndCategoryAsync = async (id, type) => {
   console.log({ id, type });
   const res = await API.delete(`/${type}`, {
-    _id: id,
+    data: {
+      _id: id,
+    },
   });
   console.log(res, 'resss');
   return res;
