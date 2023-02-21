@@ -68,3 +68,18 @@ export {
   getSurveyDetailSuccess,
   deleteSurveyQuestion,
 } from './surveyDetail/actions';
+
+export {
+  addBrandAndCategory,
+  addBrandAndCategorySuccess,
+  addBrandAndCategoryError,
+  getBrandAndCategory,
+  getBrandAndCategorySuccess,
+  getBrandAndCategoryError,
+  updateBrandAndCategory,
+  updateBrandAndCategorySuccess,
+  updateBrandAndCategoryError,
+  deleteBrandAndCategory,
+  deleteBrandAndCategorySuccess,
+  deleteBrandAndCategoryError,
+} from './brandAndCategory/actions';

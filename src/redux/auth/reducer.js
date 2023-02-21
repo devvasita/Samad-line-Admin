@@ -34,7 +34,6 @@ const INIT_STATE = {
 };
 
 export default (state = INIT_STATE, action) => {
-  console.log({ type: action.type });
   switch (action.type) {
     case GET_USER_DETAILS:
       return { ...state, loading: true, error: '' };

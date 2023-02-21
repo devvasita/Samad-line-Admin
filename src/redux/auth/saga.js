@@ -97,6 +97,7 @@ function* loginWithPhoneNumberPassword({ payload }) {
       mobileNo,
       password
     );
+    console.log(loginUser, '--=-=-=--=');
     const {
       data: { message },
       status,

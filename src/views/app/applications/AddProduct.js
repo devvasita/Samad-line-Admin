@@ -4,7 +4,7 @@ import { Label, Row, FormGroup, Form, Button } from 'reactstrap';
 import CancelIcon from '@mui/icons-material/Cancel';
 import IconButton from '@mui/material/IconButton';
 import { makeStyles } from '@mui/styles';
-import { Field, Formik } from 'formik';
+import { Field, useFormik } from 'formik';
 import Select from 'react-select';
 import ReactQuill from 'react-quill';
 import CustomSelectInput from 'components/common/CustomSelectInput';
@@ -103,7 +103,7 @@ const quillFormats = [
   'link',
   'image',
 ];
-const selectData = [
+const relavantProduct = [
   { label: 'Dumbbell (2pcs)', value: 'Dumbbell', key: 0 },
   { label: 'Protin(5kg)', value: 'Protin', key: 1 },
   { label: 'Dessert(250gm)', value: 'dessert', key: 2 },
@@ -169,14 +169,6 @@ const unit = [
     key: 6,
   },
 ];
-
-const onSubmit = (values) => {
-  console.log(values);
-};
-
-const validate = (values) => {
-  console.log(values);
-};
 
 function NewComp({ setimgArr, i, imgArr }) {
   const [file, setFile] = useState();
@@ -282,15 +274,73 @@ function AddProduct() {
     { id: 8 },
     { id: 9 },
   ]);
-  const [textQuillStandart, setTextQuillStandart] = useState('');
-  const [selectedOptionsUnit, setSelectedOptionsUnit] = useState([]);
-  const [selectedOptionsColor, setselectedOptionsColor] = useState([]);
-  const [selectedOptionsFlavour, setselectedOptionsFlavour] = useState([]);
-  const [selectedOptionsSuggest, setselectedOptionsSuggest] = useState([]);
+  // const [textQuillStandart, setTextQuillStandart] = useState('');
+  // const [selectedOptionsUnit, setSelectedOptionsUnit] = useState([]);
+  // const [selectedOptionsColor, setselectedOptionsColor] = useState([]);
+  // const [selectedOptionsFlavour, setselectedOptionsFlavour] = useState([]);
+  // const [selectedOptionsSuggest, setselectedOptionsSuggest] = useState([]);
 
   const [checkedPrimary, setCheckedPrimary] = useState(false);
 
+  const [addProduct, setAddProduct] = useState({
+    name: '',
+    price: '',
+    image: [],
+    brand: '',
+    category: '',
+    countInStock: '',
+    numReviews: '',
+    description: '',
+    mrp: '',
+    flavour: '',
+    value: '',
+    unit: '',
+    color: '',
+    nonVeg: false,
+    otherUnit: [],
+    otherColor: [],
+    otherFlavour: [],
+    suggestedProduct: [],
+  });
+  console.log(addProduct, setAddProduct);
   const classes = useStyles();
+
+  const validate = (values) => {
+    console.log(values);
+    const errors = {};
+    return errors;
+  };
+
+  const formik = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      name: '',
+      price: '',
+      image: [],
+      brand: '',
+      category: '',
+      countInStock: '',
+      numReviews: '',
+      description: '',
+      mrp: '',
+      flavour: '',
+      value: '',
+      unit: '',
+      color: '',
+      nonVeg: false,
+      otherUnit: [],
+      otherColor: [],
+      otherFlavour: [],
+      suggestedProduct: [],
+    },
+    validate,
+    onSubmit: async (values) => {
+      // setFinaldata(values);
+      console.log(values);
+      // await dispatch(EditPlanPersonalLoan(values));
+      // navigate(`/material/personalloan`);
+    },
+  });
 
   return (
     <>
@@ -316,223 +366,247 @@ function AddProduct() {
               ))}
           </Row>
 
-          <Formik
-            validate={validate}
-            initialValues={{
-              productname: '',
-              mrp: '',
-              price: '',
-              brand: '',
-              unit: '',
-              value: '',
-              category: '',
-              relevantProduct: '',
-              veg: '',
-            }}
-            onSubmit={onSubmit}
+          <Form
+            onSubmit={formik.handleSubmit}
+            className="av-tooltip tooltip-label-right mt-4"
           >
-            {() => (
-              <Form className="av-tooltip tooltip-label-right mt-4">
-                <Row>
-                  <Colxx lg="9" xs="12" sm="6">
-                    <FormGroup>
-                      <Label>Product Name:</Label>
-                      <Field className="form-control" name="productname" />
-                    </FormGroup>
-                  </Colxx>
-                  <Colxx lg="3" xs="12" sm="6">
-                    <Form>
-                      <Label>Non-Veg :</Label>
-                      <Switch
-                        className="custom-switch custom-switch-red"
-                        checked={checkedPrimary}
-                        onChange={(primary) => setCheckedPrimary(primary)}
-                      />
-                    </Form>
-                  </Colxx>
-                </Row>
+            <Row>
+              <Colxx lg="9" xs="12" sm="6">
+                <FormGroup>
+                  <Label>Product Name:</Label>
+                  <Field
+                    className="form-control"
+                    name="name"
+                    value={formik.values.name}
+                  />
+                </FormGroup>
+              </Colxx>
+              <Colxx lg="3" xs="12" sm="6">
+                <Form>
+                  <Label>Non-Veg :</Label>
+                  <Switch
+                    className="custom-switch custom-switch-red"
+                    checked={checkedPrimary}
+                    onChange={(primary) => setCheckedPrimary(primary)}
+                    name="nonVeg"
+                    value={formik.values.nonVeg}
+                  />
+                </Form>
+              </Colxx>
+            </Row>
 
-                <Row>
-                  <Colxx lg="3" xs="12" sm="6">
-                    <FormGroup>
-                      <Label>MRP(₹):</Label>
+            <Row>
+              <Colxx lg="3" xs="12" sm="6">
+                <FormGroup>
+                  <Label>MRP(₹):</Label>
 
-                      <Field className="form-control" name="mrp" />
-                    </FormGroup>
-                  </Colxx>
-                  <Colxx lg="3" xs="12" sm="6">
-                    <FormGroup>
-                      <Label>Price(₹):</Label>
+                  <Field
+                    className="form-control"
+                    name="mrp"
+                    value={formik.values.mrp}
+                  />
+                </FormGroup>
+              </Colxx>
+              <Colxx lg="3" xs="12" sm="6">
+                <FormGroup>
+                  <Label>Price(₹):</Label>
 
-                      <Field className="form-control" name="price" />
-                    </FormGroup>
-                  </Colxx>
-                  <Colxx lg="3" xs="12" sm="6">
-                    <FormGroup>
-                      <Label>Brand:</Label>
-                      <Select
-                        className="react-select react-select__single-value"
-                        classNamePrefix="react-select"
-                        options={selectBrandData}
-                        name="brand"
-                        // isMulti={isMulti}
-                        // onChange={handleChangeselect}
-                        // onBlur={handleBlur}
-                      />
-                    </FormGroup>
-                  </Colxx>
-                  <Colxx lg="3" xs="12" sm="6">
-                    <FormGroup>
-                      <Label>Category:</Label>
-                      <Select
-                        className="react-select react-select__single-value"
-                        classNamePrefix="react-select"
-                        options={category}
-                        name="category"
-                        // isMulti={isMulti}
-                        // onChange={handleChangeselect}
-                        // onBlur={handleBlur}
-                      />
-                    </FormGroup>
-                  </Colxx>
-                </Row>
+                  <Field
+                    className="form-control"
+                    name="price"
+                    value={formik.values.price}
+                  />
+                </FormGroup>
+              </Colxx>
+              <Colxx lg="3" xs="12" sm="6">
+                <FormGroup>
+                  <Label>Brand:</Label>
+                  <Select
+                    className="react-select react-select__single-value"
+                    classNamePrefix="react-select"
+                    options={selectBrandData}
+                    name="brand"
+                    value={formik.values.brand}
 
-                <Row>
-                  <Colxx lg="3" xs="12" sm="6">
-                    <FormGroup>
-                      <Label>Unit:</Label>
-                      <Select
-                        className="react-select react-select__single-value"
-                        classNamePrefix="react-select"
-                        options={options}
-                        name="unit"
-                      />
-                    </FormGroup>
-                  </Colxx>
-                  <Colxx lg="3" xs="12" sm="6">
-                    <FormGroup>
-                      <Label>Value:</Label>
-                      <Field className="form-control" name="value" />
-                    </FormGroup>
-                  </Colxx>
-                  <Colxx lg="3" xs="12" sm="6">
-                    <FormGroup>
-                      <Label>Color:</Label>
-                      <Field className="form-control" name="color" />
-                    </FormGroup>
-                  </Colxx>
-                  <Colxx lg="3" xs="12" sm="6">
-                    <Form>
-                      <Label>Flavour:</Label>
-                      <Field className="form-control" name="flavour" />
-                    </Form>
-                  </Colxx>
-                </Row>
+                    // isMulti={isMulti}
+                    // onChange={handleChangeselect}
+                    // onBlur={handleBlur}
+                  />
+                </FormGroup>
+              </Colxx>
+              <Colxx lg="3" xs="12" sm="6">
+                <FormGroup>
+                  <Label>Category:</Label>
+                  <Select
+                    className="react-select react-select__single-value"
+                    classNamePrefix="react-select"
+                    options={category}
+                    name="category"
+                    value={formik.values.category}
+                    // isMulti={isMulti}
+                    // onChange={handleChangeselect}
+                    // onBlur={handleBlur}
+                  />
+                </FormGroup>
+              </Colxx>
+            </Row>
 
-                <Row>
-                  <Colxx lg="12" xs="12" sm="6">
-                    <Label>Description :</Label>
-                    <ReactQuill
-                      theme="snow"
-                      value={textQuillStandart}
-                      onChange={(val) => setTextQuillStandart(val)}
-                      modules={quillModules}
-                      formats={quillFormats}
-                      style={{ marginBottom: '10px' }}
+            <Row>
+              <Colxx lg="3" xs="12" sm="6">
+                <FormGroup>
+                  <Label>Unit:</Label>
+                  <Select
+                    className="react-select react-select__single-value"
+                    classNamePrefix="react-select"
+                    options={options}
+                    name="unit"
+                    value={formik.values.unit}
+                  />
+                </FormGroup>
+              </Colxx>
+              <Colxx lg="3" xs="12" sm="6">
+                <FormGroup>
+                  <Label>Value:</Label>
+                  <Field
+                    className="form-control"
+                    name="value"
+                    value={formik.values.value}
+                  />
+                </FormGroup>
+              </Colxx>
+              <Colxx lg="3" xs="12" sm="6">
+                <FormGroup>
+                  <Label>Color:</Label>
+                  <Field
+                    className="form-control"
+                    name="color"
+                    value={formik.values.color}
+                  />
+                </FormGroup>
+              </Colxx>
+              <Colxx lg="3" xs="12" sm="6">
+                <Form>
+                  <Label>Flavour:</Label>
+                  <Field
+                    className="form-control"
+                    name="flavour"
+                    value={formik.values.flavour}
+                  />
+                </Form>
+              </Colxx>
+            </Row>
+
+            <Row>
+              <Colxx lg="12" xs="12" sm="6">
+                <Label>Description :</Label>
+                <ReactQuill
+                  theme="snow"
+                  value={formik.values.description}
+                  onChange={formik.handleChange}
+                  // onChange={(val) => setTextQuillStandart(val)}
+                  modules={quillModules}
+                  formats={quillFormats}
+                  style={{ marginBottom: '10px' }}
+                />
+              </Colxx>
+            </Row>
+
+            <Row>
+              <Colxx lg="12" xs="12" sm="6">
+                <FormGroup>
+                  <Label>Other Unit</Label>
+                  <Select
+                    components={{ Input: CustomSelectInput }}
+                    className="react-select"
+                    classNamePrefix="react-select"
+                    isMulti
+                    value={formik.values.description}
+                    onChange={formik.handleChange}
+                    name="otherunit"
+                    options={unit}
+                  />
+                </FormGroup>
+              </Colxx>
+            </Row>
+            <Row>
+              <Colxx lg="12" xs="12" sm="6">
+                <FormGroup>
+                  <Label>Other Color:</Label>
+                  <Select
+                    components={{ Input: CustomSelectInput }}
+                    className="react-select"
+                    classNamePrefix="react-select"
+                    isMulti
+                    name="otherColor"
+                    value={formik.values.otherColor}
+                    onChange={formik.handleChange}
+                    // value={selectedOptionsColor}
+                    // onChange={setselectedOptionsColor}
+                    options={color}
+                  />
+                </FormGroup>
+              </Colxx>
+            </Row>
+            <Row>
+              <Colxx lg="12" xs="12" sm="6">
+                <Form>
+                  <FormGroup>
+                    <Label>Other Flavour:</Label>
+                    <Select
+                      components={{ Input: CustomSelectInput }}
+                      className="react-select"
+                      classNamePrefix="react-select"
+                      isMulti
+                      name="relevantProduct"
+                      value={formik.values.otherColor}
+                      onChange={formik.handleChange}
+                      // value={selectedOptionsFlavour}
+                      // onChange={setselectedOptionsFlavour}
+                      options={Flavour}
                     />
-                  </Colxx>
-                </Row>
+                  </FormGroup>
+                </Form>
+              </Colxx>
+            </Row>
+            <Row>
+              <Colxx lg="12" xs="12" sm="6">
+                <FormGroup>
+                  <Label>Suggested Product :</Label>
+                  <Select
+                    components={{ Input: CustomSelectInput }}
+                    className="react-select"
+                    classNamePrefix="react-select"
+                    isMulti
+                    name="relevantProduct"
+                    value={formik.values.suggestedProduct}
+                    onChange={formik.handleChange}
+                    options={relavantProduct}
+                  />
+                </FormGroup>
+              </Colxx>
+            </Row>
+            <div style={{ textAlign: 'end', margin: '15px 0px 15px 0px' }}>
+              <Button
+                color="primary"
+                type="submit"
+                onClick={formik.handleSubmit}
+              >
+                Submit
+              </Button>
 
-                <Row>
-                  <Colxx lg="12" xs="12" sm="6">
-                    <FormGroup>
-                      <Label>Other Unit</Label>
-                      <Select
-                        components={{ Input: CustomSelectInput }}
-                        className="react-select"
-                        classNamePrefix="react-select"
-                        isMulti
-                        name="otherunit"
-                        value={selectedOptionsUnit}
-                        onChange={setSelectedOptionsUnit}
-                        options={unit}
-                      />
-                    </FormGroup>
-                  </Colxx>
-                </Row>
-                <Row>
-                  <Colxx lg="12" xs="12" sm="6">
-                    <FormGroup>
-                      <Label>Other Color:</Label>
-                      <Select
-                        components={{ Input: CustomSelectInput }}
-                        className="react-select"
-                        classNamePrefix="react-select"
-                        isMulti
-                        name="otherColor"
-                        value={selectedOptionsColor}
-                        onChange={setselectedOptionsColor}
-                        options={color}
-                      />
-                    </FormGroup>
-                  </Colxx>
-                </Row>
-                <Row>
-                  <Colxx lg="12" xs="12" sm="6">
-                    <Form>
-                      <FormGroup>
-                        <Label>Other Flavour:</Label>
-                        <Select
-                          components={{ Input: CustomSelectInput }}
-                          className="react-select"
-                          classNamePrefix="react-select"
-                          isMulti
-                          name="relevantProduct"
-                          value={selectedOptionsFlavour}
-                          onChange={setselectedOptionsFlavour}
-                          options={Flavour}
-                        />
-                      </FormGroup>
-                    </Form>
-                  </Colxx>
-                </Row>
-                <Row>
-                  <Colxx lg="12" xs="12" sm="6">
-                    <FormGroup>
-                      <Label>Suggested Product :</Label>
-                      <Select
-                        components={{ Input: CustomSelectInput }}
-                        className="react-select"
-                        classNamePrefix="react-select"
-                        isMulti
-                        name="relevantProduct"
-                        value={selectedOptionsSuggest}
-                        onChange={setselectedOptionsSuggest}
-                        options={selectData}
-                      />
-                    </FormGroup>
-                  </Colxx>
-                </Row>
-              </Form>
-            )}
-          </Formik>
+              <NavLink to="./product">
+                <Button
+                  outline
+                  className={classes.cancel}
+                  // style={{ background: '#6c757d', border: 'none' }}
+                >
+                  Cancel
+                </Button>
+              </NavLink>
+            </div>
+          </Form>
         </Colxx>
       </Row>
-      <div style={{ textAlign: 'end', margin: '15px 0px 15px 0px' }}>
-        <Button color="primary" type="submit">
-          Submit
-        </Button>
-
-        <NavLink to="./product">
-          <Button
-            outline
-            className={classes.cancel}
-            // style={{ background: '#6c757d', border: 'none' }}
-          >
-            Cancel
-          </Button>
-        </NavLink>
-      </div>
     </>
   );
 }
