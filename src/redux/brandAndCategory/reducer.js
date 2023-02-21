@@ -60,11 +60,15 @@ export default (state = INIT_STATE, action) => {
 
     case UPDATE_BRAND_AND_CATEGORY_SUCCESS: {
       const { item, type } = action.payload;
-      console.log(action.payload);
+      const { _id } = item;
+      const index = [...state[type].data].map((e) => e._id).indexOf(_id);
+      const dataToUpdate = [...state[type].data];
+      dataToUpdate.splice(index, 1, item);
+
       return {
         ...state,
         loaded: true,
-        [type]: { ...state[type], data: [item] },
+        [type]: { ...state[type], data: dataToUpdate },
       };
     }
     case UPDATE_BRAND_AND_CATEGORY_ERROR:
@@ -75,14 +79,14 @@ export default (state = INIT_STATE, action) => {
 
     case DELETE_BRAND_AND_CATEGORY_SUCCESS: {
       const { id, type } = action.payload;
-      const newState = state[type].filter(
-        (brandAndCategory) => brandAndCategory.id !== id
-      );
-      console.log(newState, '---');
+      const index = [...state[type].data].map((e) => e._id).indexOf(id);
+      const dataToUpdate = [...state[type].data];
+      dataToUpdate.splice(index - 1, 1);
+
       return {
         ...state,
         loaded: true,
-        newState,
+        [type]: { ...state[type], data: dataToUpdate },
       };
     }
     case DELETE_BRAND_AND_CATEGORY_ERROR: {
