@@ -12,7 +12,7 @@ import Switch from 'rc-switch';
 import 'rc-switch/assets/index.css';
 import 'react-quill/dist/quill.snow.css';
 import { NavLink } from 'react-router-dom';
-import * as Yup from 'yup';
+// import * as Yup from 'yup';
 
 const useStyles = makeStyles(() => ({
   cancel: {
@@ -175,6 +175,7 @@ function NewComp({ setimgArr, i, imgArr }) {
   const [file, setFile] = useState();
 
   const handleChange = (e) => {
+    console.log({ e });
     e.stopPropagation();
     setFile(URL.createObjectURL(e.target.files[0]));
     setimgArr(imgArr);
@@ -283,27 +284,27 @@ function AddProduct() {
 
   // const [checkedPrimary, setCheckedPrimary] = useState(false);
 
-  const [addProduct, setAddProduct] = useState({
-    name: '',
-    price: '',
-    image: [],
-    brand: '',
-    category: '',
-    countInStock: '',
-    numReviews: '',
-    description: '',
-    mrp: '',
-    flavour: '',
-    value: '',
-    unit: '',
-    color: '',
-    nonVeg: false,
-    otherUnit: [],
-    otherColor: [],
-    otherFlavour: [],
-    suggestedProduct: [],
-  });
-  console.log(addProduct, setAddProduct);
+  // const [addProduct, setAddProduct] = useState({
+  //   name: '',
+  //   price: '',
+  //   image: [],
+  //   brand: '',
+  //   category: '',
+  //   countInStock: '',
+  //   numReviews: '',
+  //   description: '',
+  //   mrp: '',
+  //   flavour: '',
+  //   value: '',
+  //   unit: '',
+  //   color: '',
+  //   nonVeg: false,
+  //   otherUnit: [],
+  //   otherColor: [],
+  //   otherFlavour: [],
+  //   suggestedProduct: [],
+  // });
+  // console.log(addProduct, setAddProduct);
   const classes = useStyles();
 
   const initialValues = {
@@ -327,10 +328,10 @@ function AddProduct() {
     suggestedProduct: [],
   };
 
-  const validationSchema = Yup.object().shape({
-    name: Yup.string().required('name is reqired'),
-    price: Yup.string().required('price is required!'),
-  });
+  // const validationSchema = Yup.object().shape({
+  //   name: Yup.string().required('name is reqired'),
+  //   price: Yup.string().required('price is required!'),
+  // });
 
   const onSubmit = (values) => {
     console.log(values);
@@ -360,7 +361,7 @@ function AddProduct() {
           </Row>
 
           <Formik
-            validate={validationSchema}
+            // validate={validationSchema}
             initialValues={initialValues}
             onSubmit={onSubmit}
           >
@@ -368,7 +369,7 @@ function AddProduct() {
               values,
               errors,
               touched,
-              handleChange,
+              // handleChange,
               handleBlur,
               handleSubmit,
             }) => (
@@ -383,8 +384,8 @@ function AddProduct() {
                       <Field
                         className="form-control"
                         name="name"
-                        value={values.name}
-                        onChange={handleChange}
+                        // value={values.name}
+                        //  onChange={handleChange}
                         onBlur={handleBlur}
                         error={Boolean(errors.name && touched.name)}
                       />
@@ -396,10 +397,10 @@ function AddProduct() {
                       <Switch
                         className="custom-switch custom-switch-red"
                         checked={values.nonVeg}
-                        onChange={handleChange}
+                        //  onChange={handleChange}
                         // onChange={(primary) => setCheckedPrimary(primary)}
                         name="nonVeg"
-                        value={values.nonVeg}
+                        // value={values.nonVeg}
                       />
                     </Form>
                   </Colxx>
@@ -413,8 +414,8 @@ function AddProduct() {
                       <Field
                         className="form-control"
                         name="mrp"
-                        value={values.mrp}
-                        onChange={handleChange}
+                        // value={values.mrp}
+                        //  onChange={handleChange}
                       />
                     </FormGroup>
                   </Colxx>
@@ -425,8 +426,8 @@ function AddProduct() {
                       <Field
                         className="form-control"
                         name="price"
-                        value={values.price}
-                        onChange={handleChange}
+                        // value={values.price}
+                        //  onChange={handleChange}
                         error={Boolean(errors.price && touched.price)}
                       />
                     </FormGroup>
@@ -439,8 +440,8 @@ function AddProduct() {
                         classNamePrefix="react-select"
                         options={selectBrandData}
                         name="brand"
-                        value={values.brand}
-                        onChange={handleChange}
+                        // value={values.brand}
+                        //  onChange={handleChange}
 
                         // isMulti={isMulti}
                         // onChange={handleChangeselect}
@@ -456,8 +457,8 @@ function AddProduct() {
                         classNamePrefix="react-select"
                         options={category}
                         name="category"
-                        value={values.category}
-                        onChange={handleChange}
+                        // value={values.category}
+                        //  onChange={handleChange}
                         // isMulti={isMulti}
                         // onChange={handleChangeselect}
                         // onBlur={handleBlur}
@@ -475,8 +476,8 @@ function AddProduct() {
                         classNamePrefix="react-select"
                         options={options}
                         name="unit"
-                        value={values.unit}
-                        onChange={handleChange}
+                        // value={values.unit}
+                        //  onChange={handleChange}
                       />
                     </FormGroup>
                   </Colxx>
@@ -486,8 +487,8 @@ function AddProduct() {
                       <Field
                         className="form-control"
                         name="value"
-                        value={values.value}
-                        onChange={handleChange}
+                        // value={values.value}
+                        //  onChange={handleChange}
                       />
                     </FormGroup>
                   </Colxx>
@@ -497,8 +498,8 @@ function AddProduct() {
                       <Field
                         className="form-control"
                         name="color"
-                        value={values.color}
-                        onChange={handleChange}
+                        // value={values.color}
+                        //  onChange={handleChange}
                       />
                     </FormGroup>
                   </Colxx>
@@ -508,8 +509,8 @@ function AddProduct() {
                       <Field
                         className="form-control"
                         name="flavour"
-                        value={values.flavour}
-                        onChange={handleChange}
+                        // value={values.flavour}
+                        //  onChange={handleChange}
                       />
                     </Form>
                   </Colxx>
@@ -520,8 +521,8 @@ function AddProduct() {
                     <Label>Description :</Label>
                     <ReactQuill
                       theme="snow"
-                      value={values.description}
-                      onChange={handleChange}
+                      // value={values.description}
+                      //  onChange={handleChange}
                       // onChange={(val) => setTextQuillStandart(val)}
                       modules={quillModules}
                       formats={quillFormats}
@@ -539,8 +540,8 @@ function AddProduct() {
                         className="react-select"
                         classNamePrefix="react-select"
                         isMulti
-                        value={values.description}
-                        onChange={handleChange}
+                        // value={values.description}
+                        //  onChange={handleChange}
                         name="otherunit"
                         options={unit}
                       />
@@ -557,8 +558,8 @@ function AddProduct() {
                         classNamePrefix="react-select"
                         isMulti
                         name="otherColor"
-                        value={values.otherColor}
-                        onChange={handleChange}
+                        // value={values.otherColor}
+                        //  onChange={handleChange}
                         // value={selectedOptionsColor}
                         // onChange={setselectedOptionsColor}
                         options={color}
@@ -577,8 +578,8 @@ function AddProduct() {
                           classNamePrefix="react-select"
                           isMulti
                           name="relevantProduct"
-                          value={values.otherColor}
-                          onChange={handleChange}
+                          // value={values.otherColor}
+                          //  onChange={handleChange}
                           // value={selectedOptionsFlavour}
                           // onChange={setselectedOptionsFlavour}
                           options={Flavour}
@@ -597,8 +598,8 @@ function AddProduct() {
                         classNamePrefix="react-select"
                         isMulti
                         name="relevantProduct"
-                        value={values.suggestedProduct}
-                        onChange={handleChange}
+                        // value={values.suggestedProduct}
+                        //  onChange={handleChange}
                         options={relavantProduct}
                       />
                     </FormGroup>
