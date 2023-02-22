@@ -1,5 +1,7 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-useless-computed-key */
 import { Colxx, Separator } from 'components/common/CustomBootstrap';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Label, Row, FormGroup, Form, Button } from 'reactstrap';
 import CancelIcon from '@mui/icons-material/Cancel';
 import IconButton from '@mui/material/IconButton';
@@ -12,6 +14,8 @@ import Switch from 'rc-switch';
 import 'rc-switch/assets/index.css';
 import 'react-quill/dist/quill.snow.css';
 import { NavLink } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { addProduct, getBrandAndCategory, getProducts } from 'redux/actions';
 // import * as Yup from 'yup';
 
 const useStyles = makeStyles(() => ({
@@ -72,7 +76,7 @@ const useStyles = makeStyles(() => ({
     bottom: 0,
   },
 }));
-const options = [
+const unit = [
   { value: 'kg', label: 'Kg', disabled: true },
   { value: 'gm', label: 'Gm' },
   { value: 'pcs', label: 'pcs' },
@@ -112,70 +116,69 @@ const relavantProduct = [
   { label: 'Protin SugarFree(2kg)', value: 'Protin1', key: 1 },
   { label: 'gloves(2pcs)', value: 'gloves', key: 2 },
 ];
-const color = [
-  { label: 'Gym gloves(Red)', value: 'Red', key: 0 },
-  { label: 'Streching Belt (Gray)', value: 'Gray', key: 0 },
-  { label: 'Gym gloves(Blue)', value: 'Blue', key: 0 },
-  { label: 'Skipping Ropes(green)', value: 'green', key: 0 },
-  { label: 'Medicine Balls(Gray)', value: 'gray1', key: 0 },
-];
-const Flavour = [
-  { label: 'Protein Powder (Chocolate)', value: 'gm', key: 0 },
-  {
-    label:
-      'PRO365 Tummy Trimmer for Men & Women Belly Fat ABS Exercise (Coconute)',
-    value: 'gm1',
-    key: 1,
-  },
-  {
-    label:
-      'Kobra Labs The Bull Mass Gainer Weight Gainers/Mass Gainers  (Snickerdoodle)',
-    value: 'gm2',
-    key: 2,
-  },
-  { label: 'Protein Powder (Peanut Butter )', value: 'gm3', key: 3 },
-  { label: 'Protein Powder (Cookies and Cream  )', value: 'gm4', key: 4 },
-];
-const selectBrandData = [
-  { label: 'Zara', value: 'Zara', key: 0 },
-  { label: 'U.S Polo', value: 'u.s polo', key: 1 },
-  { label: 'Nike', value: 'nike', key: 2 },
-];
-const category = [
-  { label: 'Cycling', value: 'Cycling', key: 0 },
-  { label: 'Gymnastics', value: 'Gymnastics', key: 1 },
-  { label: 'Boxing', value: 'Boxing', key: 2 },
-];
-const unit = [
-  { label: 'Protein Powder (200gm)', value: 'gm', key: 0 },
-  { label: 'Protein Powder (250gm)', value: 'gm1', key: 1 },
-  {
-    label:
-      'PRO365 Tummy Trimmer for Men & Women Belly Fat ABS Exercise (1 pcs)',
-    value: 'gm2',
-    key: 2,
-  },
-  {
-    label: 'Streching Belt(2 pcs)',
-    value: 'Kg1',
-    key: 3,
-  },
+// const color = [
+//   { label: 'Gym gloves(Red)', value: 'Red', key: 0 },
+//   { label: 'Streching Belt (Gray)', value: 'Gray', key: 0 },
+//   { label: 'Gym gloves(Blue)', value: 'Blue', key: 0 },
+//   { label: 'Skipping Ropes(green)', value: 'green', key: 0 },
+//   { label: 'Medicine Balls(Gray)', value: 'gray1', key: 0 },
+// ];
+// const Flavour = [
+//   { label: 'Protein Powder (Chocolate)', value: 'gm', key: 0 },
+//   {
+//     label:
+//       'PRO365 Tummy Trimmer for Men & Women Belly Fat ABS Exercise (Coconute)',
+//     value: 'gm1',
+//     key: 1,
+//   },
+//   {
+//     label:
+//       'Kobra Labs The Bull Mass Gainer Weight Gainers/Mass Gainers  (Snickerdoodle)',
+//     value: 'gm2',
+//     key: 2,
+//   },
+//   { label: 'Protein Powder (Peanut Butter )', value: 'gm3', key: 3 },
+//   { label: 'Protein Powder (Cookies and Cream  )', value: 'gm4', key: 4 },
+// ];
+// const brand = [
+//   { label: 'Zara', value: 'Zara', key: 0 },
+//   { label: 'U.S Polo', value: 'u.s polo', key: 1 },
+//   { label: 'Nike', value: 'nike', key: 2 },
+// ];
+// const category = [
+//   { label: 'Cycling', value: 'Cycling', key: 0 },
+//   { label: 'Gymnastics', value: 'Gymnastics', key: 1 },
+//   { label: 'Boxing', value: 'Boxing', key: 2 },
+// ];
+// const unit = [
+//   { label: 'Protein Powder (200gm)', value: 'gm', key: 0 },
+//   { label: 'Protein Powder (250gm)', value: 'gm1', key: 1 },
+//   {
+//     label:
+//       'PRO365 Tummy Trimmer for Men & Women Belly Fat ABS Exercise (1 pcs)',
+//     value: 'gm2',
+//     key: 2,
+//   },
+//   {
+//     label: 'Streching Belt(2 pcs)',
+//     value: 'Kg1',
+//     key: 3,
+//   },
 
-  { label: 'Gym gloves(2 pcs)', value: 'Kg2', key: 4 },
-  { label: 'Protein Powder sugarless(2.5kg)', value: 'Kg3', key: 5 },
+//   { label: 'Gym gloves(2 pcs)', value: 'Kg2', key: 4 },
+//   { label: 'Protein Powder sugarless(2.5kg)', value: 'Kg3', key: 5 },
 
-  {
-    label: 'Protein Powder Mass Gainer (5kg)',
-    value: 'Kg4',
-    key: 6,
-  },
-];
+//   {
+//     label: 'Protein Powder Mass Gainer (5kg)',
+//     value: 'Kg4',
+//     key: 6,
+//   },
+// ];
 
 function NewComp({ setimgArr, i, imgArr }) {
   const [file, setFile] = useState();
 
   const handleChange = (e) => {
-    console.log({ e });
     e.stopPropagation();
     setFile(URL.createObjectURL(e.target.files[0]));
     setimgArr(imgArr);
@@ -264,48 +267,110 @@ function NewComp({ setimgArr, i, imgArr }) {
 }
 
 function AddProduct() {
-  const [imgArr, setimgArr] = useState([
-    { id: 0 },
-    { id: 1 },
-    { id: 2 },
-    { id: 3 },
-    { id: 4 },
-    { id: 5 },
-    { id: 6 },
-    { id: 7 },
-    { id: 8 },
-    { id: 9 },
-  ]);
-  // const [textQuillStandart, setTextQuillStandart] = useState('');
-  // const [selectedOptionsUnit, setSelectedOptionsUnit] = useState([]);
-  // const [selectedOptionsColor, setselectedOptionsColor] = useState([]);
-  // const [selectedOptionsFlavour, setselectedOptionsFlavour] = useState([]);
-  // const [selectedOptionsSuggest, setselectedOptionsSuggest] = useState([]);
-
-  // const [checkedPrimary, setCheckedPrimary] = useState(false);
-
-  // const [addProduct, setAddProduct] = useState({
-  //   name: '',
-  //   price: '',
-  //   image: [],
-  //   brand: '',
-  //   category: '',
-  //   countInStock: '',
-  //   numReviews: '',
-  //   description: '',
-  //   mrp: '',
-  //   flavour: '',
-  //   value: '',
-  //   unit: '',
-  //   color: '',
-  //   nonVeg: false,
-  //   otherUnit: [],
-  //   otherColor: [],
-  //   otherFlavour: [],
-  //   suggestedProduct: [],
-  // });
-  // console.log(addProduct, setAddProduct);
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const [brand, setbrand] = useState([]);
+  const [category, setcategory] = useState([]);
+  const [otherUnitOption, setOtherUnitOption] = useState([]);
+  const [otherFlavourOption, setOtherFlavourOption] = useState([]);
+  const [otherColoroption, setOtherColorOption] = useState([]);
+  const [product, setProduct] = useState({
+    name: '',
+    price: '',
+    image: [
+      { id: 0 },
+      { id: 1 },
+      { id: 2 },
+      { id: 3 },
+      { id: 4 },
+      { id: 5 },
+      { id: 6 },
+      { id: 7 },
+      { id: 8 },
+      { id: 9 },
+    ],
+    brand: '',
+    category: '',
+    countInStock: '',
+    numReviews: '',
+    description: '',
+    sellerInformation: '',
+    mrp: '',
+    flavour: '',
+    value: '',
+    unit: '',
+    color: '',
+    nonVeg: false,
+    otherUnit: [],
+    otherColor: [],
+    otherFlavour: [],
+    suggestedProduct: [],
+  });
+
+  const brandData = useSelector(
+    (state) => state?.brandAndCategory?.brand?.data
+  );
+  const categoryData = useSelector(
+    (state) => state?.brandAndCategory?.category?.data
+  );
+  const products = useSelector((state) => state.product);
+
+  const { otherUnit, otherColor, otherFlavour } = products;
+
+  useEffect(() => {
+    dispatch(getBrandAndCategory('brand'));
+    dispatch(getBrandAndCategory('category'));
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (brandData && brandData.length)
+      setbrand(
+        brandData.map((elem, i) => {
+          return { label: elem.name, value: elem.name, key: i };
+        })
+      );
+    if (categoryData && categoryData.length)
+      setcategory(
+        categoryData.map((elem, i) => {
+          return { label: elem.name, value: elem.name, key: i };
+        })
+      );
+    dispatch(getProducts({ filterBy: 'color', key: 'otherColor' }));
+    dispatch(getProducts({ filterBy: 'flavour', key: 'otherFlavour' }));
+  }, [categoryData, brandData]);
+
+  useEffect(() => {
+    if (otherUnit && otherUnit.data.length)
+      setOtherUnitOption(
+        otherUnit.data.map((elem, i) => {
+          return { label: elem.name, value: elem._id, key: i };
+        })
+      );
+    if (otherFlavour && otherFlavour.data.length)
+      setOtherFlavourOption(
+        otherFlavour.data.map((elem, i) => {
+          return { label: elem.name, value: elem._id, key: i };
+        })
+      );
+    if (otherColor && otherColor.data.length)
+      setOtherColorOption(
+        otherColor.data.map((elem, i) => {
+          return { label: elem.name, value: elem._id, key: i };
+        })
+      );
+  }, [otherUnit, otherColor, otherFlavour]);
+
+  const handleChange = (value, key) => {
+    setProduct((oldVal) => {
+      return { ...oldVal, [key]: value };
+    });
+    if (value !== '' && key === 'unit')
+      dispatch(getProducts({ unit: value, key: 'otherUnit' }));
+    if (key === 'color' && !product.color.length)
+      dispatch(getProducts({ filterBy: 'color', key: 'otherColor' }));
+    if (key === 'flavour' && !product.flavour.length)
+      dispatch(getProducts({ filterBy: 'flavour', key: 'otherFlavour' }));
+  };
 
   const initialValues = {
     name: '',
@@ -333,8 +398,9 @@ function AddProduct() {
   //   price: Yup.string().required('price is required!'),
   // });
 
-  const onSubmit = (values) => {
-    console.log(values);
+  const onSubmit = () => {
+    console.log({ product });
+    dispatch(addProduct(product));
   };
   return (
     <>
@@ -349,11 +415,15 @@ function AddProduct() {
         <Colxx xxs="12">
           <Label>Image</Label>
           <Row>
-            {imgArr &&
-              imgArr.map((elm, index) => (
+            {product.image &&
+              product.image.map((elm, index) => (
                 <NewComp
-                  setimgArr={setimgArr}
-                  imgArr={imgArr}
+                  setimgArr={(val) =>
+                    setProduct((oldVal) => {
+                      return { ...oldVal, image: val };
+                    })
+                  }
+                  imgArr={product.image}
                   i={index}
                   key={elm.id}
                 />
@@ -366,7 +436,7 @@ function AddProduct() {
             onSubmit={onSubmit}
           >
             {({
-              values,
+              // values,
               errors,
               touched,
               // handleChange,
@@ -384,8 +454,8 @@ function AddProduct() {
                       <Field
                         className="form-control"
                         name="name"
-                        // value={values.name}
-                        //  onChange={handleChange}
+                        value={product.name}
+                        onChange={(e) => handleChange(e.target.value, 'name')}
                         onBlur={handleBlur}
                         error={Boolean(errors.name && touched.name)}
                       />
@@ -396,11 +466,11 @@ function AddProduct() {
                       <Label>Non-Veg :</Label>
                       <Switch
                         className="custom-switch custom-switch-red"
-                        checked={values.nonVeg}
-                        //  onChange={handleChange}
+                        checked={product.nonVeg}
+                        onChange={(value) => handleChange(value, 'nonVeg')}
                         // onChange={(primary) => setCheckedPrimary(primary)}
                         name="nonVeg"
-                        // value={values.nonVeg}
+                        value={product.nonVeg}
                       />
                     </Form>
                   </Colxx>
@@ -414,8 +484,8 @@ function AddProduct() {
                       <Field
                         className="form-control"
                         name="mrp"
-                        // value={values.mrp}
-                        //  onChange={handleChange}
+                        value={product.mrp}
+                        onChange={(e) => handleChange(e.target.value, 'mrp')}
                       />
                     </FormGroup>
                   </Colxx>
@@ -426,8 +496,8 @@ function AddProduct() {
                       <Field
                         className="form-control"
                         name="price"
-                        // value={values.price}
-                        //  onChange={handleChange}
+                        value={product.price}
+                        onChange={(e) => handleChange(e.target.value, 'price')}
                         error={Boolean(errors.price && touched.price)}
                       />
                     </FormGroup>
@@ -438,11 +508,11 @@ function AddProduct() {
                       <Select
                         className="react-select react-select__single-value"
                         classNamePrefix="react-select"
-                        options={selectBrandData}
+                        options={brand}
                         name="brand"
-                        // value={values.brand}
+                        // value={product.brand}
                         //  onChange={handleChange}
-
+                        onChange={({ value }) => handleChange(value, 'brand')}
                         // isMulti={isMulti}
                         // onChange={handleChangeselect}
                         // onBlur={handleBlur}
@@ -457,8 +527,10 @@ function AddProduct() {
                         classNamePrefix="react-select"
                         options={category}
                         name="category"
-                        // value={values.category}
-                        //  onChange={handleChange}
+                        // value={product.category}
+                        onChange={({ value }) =>
+                          handleChange(value, 'category')
+                        }
                         // isMulti={isMulti}
                         // onChange={handleChangeselect}
                         // onBlur={handleBlur}
@@ -474,9 +546,10 @@ function AddProduct() {
                       <Select
                         className="react-select react-select__single-value"
                         classNamePrefix="react-select"
-                        options={options}
+                        options={unit}
                         name="unit"
-                        // value={values.unit}
+                        onChange={({ value }) => handleChange(value, 'unit')}
+                        // value={product.unit}
                         //  onChange={handleChange}
                       />
                     </FormGroup>
@@ -487,8 +560,8 @@ function AddProduct() {
                       <Field
                         className="form-control"
                         name="value"
-                        // value={values.value}
-                        //  onChange={handleChange}
+                        value={product.value}
+                        onChange={(e) => handleChange(e.target.value, 'value')}
                       />
                     </FormGroup>
                   </Colxx>
@@ -498,8 +571,8 @@ function AddProduct() {
                       <Field
                         className="form-control"
                         name="color"
-                        // value={values.color}
-                        //  onChange={handleChange}
+                        value={product.color}
+                        onChange={(e) => handleChange(e.target.value, 'color')}
                       />
                     </FormGroup>
                   </Colxx>
@@ -509,10 +582,13 @@ function AddProduct() {
                       <Field
                         className="form-control"
                         name="flavour"
-                        // value={values.flavour}
-                        //  onChange={handleChange}
+                        value={product.flavour}
+                        onChange={(e) =>
+                          handleChange(e.target.value, 'flavour')
+                        }
                       />
                     </Form>
+                    -{' '}
                   </Colxx>
                 </Row>
 
@@ -521,9 +597,28 @@ function AddProduct() {
                     <Label>Description :</Label>
                     <ReactQuill
                       theme="snow"
-                      // value={values.description}
+                      name="description"
+                      value={product.description}
                       //  onChange={handleChange}
-                      // onChange={(val) => setTextQuillStandart(val)}
+                      onChange={(value) => handleChange(value, 'description')}
+                      modules={quillModules}
+                      formats={quillFormats}
+                      style={{ marginBottom: '10px' }}
+                    />
+                  </Colxx>
+                </Row>
+
+                <Row>
+                  <Colxx lg="12" xs="12" sm="6">
+                    <Label>Seller Information :</Label>
+                    <ReactQuill
+                      theme="snow"
+                      name="sellerInformation"
+                      value={product.sellerInformation}
+                      //  onChange={handleChange}
+                      onChange={(value) =>
+                        handleChange(value, 'sellerInformation')
+                      }
                       modules={quillModules}
                       formats={quillFormats}
                       style={{ marginBottom: '10px' }}
@@ -540,10 +635,15 @@ function AddProduct() {
                         className="react-select"
                         classNamePrefix="react-select"
                         isMulti
-                        // value={values.description}
-                        //  onChange={handleChange}
+                        // value={product.otherUnit}
+                        onChange={(value) =>
+                          handleChange(
+                            value.map((e) => e.value),
+                            'otherUnit'
+                          )
+                        }
                         name="otherunit"
-                        options={unit}
+                        options={otherUnitOption}
                       />
                     </FormGroup>
                   </Colxx>
@@ -558,11 +658,16 @@ function AddProduct() {
                         classNamePrefix="react-select"
                         isMulti
                         name="otherColor"
-                        // value={values.otherColor}
+                        // value={product.otherColor}
                         //  onChange={handleChange}
                         // value={selectedOptionsColor}
-                        // onChange={setselectedOptionsColor}
-                        options={color}
+                        onChange={(value) =>
+                          handleChange(
+                            value.map((e) => e.value),
+                            'otherColor'
+                          )
+                        }
+                        options={otherColoroption}
                       />
                     </FormGroup>
                   </Colxx>
@@ -577,12 +682,17 @@ function AddProduct() {
                           className="react-select"
                           classNamePrefix="react-select"
                           isMulti
-                          name="relevantProduct"
-                          // value={values.otherColor}
+                          name="otherFlavour"
+                          // value={product.otherFlavour}
                           //  onChange={handleChange}
                           // value={selectedOptionsFlavour}
-                          // onChange={setselectedOptionsFlavour}
-                          options={Flavour}
+                          onChange={(value) =>
+                            handleChange(
+                              value.map((e) => e.value),
+                              'otherFlavour'
+                            )
+                          }
+                          options={otherFlavourOption}
                         />
                       </FormGroup>
                     </Form>
@@ -598,8 +708,10 @@ function AddProduct() {
                         classNamePrefix="react-select"
                         isMulti
                         name="relevantProduct"
-                        // value={values.suggestedProduct}
-                        //  onChange={handleChange}
+                        value={product.relevantProduct}
+                        onChange={(value) =>
+                          handleChange(value, 'suggestedProduct')
+                        }
                         options={relavantProduct}
                       />
                     </FormGroup>

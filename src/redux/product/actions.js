@@ -16,16 +16,16 @@ import {
   GET_SINGLE_PRODUCT_ERROR,
 } from '../contants';
 
-export const addProduct = (item, type) => {
+export const addProduct = (product) => {
   return {
     type: ADD_PRODUCT,
-    payload: { item, type },
+    payload: { product },
   };
 };
-export const addProductSuccess = (item, type) => {
+export const addProductSuccess = (product) => {
   return {
     type: ADD_PRODUCT_SUCCESS,
-    payload: { item, type },
+    payload: { product },
   };
 };
 export const addProductError = (message) => ({
@@ -33,12 +33,13 @@ export const addProductError = (message) => ({
   payload: { message },
 });
 
-export const getProducts = () => ({
+export const getProducts = (data) => ({
   type: GET_PRODUCTS,
+  payload: data,
 });
-export const getProductSuccess = (list) => ({
+export const getProductSuccess = (list, key) => ({
   type: GET_PRODUCTS_SUCCESS,
-  payload: list,
+  payload: { list, key },
 });
 export const getProductsError = (message) => ({
   type: GET_PRODUCTS_ERROR,

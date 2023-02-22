@@ -29,13 +29,14 @@ function* addProductWorker({ payload }) {
   const { product } = payload;
   try {
     const { data, status } = yield call(addProductAsync, product);
+    const { messgae } = data;
     if (status === 201) {
       yield put(addProductSuccess(data));
     } else {
-      yield put(addProductSuccess('token expired'));
+      yield put(addProductSuccess(messgae));
     }
   } catch (error) {
-    yield put(addProductError('something went wrong'));
+    yield put(addProductError(error));
   }
 }
 
@@ -43,16 +44,17 @@ export function* watchAddProduct() {
   yield takeEvery(ADD_PRODUCT, addProductWorker);
 }
 
-const getProductAsync = async () => {
-  const res = await API.get('/product');
+const getProductAsync = async (filterBy, unit) => {
+  const res = await API.get('/product', { params: { filterBy, unit } });
   return res;
 };
-function* getProductWorker() {
+function* getProductWorker({ payload }) {
+  const { key, filterBy, unit } = payload;
   try {
-    const { data, status } = yield call(getProductAsync);
+    const { data, status } = yield call(getProductAsync, filterBy, unit);
     const { message } = data;
     if (status === 200 && data) {
-      yield put(getProductSuccess(data));
+      yield put(getProductSuccess(data, key));
     } else {
       yield put(getProductsError(message));
     }

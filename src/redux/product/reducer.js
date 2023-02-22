@@ -29,28 +29,33 @@ export default (state = INIT_STATE, action) => {
       return { ...state, loaded: false };
 
     case ADD_PRODUCT_SUCCESS: {
-      const { item, type } = action.payload;
+      const { product } = action.payload;
 
-      console.log(state[type], item, 'boooomm boomml');
       return {
         ...state,
         loaded: true,
-        [type]: { ...state[type], data: [...state[type].data, item] },
+        products: {
+          ...state.products,
+          data: [...state.products.data, product],
+        },
       };
     }
     case ADD_PRODUCT_ERROR:
-      return { ...state, loaded: true, error: action.payload };
+      return { ...state, loaded: true, error: action.payload.message };
     case GET_PRODUCTS:
       return { ...state, loading: true, error: '' };
-    case GET_PRODUCTS_SUCCESS:
+    case GET_PRODUCTS_SUCCESS: {
+      const type = action.payload.key ?? 'products';
+      console.log({ type });
       return {
         ...state,
-        products: action.payload,
+        [type]: action.payload.list,
       };
+    }
     case GET_PRODUCTS_ERROR:
       return {
         ...state,
-        error: action.message,
+        error: action.payload.message,
       };
 
     case GET_SINGLE_PRODUCT:
