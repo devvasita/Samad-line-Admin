@@ -74,16 +74,16 @@ export default (state = INIT_STATE, action) => {
       return { ...state, loaded: false };
 
     case UPDATE_PRODUCT_SUCCESS: {
-      const { item, type } = action.payload;
+      const { item } = action.payload;
       const { _id } = item;
-      const index = [...state[type].data].map((e) => e._id).indexOf(_id);
-      const dataToUpdate = [...state[type].data];
+      const index = [...state.products.data].map((e) => e._id).indexOf(_id);
+      const dataToUpdate = [...state.products.data];
       dataToUpdate.splice(index, 1, item);
 
       return {
         ...state,
         loaded: true,
-        [type]: { ...state[type], data: dataToUpdate },
+        products: { ...state.products, data: dataToUpdate },
       };
     }
     case UPDATE_PRODUCT_ERROR:
@@ -93,15 +93,16 @@ export default (state = INIT_STATE, action) => {
       return { ...state, loaded: false };
 
     case DELETE_PRODUCT_SUCCESS: {
-      const { id, type } = action.payload;
-      const index = [...state[type].data].map((e) => e._id).indexOf(id);
-      const dataToUpdate = [...state[type].data];
-      dataToUpdate.splice(index - 1, 1);
+      const { _id } = action.payload;
+      const index = [...state.products.data].map((e) => e._id).indexOf(_id);
+      console.log({ index, product: state.products.data });
+      const dataToUpdate = [...state.products.data];
+      dataToUpdate.splice(index, 1);
 
       return {
         ...state,
         loaded: true,
-        [type]: { ...state[type], data: dataToUpdate },
+        products: { ...state.products, data: dataToUpdate },
       };
     }
     case DELETE_PRODUCT_ERROR: {

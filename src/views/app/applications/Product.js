@@ -7,7 +7,7 @@ import { Menu, MenuItem } from '@mui/material';
 import { Button, Card, CardBody, Row, Table } from 'reactstrap';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProducts } from 'redux/actions';
+import { deleteProduct, getProducts } from 'redux/actions';
 
 function Product() {
   const history = useHistory();
@@ -39,6 +39,10 @@ function Product() {
   };
   const handleViewProduct = () => {
     history.push(`/app/applications/viewProduct/${activeProductId}`);
+  };
+
+  const handleDeleteProduct = () => {
+    dispatch(deleteProduct(activeProductId));
   };
   // const userAddressData = [
   //   {
@@ -202,7 +206,7 @@ function Product() {
                 />
                 <span style={{ marginLeft: '5px' }}>View</span>
               </MenuItem>
-              <MenuItem>
+              <MenuItem onClick={handleDeleteProduct}>
                 <i
                   className="iconsminds-delete-file"
                   style={{ color: '#6fb327', marginRight: '5px' }}

@@ -44,7 +44,6 @@ export const getProductsError = (message) => ({
   type: GET_PRODUCTS_ERROR,
   payload: { message },
 });
-
 export const getSingleProduct = (id) => {
   return {
     type: GET_SINGLE_PRODUCT,
@@ -77,13 +76,13 @@ export const updateProductError = (message) => ({
   payload: { message },
 });
 
-export const deleteProduct = (id, type) => ({
+export const deleteProduct = (_id) => ({
   type: DELETE_PRODUCT,
-  payload: { id, type },
+  payload: { _id },
 });
-export const deleteProductSuccess = (id, type) => ({
+export const deleteProductSuccess = (_id) => ({
   type: DELETE_PRODUCT_SUCCESS,
-  payload: { id, type },
+  payload: { _id },
 });
 export const deleteProductError = (message) => ({
   type: DELETE_PRODUCT_ERROR,
