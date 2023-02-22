@@ -233,9 +233,8 @@ function ViewProduct() {
       </Row>
       <CardTitle style={{ padding: '5px' }}>
         <h2>
-          {data?.brand}
-          {data?.value}
-          {data?.unit}
+          {data?.brand}({data?.value}
+          {data?.unit}):-
         </h2>
       </CardTitle>
 
@@ -283,7 +282,11 @@ function ViewProduct() {
                     }}
                   />
                   <h5 style={{ marginBottom: '0px' }}>
-                    <b>This is a Vegetarian Product</b>
+                    {data?.nonVeg ? (
+                      <b>This is a non-Veg Product</b>
+                    ) : (
+                      <b>This is a Vegetarian Product</b>
+                    )}
                   </h5>
                 </div>
                 <Separator className="mb-5" />
@@ -296,18 +299,12 @@ function ViewProduct() {
                 <div>
                   <ul style={{ padding: '0px 0px 0px 15px' }}>
                     <li className="card-title">
-                      <p>
-                        MB Biozyme Performance Whey comes with a proprietary
-                        international patent-pending Enhanced Absorption Formula
-                        (EAF ®) that ensures 50% higher protein absorption & 60%
-                        superior BCAA absorption when compared to other whey
-                        proteins
-                      </p>
+                      <p>{data?.description}</p>
                     </li>
                   </ul>
                 </div>
 
-                <div>
+                {/* <div>
                   <ul style={{ padding: '0px 0px 0px 15px' }}>
                     <li className="card-title">
                       <p>
@@ -371,7 +368,7 @@ function ViewProduct() {
                       </p>
                     </li>
                   </ul>
-                </div>
+                </div> */}
               </CardBody>
             </Card>
           </Row>
@@ -404,7 +401,7 @@ function ViewProduct() {
                       </CardSubtitle>
 
                       <CardText className="mb-2" style={{ color: '#6fb327' }}>
-                        <b>₹500</b>
+                        <b>₹{data?.mrp}</b>
                       </CardText>
                     </div>
                   </CardBody>
@@ -437,7 +434,7 @@ function ViewProduct() {
                       </CardSubtitle>
 
                       <CardText className="mb-2" style={{ color: '#6fb327' }}>
-                        <b>₹400</b>
+                        <b>₹{data?.price}</b>
                       </CardText>
                     </div>
                   </CardBody>
@@ -470,7 +467,7 @@ function ViewProduct() {
                       </CardSubtitle>
 
                       <CardText className="mb-2" style={{ color: '#6fb327' }}>
-                        <b>Chocolate</b>
+                        <b>{data?.flavour}</b>
                       </CardText>
                     </div>
                   </CardBody>
@@ -503,7 +500,7 @@ function ViewProduct() {
                       </CardSubtitle>
 
                       <CardText className="mb-2" style={{ color: '#6fb327' }}>
-                        <b>MUSCLEBLAZE</b>
+                        <b>{data?.brand}</b>
                       </CardText>
                     </div>
                   </CardBody>
