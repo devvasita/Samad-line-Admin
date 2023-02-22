@@ -11,7 +11,6 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
   } = useSelector((state) => state);
 
   useEffect(() => {
-    console.log({ currentUser });
     if (!currentUser) dispatch(getUserDetails(history));
   }, [dispatch, history]);
 

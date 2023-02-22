@@ -27,7 +27,6 @@ const Otp = ({ loading }) => {
 
   const { mobileNo, resetPass } =
     JSON.parse(localStorage.getItem('mobileNo')) ?? {};
-  console.log({ mobileNo, resetPass });
 
   const onVerifyOtp = (values) => {
     if (!loading) {

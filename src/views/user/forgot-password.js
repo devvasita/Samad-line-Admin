@@ -29,7 +29,6 @@ const ForgotPassword = ({
   forgotPasswordAction,
 }) => {
   const onForgotPassword = (values) => {
-    console.log({ values });
     if (!loading) {
       if (values.mobile !== '') {
         localStorage.setItem(
