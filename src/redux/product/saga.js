@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import API from 'helpers/API';
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 import {
@@ -91,16 +92,18 @@ export function* watchGetSingleProduct() {
 }
 
 const updateProductAsync = async (product) => {
-  const res = await API.put('/product', { data: product });
+  const res = await API.put(`/product/${product._id}`, product);
   return res;
 };
 
 function* updateProductWorker({ payload }) {
-  const { product } = payload;
+  const { product, history } = payload;
+  console.log({ product, history });
   try {
     const { data, status } = yield call(updateProductAsync, product);
     const { message } = data;
     if (status === 200) {
+      history.push('/app/applications/product');
       yield put(updateProductSuccess(data));
     } else {
       yield put(updateProductError(message));

@@ -19,6 +19,7 @@ import {
 
 const INIT_STATE = {
   products: null,
+  selectedProduct: null,
   loading: false,
   error: '',
 };
@@ -64,14 +65,14 @@ export default (state = INIT_STATE, action) => {
       return {
         ...state,
         loading: false,
-        products: action.payload,
+        selectedProduct: action.payload,
         error: '',
       };
     case GET_SINGLE_PRODUCT_ERROR:
       return {
         ...state,
         loading: false,
-        products: null,
+        selectedProduct: null,
         error: action.payload.message,
       };
 

@@ -221,7 +221,7 @@ function ViewProduct() {
     dispatch(getSingleProduct(id));
   }, []);
 
-  const data = useSelector((state) => state?.product?.products);
+  const data = useSelector((state) => state?.product?.selectedProduct);
 
   return (
     <>

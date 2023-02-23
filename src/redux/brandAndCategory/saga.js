@@ -17,29 +17,21 @@ import {
   deleteBrandAndCategoryError,
 } from './actions';
 
-const addBrandAndCategoryAsync = async (name, image, type) => {
-  const res = await API.post(`/${type}`, {
-    name,
-    image,
-  });
+const addBrandAndCategoryAsync = async (item, type) => {
+  const res = await API.post(`/${type}`, item);
   return res;
 };
 
 function* addBrandAndCategoryWorker({ payload }) {
-  const { name, image } = payload.item;
-  const { type } = payload;
+  const { item, type } = payload;
 
   try {
-    const { data, status } = yield call(
-      addBrandAndCategoryAsync,
-      name,
-      image,
-      type
-    );
+    const { data, status } = yield call(addBrandAndCategoryAsync, item, type);
+    const { message } = data;
     if (status === 201) {
       yield put(addBrandAndCategorySuccess(data, type));
     } else {
-      yield put(addBrandAndCategoryError('token expired'));
+      yield put(addBrandAndCategoryError(message));
     }
   } catch (error) {
     console.log({ error });

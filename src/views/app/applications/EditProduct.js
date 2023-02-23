@@ -1,5 +1,7 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-useless-computed-key */
 import { Colxx, Separator } from 'components/common/CustomBootstrap';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Label, Row, FormGroup, Form, Button } from 'reactstrap';
 import CancelIcon from '@mui/icons-material/Cancel';
 import IconButton from '@mui/material/IconButton';
@@ -11,7 +13,15 @@ import CustomSelectInput from 'components/common/CustomSelectInput';
 import Switch from 'rc-switch';
 import 'rc-switch/assets/index.css';
 import 'react-quill/dist/quill.snow.css';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  getBrandAndCategory,
+  getProducts,
+  getSingleProduct,
+  updateProduct,
+} from 'redux/actions';
+// import * as Yup from 'yup';
 
 const useStyles = makeStyles(() => ({
   cancel: {
@@ -71,7 +81,7 @@ const useStyles = makeStyles(() => ({
     bottom: 0,
   },
 }));
-const options = [
+const unit = [
   { value: 'kg', label: 'Kg', disabled: true },
   { value: 'gm', label: 'Gm' },
   { value: 'pcs', label: 'pcs' },
@@ -103,80 +113,6 @@ const quillFormats = [
   'link',
   'image',
 ];
-const selectData = [
-  { label: 'Dumbbell (2pcs)', value: 'Dumbbell', key: 0 },
-  { label: 'Protin(5kg)', value: 'Protin', key: 1 },
-  { label: 'Dessert(250gm)', value: 'dessert', key: 2 },
-  { label: 'Shaker Bottle(500ml)', value: 'bottle', key: 3 },
-  { label: 'Protin SugarFree(2kg)', value: 'Protin1', key: 1 },
-  { label: 'gloves(2pcs)', value: 'gloves', key: 2 },
-];
-const color = [
-  { label: 'Gym gloves(Red)', value: 'Red', key: 0 },
-  { label: 'Streching Belt (Gray)', value: 'Gray', key: 0 },
-  { label: 'Gym gloves(Blue)', value: 'Blue', key: 0 },
-  { label: 'Skipping Ropes(green)', value: 'green', key: 0 },
-  { label: 'Medicine Balls(Gray)', value: 'gray1', key: 0 },
-];
-const Flavour = [
-  { label: 'Protein Powder (Chocolate)', value: 'gm', key: 0 },
-  {
-    label:
-      'PRO365 Tummy Trimmer for Men & Women Belly Fat ABS Exercise (Coconute)',
-    value: 'gm1',
-    key: 1,
-  },
-  {
-    label:
-      'Kobra Labs The Bull Mass Gainer Weight Gainers/Mass Gainers  (Snickerdoodle)',
-    value: 'gm2',
-    key: 2,
-  },
-  { label: 'Protein Powder (Peanut Butter )', value: 'gm3', key: 3 },
-  { label: 'Protein Powder (Cookies and Cream  )', value: 'gm4', key: 4 },
-];
-const selectBrandData = [
-  { label: 'Zara', value: 'Zara', key: 0 },
-  { label: 'U.S Polo', value: 'u.s polo', key: 1 },
-  { label: 'Nike', value: 'nike', key: 2 },
-];
-const category = [
-  { label: 'Cycling', value: 'Cycling', key: 0 },
-  { label: 'Gymnastics', value: 'Gymnastics', key: 1 },
-  { label: 'Boxing', value: 'Boxing', key: 2 },
-];
-const unit = [
-  { label: 'Protein Powder (200gm)', value: 'gm', key: 0 },
-  { label: 'Protein Powder (250gm)', value: 'gm1', key: 1 },
-  {
-    label:
-      'PRO365 Tummy Trimmer for Men & Women Belly Fat ABS Exercise (1 pcs)',
-    value: 'gm2',
-    key: 2,
-  },
-  {
-    label: 'Streching Belt(2 pcs)',
-    value: 'Kg1',
-    key: 3,
-  },
-
-  { label: 'Gym gloves(2 pcs)', value: 'Kg2', key: 4 },
-  { label: 'Protein Powder sugarless(2.5kg)', value: 'Kg3', key: 5 },
-
-  {
-    label: 'Protein Powder Mass Gainer (5kg)',
-    value: 'Kg4',
-    key: 6,
-  },
-];
-
-const onSubmit = (values) => {
-  console.log(values);
-};
-
-const validate = (values) => {
-  console.log(values);
-};
 
 function NewComp({ setimgArr, i, imgArr }) {
   const [file, setFile] = useState();
@@ -187,13 +123,8 @@ function NewComp({ setimgArr, i, imgArr }) {
     setimgArr(imgArr);
   };
 
-  //   const hiddenFileInput = useRef();
   const classes = useStyles();
 
-  //   const handleClick = (e) => {
-  //     e.stopPropagation();
-  //     hiddenFileInput.current.click();
-  //   };
   const handleCancelImage = () => {
     setFile('');
   };
@@ -221,19 +152,12 @@ function NewComp({ setimgArr, i, imgArr }) {
                 height: '100%',
                 width: '100%',
                 border: '1px solid',
-                // boxShadow:
-                //   '0px 16px 16px rgb(50 50 71 / 8%), 0px 24px 32px rgb(50 50 71 / 8%)',
               }}
             />
           </div>
         </div>
       ) : (
-        <div
-          // onClick={(e) => handleClick(e)}
-          // onKeyDown={(e) => handleClick(e)}
-          aria-hidden="true"
-          className={classes.image}
-        >
+        <div aria-hidden="true" className={classes.image}>
           {i === 0 && <span className={classes.required}>* Cover Image</span>}
 
           <IconButton
@@ -246,7 +170,6 @@ function NewComp({ setimgArr, i, imgArr }) {
               width: '100%',
               height: '100%',
             }}
-            // ref={hiddenFileInput}
           >
             <input
               hidden
@@ -269,34 +192,135 @@ function NewComp({ setimgArr, i, imgArr }) {
   );
 }
 
-function EditProduct() {
-  const [imgArr, setimgArr] = useState([
-    { id: 0 },
-    { id: 1 },
-    { id: 2 },
-    { id: 3 },
-    { id: 4 },
-    { id: 5 },
-    { id: 6 },
-    { id: 7 },
-    { id: 8 },
-    { id: 9 },
-  ]);
-  const [textQuillStandart, setTextQuillStandart] = useState('');
-  const [selectedOptionsUnit, setSelectedOptionsUnit] = useState([]);
-  const [selectedOptionsColor, setselectedOptionsColor] = useState([]);
-  const [selectedOptionsFlavour, setselectedOptionsFlavour] = useState([]);
-  const [selectedOptionsSuggest, setselectedOptionsSuggest] = useState([]);
-
-  const [checkedPrimary, setCheckedPrimary] = useState(false);
-
+function EditProduct({ history }) {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const { id } = useParams();
 
+  const [brand, setbrand] = useState([]);
+  const [category, setcategory] = useState([]);
+  const [relavantProduct, setRelavantProduct] = useState([]);
+
+  const [product, setProduct] = useState({
+    name: '',
+    price: '',
+    image: [
+      { id: 0 },
+      { id: 1 },
+      { id: 2 },
+      { id: 3 },
+      { id: 4 },
+      { id: 5 },
+      { id: 6 },
+      { id: 7 },
+      { id: 8 },
+      { id: 9 },
+    ],
+    brand: '',
+    category: '',
+    countInStock: '',
+    numReviews: '',
+    description: '',
+    sellerInformation: '',
+    mrp: '',
+    flavour: null,
+    value: '',
+    unit: '',
+    color: null,
+    nonVeg: false,
+    otherUnit: [],
+    otherColor: [],
+    otherFlavour: [],
+    suggestedProduct: [],
+  });
+
+  const brandData = useSelector(
+    (state) => state?.brandAndCategory?.brand?.data
+  );
+  const categoryData = useSelector(
+    (state) => state?.brandAndCategory?.category?.data
+  );
+  const productState = useSelector((state) => state.product);
+  const selectedProduct = useSelector(
+    (state) => state?.product?.selectedProduct
+  );
+
+  const { otherUnit, otherColor, otherFlavour, products } = productState;
+
+  useEffect(() => {
+    dispatch(getBrandAndCategory('brand'));
+    dispatch(getBrandAndCategory('category'));
+    dispatch(getSingleProduct(id));
+    dispatch(getProducts({}));
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (selectedProduct) setProduct(selectedProduct);
+  }, [selectedProduct]);
+
+  useEffect(() => {
+    if (brandData && brandData.length)
+      setbrand(
+        brandData.map((elem, i) => {
+          return { label: elem.name, value: elem.name, key: i };
+        })
+      );
+    if (categoryData && categoryData.length)
+      setcategory(
+        categoryData.map((elem, i) => {
+          return { label: elem.name, value: elem.name, key: i };
+        })
+      );
+    if (products && products.data.length)
+      setRelavantProduct(
+        products.data.map((elem, i) => {
+          return { label: elem.name, value: elem.name, key: i };
+        })
+      );
+  }, [categoryData, brandData, products]);
+
+  const handleChange = (value, key) => {
+    setProduct((oldVal) => {
+      return { ...oldVal, [key]: value };
+    });
+    if (value !== '' && key === 'unit')
+      dispatch(getProducts({ unit: value, key: 'otherUnit' }));
+    if (key === 'color' && !product.color)
+      dispatch(getProducts({ filterBy: 'color', key: 'otherColor' }));
+    if (key === 'flavour' && !product.flavour)
+      dispatch(getProducts({ filterBy: 'flavour', key: 'otherFlavour' }));
+  };
+
+  const initialValues = {
+    name: '',
+    price: '',
+    image: [],
+    brand: '',
+    category: '',
+    countInStock: '',
+    numReviews: '',
+    description: '',
+    mrp: '',
+    flavour: '',
+    value: '',
+    unit: '',
+    color: '',
+    nonVeg: false,
+    otherUnit: [],
+    otherColor: [],
+    otherFlavour: [],
+    suggestedProduct: [],
+  };
+
+  const onSubmit = () => {
+    // update product
+    dispatch(updateProduct(product, history));
+  };
   return (
     <>
       <Row>
         <Colxx xxs="12">
-          <h1> Edit Product</h1>
+          <h1> Add Product</h1>
           <Separator className="mb-5" />
         </Colxx>
       </Row>
@@ -305,11 +329,15 @@ function EditProduct() {
         <Colxx xxs="12">
           <Label>Image</Label>
           <Row>
-            {imgArr &&
-              imgArr.map((elm, index) => (
+            {product.image &&
+              product.image.map((elm, index) => (
                 <NewComp
-                  setimgArr={setimgArr}
-                  imgArr={imgArr}
+                  setimgArr={(val) =>
+                    setProduct((oldVal) => {
+                      return { ...oldVal, image: val };
+                    })
+                  }
+                  imgArr={product.image}
                   i={index}
                   key={elm.id}
                 />
@@ -317,27 +345,34 @@ function EditProduct() {
           </Row>
 
           <Formik
-            validate={validate}
-            initialValues={{
-              productname: '',
-              mrp: '',
-              price: '',
-              brand: '',
-              unit: '',
-              value: '',
-              category: '',
-              relevantProduct: '',
-              veg: '',
-            }}
+            // validate={validationSchema}
+            initialValues={initialValues}
             onSubmit={onSubmit}
           >
-            {() => (
-              <Form className="av-tooltip tooltip-label-right mt-4">
+            {({
+              // values,
+              errors,
+              touched,
+              // handleChange,
+              handleBlur,
+              handleSubmit,
+            }) => (
+              <Form
+                onSubmit={handleSubmit}
+                className="av-tooltip tooltip-label-right mt-4"
+              >
                 <Row>
                   <Colxx lg="9" xs="12" sm="6">
                     <FormGroup>
                       <Label>Product Name:</Label>
-                      <Field className="form-control" name="productname" />
+                      <Field
+                        className="form-control"
+                        name="name"
+                        value={product.name}
+                        onChange={(e) => handleChange(e.target.value, 'name')}
+                        onBlur={handleBlur}
+                        error={Boolean(errors.name && touched.name)}
+                      />
                     </FormGroup>
                   </Colxx>
                   <Colxx lg="3" xs="12" sm="6">
@@ -345,8 +380,11 @@ function EditProduct() {
                       <Label>Non-Veg :</Label>
                       <Switch
                         className="custom-switch custom-switch-red"
-                        checked={checkedPrimary}
-                        onChange={(primary) => setCheckedPrimary(primary)}
+                        checked={product.nonVeg}
+                        onChange={(value) => handleChange(value, 'nonVeg')}
+                        // onChange={(primary) => setCheckedPrimary(primary)}
+                        name="nonVeg"
+                        value={product.nonVeg}
                       />
                     </Form>
                   </Colxx>
@@ -357,14 +395,25 @@ function EditProduct() {
                     <FormGroup>
                       <Label>MRP(₹):</Label>
 
-                      <Field className="form-control" name="mrp" />
+                      <Field
+                        className="form-control"
+                        name="mrp"
+                        value={product.mrp}
+                        onChange={(e) => handleChange(e.target.value, 'mrp')}
+                      />
                     </FormGroup>
                   </Colxx>
                   <Colxx lg="3" xs="12" sm="6">
                     <FormGroup>
                       <Label>Price(₹):</Label>
 
-                      <Field className="form-control" name="price" />
+                      <Field
+                        className="form-control"
+                        name="price"
+                        value={product.price}
+                        onChange={(e) => handleChange(e.target.value, 'price')}
+                        error={Boolean(errors.price && touched.price)}
+                      />
                     </FormGroup>
                   </Colxx>
                   <Colxx lg="3" xs="12" sm="6">
@@ -373,11 +422,9 @@ function EditProduct() {
                       <Select
                         className="react-select react-select__single-value"
                         classNamePrefix="react-select"
-                        options={selectBrandData}
+                        options={brand}
                         name="brand"
-                        // isMulti={isMulti}
-                        // onChange={handleChangeselect}
-                        // onBlur={handleBlur}
+                        onChange={({ value }) => handleChange(value, 'brand')}
                       />
                     </FormGroup>
                   </Colxx>
@@ -389,9 +436,9 @@ function EditProduct() {
                         classNamePrefix="react-select"
                         options={category}
                         name="category"
-                        // isMulti={isMulti}
-                        // onChange={handleChangeselect}
-                        // onBlur={handleBlur}
+                        onChange={({ value }) =>
+                          handleChange(value, 'category')
+                        }
                       />
                     </FormGroup>
                   </Colxx>
@@ -404,28 +451,49 @@ function EditProduct() {
                       <Select
                         className="react-select react-select__single-value"
                         classNamePrefix="react-select"
-                        options={options}
+                        options={unit}
                         name="unit"
+                        onChange={({ value }) => handleChange(value, 'unit')}
+                        // value={product.unit}
+                        //  onChange={handleChange}
                       />
                     </FormGroup>
                   </Colxx>
                   <Colxx lg="3" xs="12" sm="6">
                     <FormGroup>
                       <Label>Value:</Label>
-                      <Field className="form-control" name="value" />
+                      <Field
+                        className="form-control"
+                        name="value"
+                        value={product.value}
+                        onChange={(e) => handleChange(e.target.value, 'value')}
+                      />
                     </FormGroup>
                   </Colxx>
                   <Colxx lg="3" xs="12" sm="6">
                     <FormGroup>
                       <Label>Color:</Label>
-                      <Field className="form-control" name="color" />
+                      <Field
+                        className="form-control"
+                        name="color"
+                        value={product.color}
+                        onChange={(e) => handleChange(e.target.value, 'color')}
+                      />
                     </FormGroup>
                   </Colxx>
                   <Colxx lg="3" xs="12" sm="6">
                     <Form>
                       <Label>Flavour:</Label>
-                      <Field className="form-control" name="flavour" />
+                      <Field
+                        className="form-control"
+                        name="flavour"
+                        value={product.flavour}
+                        onChange={(e) =>
+                          handleChange(e.target.value, 'flavour')
+                        }
+                      />
                     </Form>
+                    -{' '}
                   </Colxx>
                 </Row>
 
@@ -434,8 +502,10 @@ function EditProduct() {
                     <Label>Description :</Label>
                     <ReactQuill
                       theme="snow"
-                      value={textQuillStandart}
-                      onChange={(val) => setTextQuillStandart(val)}
+                      name="description"
+                      value={product.description}
+                      //  onChange={handleChange}
+                      onChange={(value) => handleChange(value, 'description')}
                       modules={quillModules}
                       formats={quillFormats}
                       style={{ marginBottom: '10px' }}
@@ -445,6 +515,23 @@ function EditProduct() {
 
                 <Row>
                   <Colxx lg="12" xs="12" sm="6">
+                    <Label>Seller Information :</Label>
+                    <ReactQuill
+                      theme="snow"
+                      name="sellerInformation"
+                      value={product.sellerInformation}
+                      //  onChange={handleChange}
+                      onChange={(value) =>
+                        handleChange(value, 'sellerInformation')
+                      }
+                      modules={quillModules}
+                      formats={quillFormats}
+                      style={{ marginBottom: '10px' }}
+                    />
+                  </Colxx>
+                </Row>
+                <Row>
+                  <Colxx lg="12" xs="12" sm="6">
                     <FormGroup>
                       <Label>Other Unit</Label>
                       <Select
@@ -452,10 +539,10 @@ function EditProduct() {
                         className="react-select"
                         classNamePrefix="react-select"
                         isMulti
+                        value={product.otherUnit}
+                        onChange={(value) => handleChange(value, 'otherUnit')}
                         name="otherunit"
-                        value={selectedOptionsUnit}
-                        onChange={setSelectedOptionsUnit}
-                        options={unit}
+                        options={otherUnit}
                       />
                     </FormGroup>
                   </Colxx>
@@ -470,9 +557,11 @@ function EditProduct() {
                         classNamePrefix="react-select"
                         isMulti
                         name="otherColor"
-                        value={selectedOptionsColor}
-                        onChange={setselectedOptionsColor}
-                        options={color}
+                        value={product.otherColor}
+                        //  onChange={handleChange}
+                        // value={selectedOptionsColor}
+                        onChange={(value) => handleChange(value, 'otherColor')}
+                        options={otherColor}
                       />
                     </FormGroup>
                   </Colxx>
@@ -487,10 +576,12 @@ function EditProduct() {
                           className="react-select"
                           classNamePrefix="react-select"
                           isMulti
-                          name="relevantProduct"
-                          value={selectedOptionsFlavour}
-                          onChange={setselectedOptionsFlavour}
-                          options={Flavour}
+                          name="otherFlavour"
+                          value={product.otherFlavour}
+                          onChange={(value) =>
+                            handleChange(value, 'otherFlavour')
+                          }
+                          options={otherFlavour}
                         />
                       </FormGroup>
                     </Form>
@@ -506,33 +597,31 @@ function EditProduct() {
                         classNamePrefix="react-select"
                         isMulti
                         name="relevantProduct"
-                        value={selectedOptionsSuggest}
-                        onChange={setselectedOptionsSuggest}
-                        options={selectData}
+                        value={product.suggestedProduct}
+                        onChange={(value) =>
+                          handleChange(value, 'suggestedProduct')
+                        }
+                        options={relavantProduct}
                       />
                     </FormGroup>
                   </Colxx>
                 </Row>
+                <div style={{ textAlign: 'end', margin: '15px 0px 15px 0px' }}>
+                  <Button color="primary" type="submit">
+                    Submit
+                  </Button>
+
+                  <NavLink to="./product">
+                    <Button outline className={classes.cancel}>
+                      Cancel
+                    </Button>
+                  </NavLink>
+                </div>
               </Form>
             )}
           </Formik>
         </Colxx>
       </Row>
-      <div style={{ textAlign: 'end', margin: '15px 0px 15px 0px' }}>
-        <Button color="primary" type="submit">
-          Submit
-        </Button>
-
-        <NavLink to="./product">
-          <Button
-            outline
-            className={classes.cancel}
-            // style={{ background: '#6c757d', border: 'none' }}
-          >
-            Cancel
-          </Button>
-        </NavLink>
-      </div>
     </>
   );
 }

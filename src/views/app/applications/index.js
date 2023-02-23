@@ -108,7 +108,7 @@ const Applications = ({ match }) => (
       />
 
       <Route
-        path={`${match.url}/editProduct`}
+        path={`${match.url}/editProduct/:id`}
         render={(props) => <EditProduct {...props} />}
       />
       <Route

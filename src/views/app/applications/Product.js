@@ -35,7 +35,7 @@ function Product() {
     history.push(`/app/applications/addProduct`);
   };
   const handleEditProduct = () => {
-    history.push(`/app/applications/editProduct`);
+    history.push(`/app/applications/editProduct/${activeProductId}`);
   };
   const handleViewProduct = () => {
     history.push(`/app/applications/viewProduct/${activeProductId}`);
@@ -44,41 +44,7 @@ function Product() {
   const handleDeleteProduct = () => {
     dispatch(deleteProduct(activeProductId));
   };
-  // const userAddressData = [
-  //   {
-  //     id: 1,
-  //     productName: 'Hp Lpatop',
-  //     Category: 'Laptop',
-  //     mrp: '65000',
-  //     price: '55000',
-  //     unit: 'gm',
-  //     value: '990',
-  //     symbol: '/assets/img/products/veg-icon.svg',
-  //     img: '/assets/img/products/gym1.jpg',
-  //   },
-  //   {
-  //     id: 1,
-  //     productName: 'Hp Lpatop',
-  //     Category: 'Laptop',
-  //     mrp: '65000',
-  //     price: '55000',
-  //     unit: 'gm',
-  //     value: '990',
-  //     symbol: '/assets/img/products/non-veg-icon.svg',
-  //     img: '/assets/img/products/gym2.jpg',
-  //   },
-  //   {
-  //     id: 1,
-  //     productName: 'Hp Lpatop',
-  //     Category: 'Laptop',
-  //     mrp: '65000',
-  //     price: '55000',
-  //     unit: 'gm',
-  //     value: '990',
-  //     symbol: '/assets/img/products/veg-icon.svg',
-  //     img: '/assets/img/products/gym3.jpg',
-  //   },
-  // ];
+
   return (
     <>
       <Row>

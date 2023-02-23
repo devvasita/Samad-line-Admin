@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-return-assign */
 /* eslint no-underscore-dangle: 0 */
 import React, { useState, useEffect } from 'react';
 import {
@@ -27,7 +29,7 @@ import {
   updateBrandAndCategory,
 } from 'redux/actions';
 import { useDispatch, useSelector } from 'react-redux';
-import ReactCrop from 'react-image-crop';
+// import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 
 function Brand() {
@@ -46,9 +48,10 @@ function Brand() {
   });
 
   const handleChange = (e) => {
+    e.preventDefault();
     setState({
       name: state.name,
-      image: URL.createObjectURL(e.target.files[0]),
+      image: e.target.files[0],
       id: state.id,
     });
   };
@@ -60,12 +63,17 @@ function Brand() {
     });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    Object.keys(state).map((elem) => formData.append(elem, state[elem]));
+
+    console.log({ name: formData.get('name'), image: formData.get('image') });
     if (modelEdit) {
-      dispatch(updateBrandAndCategory(state, 'brand'));
+      dispatch(updateBrandAndCategory(formData, 'brand'));
       setModalLong(false);
     } else {
-      dispatch(addBrandAndCategory(state, 'brand'));
+      dispatch(addBrandAndCategory(formData, 'brand'));
       setModalLong(false);
     }
     setModelEdit('');
@@ -86,70 +94,6 @@ function Brand() {
       name: BrandData[index].name,
       image: BrandData[index].image,
       id: BrandData[index]._id,
-    });
-  };
-
-  const [crop, setCrop] = useState({ aspect: 16 / 9 });
-  const [result, setResult] = useState(null);
-
-  const onImageLoaded = () => {
-    setCrop({ aspect: state.image.width / state.image.height });
-  };
-  // console.log(crop, 'croppppp');
-  const getCropImage = async () => {
-    const canvas = document.createElement('Canvas');
-    const ctx = canvas.getContext('2d');
-    // const scaleX = state.image.naturalWidth / state.image.width;
-    // const scaleY = state.image.naturalHeight / state.image.height;
-
-    const img = new Image();
-    img.src = state.image;
-    console.log(img, '0000');
-    // ctx.drawImage(
-    //   img,
-    //   0,
-    //   0,
-    //   crop.x * scaleX,
-    //   crop.y * scaleY,
-    //   crop.width * scaleX,
-    //   crop.height * scaleY,
-    //   0,
-    //   0,
-    //   crop.width,
-    //   crop.height
-    // );
-    ctx.drawImage(img, 0, 0);
-    const data = ctx.getImageData(crop.x, crop.y, crop.width, crop.height);
-    canvas.width = crop.width;
-    canvas.height = crop.height;
-    console.log(data, 'dataaaa');
-
-    // canvas.toBlob((blob) => {
-    //   setResult(blob);
-    // }, 'image/jpeg');
-    // const base64Image = canvas.toDataURL('image/jpeg');
-    // await setResult(base64Image);
-    // console.log(base64Image, 'base64');
-
-    // const imgResponse = await canvas.toBlob((file) => {
-    //   console.log(file, '---');
-    //   URL.createObjectURL(file);
-    // }, 'image/jpeg');
-
-    canvas.toBlob((blob) => {
-      console.log({ blob });
-      const newImg = document.createElement('img');
-      const url = URL.createObjectURL(blob);
-
-      newImg.onload = () => {
-        // no longer need to read the blob so it's revoked
-        URL.revokeObjectURL(url);
-      };
-
-      newImg.src = url;
-      console.log({ url });
-      setResult(url);
-      // document.body.appendChild(newImg);
     });
   };
 
@@ -242,26 +186,9 @@ function Brand() {
                         }}
                       />
 
-                      {/* <ReactCrop
-                        src="./assets/upload.png"
-                        crop={crop}
-                        onChange={(newCrop) => setCrop(newCrop)}
-                        onImageLoaded={onImageLoaded}
-                        onComplete={getCropImage}
-                      /> */}
-                      <ReactCrop
-                        crop={crop}
-                        src={state.image}
-                        onChange={(c) => {
-                          setCrop(c);
-                        }}
-                        onImageLoaded={onImageLoaded}
-                      />
-                      {/* <img alt="crop" /> */}
-
-                      <Button onClick={getCropImage}>Crop Image</Button>
-                      {/* <img
-                        src={state.image}
+                      {console.log({ img: state.image })}
+                      <img
+                        src="http://localhost:8080/uploads/1677145079572.jpg"
                         alt=""
                         style={{
                           objectFit: 'contain',
@@ -272,13 +199,13 @@ function Brand() {
                           boxShadow:
                             '0px 16px 16px rgb(50 50 71 / 8%), 0px 24px 32px rgb(50 50 71 / 8%)',
                         }}
-                      /> */}
+                      />
 
-                      {result && (
+                      {/* {result && (
                         <div>
                           <img src={result} alt="result" />
                         </div>
-                      )}
+                      )} */}
                     </div>
                   ) : null}
                 </div>
@@ -293,12 +220,10 @@ function Brand() {
               type="text"
               defaultValue={state.name}
               onChange={(event) => {
-                setState({
-                  name: event.target.value,
-                  image: state.image,
-                  id: state.id,
+                // formData.append('name', event.target.value);
+                setState((oldVal) => {
+                  return { ...oldVal, name: event.target.value };
                 });
-                // setState((oldState) => (oldState.name = event.target.value));
               }}
             />
           </ModalBody>
@@ -327,7 +252,11 @@ function Brand() {
               <Colxx xxs="12" xs="6" md="3" lg="2" key={brand?._id}>
                 <Card className="mb-4">
                   <div className="position-relative">
-                    <CardImg top src={brand?.image} alt="Card image cap" />
+                    <CardImg
+                      top
+                      src={`http://localhost:8080/${brand?.image}`}
+                      alt="Card image cap"
+                    />
                   </div>
                   <CardBody className="p-2">
                     <CardSubtitle className="mb-3 font-weight-bold font-size-11">

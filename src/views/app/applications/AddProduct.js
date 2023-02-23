@@ -108,14 +108,6 @@ const quillFormats = [
   'link',
   'image',
 ];
-const relavantProduct = [
-  { label: 'Dumbbell (2pcs)', value: 'Dumbbell', key: 0 },
-  { label: 'Protin(5kg)', value: 'Protin', key: 1 },
-  { label: 'Dessert(250gm)', value: 'dessert', key: 2 },
-  { label: 'Shaker Bottle(500ml)', value: 'bottle', key: 3 },
-  { label: 'Protin SugarFree(2kg)', value: 'Protin1', key: 1 },
-  { label: 'gloves(2pcs)', value: 'gloves', key: 2 },
-];
 
 function NewComp({ setimgArr, i, imgArr }) {
   const [file, setFile] = useState();
@@ -200,6 +192,7 @@ function AddProduct({ history }) {
   const dispatch = useDispatch();
   const [brand, setbrand] = useState([]);
   const [category, setcategory] = useState([]);
+  const [relavantProduct, setRelavantProduct] = useState([]);
   const [product, setProduct] = useState({
     name: '',
     price: '',
@@ -239,13 +232,15 @@ function AddProduct({ history }) {
   const categoryData = useSelector(
     (state) => state?.brandAndCategory?.category?.data
   );
-  const products = useSelector((state) => state.product);
+  const productState = useSelector((state) => state.product);
 
-  const { otherUnit, otherColor, otherFlavour } = products;
+  const { otherUnit, otherColor, otherFlavour, products } = productState;
+  console.log({ products });
 
   useEffect(() => {
     dispatch(getBrandAndCategory('brand'));
     dispatch(getBrandAndCategory('category'));
+    dispatch(getProducts({}));
   }, [dispatch]);
 
   useEffect(() => {
@@ -261,9 +256,16 @@ function AddProduct({ history }) {
           return { label: elem.name, value: elem.name, key: i };
         })
       );
-    dispatch(getProducts({ filterBy: 'color', key: 'otherColor' }));
-    dispatch(getProducts({ filterBy: 'flavour', key: 'otherFlavour' }));
-  }, [categoryData, brandData]);
+    console.log({ products });
+    if (products && products.data.length)
+      setRelavantProduct(
+        products.data.map((elem, i) => {
+          return { label: elem.name, value: elem.name, key: i };
+        })
+      );
+    // dispatch(getProducts({ filterBy: 'color', key: 'otherColor' }));
+    // dispatch(getProducts({ filterBy: 'flavour', key: 'otherFlavour' }));
+  }, [categoryData, brandData, products]);
 
   const handleChange = (value, key) => {
     setProduct((oldVal) => {
@@ -585,7 +587,6 @@ function AddProduct({ history }) {
                         classNamePrefix="react-select"
                         isMulti
                         name="relevantProduct"
-                        value={product.relevantProduct}
                         onChange={(value) =>
                           handleChange(value, 'suggestedProduct')
                         }
