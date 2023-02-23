@@ -22,7 +22,7 @@ function Product() {
   };
 
   useEffect(() => {
-    dispatch(getProducts());
+    dispatch(getProducts({}));
   }, [dispatch]);
 
   const ProductsData = useSelector((state) => state?.product?.products?.data);

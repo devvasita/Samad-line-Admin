@@ -116,64 +116,6 @@ const relavantProduct = [
   { label: 'Protin SugarFree(2kg)', value: 'Protin1', key: 1 },
   { label: 'gloves(2pcs)', value: 'gloves', key: 2 },
 ];
-// const color = [
-//   { label: 'Gym gloves(Red)', value: 'Red', key: 0 },
-//   { label: 'Streching Belt (Gray)', value: 'Gray', key: 0 },
-//   { label: 'Gym gloves(Blue)', value: 'Blue', key: 0 },
-//   { label: 'Skipping Ropes(green)', value: 'green', key: 0 },
-//   { label: 'Medicine Balls(Gray)', value: 'gray1', key: 0 },
-// ];
-// const Flavour = [
-//   { label: 'Protein Powder (Chocolate)', value: 'gm', key: 0 },
-//   {
-//     label:
-//       'PRO365 Tummy Trimmer for Men & Women Belly Fat ABS Exercise (Coconute)',
-//     value: 'gm1',
-//     key: 1,
-//   },
-//   {
-//     label:
-//       'Kobra Labs The Bull Mass Gainer Weight Gainers/Mass Gainers  (Snickerdoodle)',
-//     value: 'gm2',
-//     key: 2,
-//   },
-//   { label: 'Protein Powder (Peanut Butter )', value: 'gm3', key: 3 },
-//   { label: 'Protein Powder (Cookies and Cream  )', value: 'gm4', key: 4 },
-// ];
-// const brand = [
-//   { label: 'Zara', value: 'Zara', key: 0 },
-//   { label: 'U.S Polo', value: 'u.s polo', key: 1 },
-//   { label: 'Nike', value: 'nike', key: 2 },
-// ];
-// const category = [
-//   { label: 'Cycling', value: 'Cycling', key: 0 },
-//   { label: 'Gymnastics', value: 'Gymnastics', key: 1 },
-//   { label: 'Boxing', value: 'Boxing', key: 2 },
-// ];
-// const unit = [
-//   { label: 'Protein Powder (200gm)', value: 'gm', key: 0 },
-//   { label: 'Protein Powder (250gm)', value: 'gm1', key: 1 },
-//   {
-//     label:
-//       'PRO365 Tummy Trimmer for Men & Women Belly Fat ABS Exercise (1 pcs)',
-//     value: 'gm2',
-//     key: 2,
-//   },
-//   {
-//     label: 'Streching Belt(2 pcs)',
-//     value: 'Kg1',
-//     key: 3,
-//   },
-
-//   { label: 'Gym gloves(2 pcs)', value: 'Kg2', key: 4 },
-//   { label: 'Protein Powder sugarless(2.5kg)', value: 'Kg3', key: 5 },
-
-//   {
-//     label: 'Protein Powder Mass Gainer (5kg)',
-//     value: 'Kg4',
-//     key: 6,
-//   },
-// ];
 
 function NewComp({ setimgArr, i, imgArr }) {
   const [file, setFile] = useState();
@@ -184,13 +126,8 @@ function NewComp({ setimgArr, i, imgArr }) {
     setimgArr(imgArr);
   };
 
-  //   const hiddenFileInput = useRef();
   const classes = useStyles();
 
-  //   const handleClick = (e) => {
-  //     e.stopPropagation();
-  //     hiddenFileInput.current.click();
-  //   };
   const handleCancelImage = () => {
     setFile('');
   };
@@ -218,19 +155,12 @@ function NewComp({ setimgArr, i, imgArr }) {
                 height: '100%',
                 width: '100%',
                 border: '1px solid',
-                // boxShadow:
-                //   '0px 16px 16px rgb(50 50 71 / 8%), 0px 24px 32px rgb(50 50 71 / 8%)',
               }}
             />
           </div>
         </div>
       ) : (
-        <div
-          // onClick={(e) => handleClick(e)}
-          // onKeyDown={(e) => handleClick(e)}
-          aria-hidden="true"
-          className={classes.image}
-        >
+        <div aria-hidden="true" className={classes.image}>
           {i === 0 && <span className={classes.required}>* Cover Image</span>}
 
           <IconButton
@@ -243,7 +173,6 @@ function NewComp({ setimgArr, i, imgArr }) {
               width: '100%',
               height: '100%',
             }}
-            // ref={hiddenFileInput}
           >
             <input
               hidden
@@ -266,14 +195,11 @@ function NewComp({ setimgArr, i, imgArr }) {
   );
 }
 
-function AddProduct() {
+function AddProduct({ history }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [brand, setbrand] = useState([]);
   const [category, setcategory] = useState([]);
-  const [otherUnitOption, setOtherUnitOption] = useState([]);
-  const [otherFlavourOption, setOtherFlavourOption] = useState([]);
-  const [otherColoroption, setOtherColorOption] = useState([]);
   const [product, setProduct] = useState({
     name: '',
     price: '',
@@ -296,10 +222,10 @@ function AddProduct() {
     description: '',
     sellerInformation: '',
     mrp: '',
-    flavour: '',
+    flavour: null,
     value: '',
     unit: '',
-    color: '',
+    color: null,
     nonVeg: false,
     otherUnit: [],
     otherColor: [],
@@ -339,36 +265,15 @@ function AddProduct() {
     dispatch(getProducts({ filterBy: 'flavour', key: 'otherFlavour' }));
   }, [categoryData, brandData]);
 
-  useEffect(() => {
-    if (otherUnit && otherUnit.data.length)
-      setOtherUnitOption(
-        otherUnit.data.map((elem, i) => {
-          return { label: elem.name, value: elem._id, key: i };
-        })
-      );
-    if (otherFlavour && otherFlavour.data.length)
-      setOtherFlavourOption(
-        otherFlavour.data.map((elem, i) => {
-          return { label: elem.name, value: elem._id, key: i };
-        })
-      );
-    if (otherColor && otherColor.data.length)
-      setOtherColorOption(
-        otherColor.data.map((elem, i) => {
-          return { label: elem.name, value: elem._id, key: i };
-        })
-      );
-  }, [otherUnit, otherColor, otherFlavour]);
-
   const handleChange = (value, key) => {
     setProduct((oldVal) => {
       return { ...oldVal, [key]: value };
     });
     if (value !== '' && key === 'unit')
       dispatch(getProducts({ unit: value, key: 'otherUnit' }));
-    if (key === 'color' && !product.color.length)
+    if (key === 'color' && !product.color)
       dispatch(getProducts({ filterBy: 'color', key: 'otherColor' }));
-    if (key === 'flavour' && !product.flavour.length)
+    if (key === 'flavour' && !product.flavour)
       dispatch(getProducts({ filterBy: 'flavour', key: 'otherFlavour' }));
   };
 
@@ -393,14 +298,8 @@ function AddProduct() {
     suggestedProduct: [],
   };
 
-  // const validationSchema = Yup.object().shape({
-  //   name: Yup.string().required('name is reqired'),
-  //   price: Yup.string().required('price is required!'),
-  // });
-
   const onSubmit = () => {
-    console.log({ product });
-    dispatch(addProduct(product));
+    dispatch(addProduct({ product, history }));
   };
   return (
     <>
@@ -510,12 +409,7 @@ function AddProduct() {
                         classNamePrefix="react-select"
                         options={brand}
                         name="brand"
-                        // value={product.brand}
-                        //  onChange={handleChange}
                         onChange={({ value }) => handleChange(value, 'brand')}
-                        // isMulti={isMulti}
-                        // onChange={handleChangeselect}
-                        // onBlur={handleBlur}
                       />
                     </FormGroup>
                   </Colxx>
@@ -527,13 +421,9 @@ function AddProduct() {
                         classNamePrefix="react-select"
                         options={category}
                         name="category"
-                        // value={product.category}
                         onChange={({ value }) =>
                           handleChange(value, 'category')
                         }
-                        // isMulti={isMulti}
-                        // onChange={handleChangeselect}
-                        // onBlur={handleBlur}
                       />
                     </FormGroup>
                   </Colxx>
@@ -625,7 +515,7 @@ function AddProduct() {
                     />
                   </Colxx>
                 </Row>
-
+                {console.log({ otherUnit })}
                 <Row>
                   <Colxx lg="12" xs="12" sm="6">
                     <FormGroup>
@@ -636,14 +526,9 @@ function AddProduct() {
                         classNamePrefix="react-select"
                         isMulti
                         // value={product.otherUnit}
-                        onChange={(value) =>
-                          handleChange(
-                            value.map((e) => e.value),
-                            'otherUnit'
-                          )
-                        }
+                        onChange={(value) => handleChange(value, 'otherUnit')}
                         name="otherunit"
-                        options={otherUnitOption}
+                        options={otherUnit}
                       />
                     </FormGroup>
                   </Colxx>
@@ -661,13 +546,8 @@ function AddProduct() {
                         // value={product.otherColor}
                         //  onChange={handleChange}
                         // value={selectedOptionsColor}
-                        onChange={(value) =>
-                          handleChange(
-                            value.map((e) => e.value),
-                            'otherColor'
-                          )
-                        }
-                        options={otherColoroption}
+                        onChange={(value) => handleChange(value, 'otherColor')}
+                        options={otherColor}
                       />
                     </FormGroup>
                   </Colxx>
@@ -687,12 +567,9 @@ function AddProduct() {
                           //  onChange={handleChange}
                           // value={selectedOptionsFlavour}
                           onChange={(value) =>
-                            handleChange(
-                              value.map((e) => e.value),
-                              'otherFlavour'
-                            )
+                            handleChange(value, 'otherFlavour')
                           }
-                          options={otherFlavourOption}
+                          options={otherFlavour}
                         />
                       </FormGroup>
                     </Form>

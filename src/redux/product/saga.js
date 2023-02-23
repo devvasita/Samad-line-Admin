@@ -26,11 +26,12 @@ const addProductAsync = async (product) => {
 };
 
 function* addProductWorker({ payload }) {
-  const { product } = payload;
+  const { product, history } = payload;
   try {
     const { data, status } = yield call(addProductAsync, product);
     const { messgae } = data;
     if (status === 201) {
+      history.push('/app/applications/product');
       yield put(addProductSuccess(data));
     } else {
       yield put(addProductSuccess(messgae));
