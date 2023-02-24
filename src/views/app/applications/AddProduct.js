@@ -110,23 +110,29 @@ const quillFormats = [
 ];
 
 function NewComp({ setimgArr, i, imgArr }) {
-  const [file, setFile] = useState();
-
   const handleChange = (e) => {
     e.stopPropagation();
-    setFile(URL.createObjectURL(e.target.files[0]));
+    imgArr.splice(i, 1, {
+      file: e.target.files[0],
+      url: URL.createObjectURL(e.target.files[0]),
+    });
+
     setimgArr(imgArr);
   };
 
   const classes = useStyles();
 
   const handleCancelImage = () => {
-    setFile('');
+    imgArr.splice(i, 1, {
+      file: null,
+      url: '',
+    });
+    setimgArr(imgArr);
   };
 
   return (
     <Colxx xxs="3">
-      {file && file ? (
+      {imgArr[i] && imgArr[i].url ? (
         <div>
           <div className={classes.upload}>
             <CancelIcon
@@ -139,7 +145,7 @@ function NewComp({ setimgArr, i, imgArr }) {
               }}
             />
             <img
-              src={file}
+              src={imgArr[i].url}
               alt=""
               style={{
                 objectFit: 'contain',
@@ -235,7 +241,6 @@ function AddProduct({ history }) {
   const productState = useSelector((state) => state.product);
 
   const { otherUnit, otherColor, otherFlavour, products } = productState;
-  console.log({ products });
 
   useEffect(() => {
     dispatch(getBrandAndCategory('brand'));
@@ -256,11 +261,11 @@ function AddProduct({ history }) {
           return { label: elem.name, value: elem.name, key: i };
         })
       );
-    console.log({ products });
+
     if (products && products.data.length)
       setRelavantProduct(
         products.data.map((elem, i) => {
-          return { label: elem.name, value: elem.name, key: i };
+          return { label: elem?.name, value: elem?.name, key: i };
         })
       );
     // dispatch(getProducts({ filterBy: 'color', key: 'otherColor' }));
@@ -301,7 +306,36 @@ function AddProduct({ history }) {
   };
 
   const onSubmit = () => {
-    dispatch(addProduct({ product, history }));
+    const formData = new FormData();
+    // eslint-disable-next-line array-callback-return
+    // const list = ['image', 'otherColor', 'otherFlavour', 'suggestedProduct'];
+
+    formData.append('name', product.name);
+    formData.append('price', product.price);
+    formData.append('brand', product.brand);
+    formData.append('category', product.category);
+    formData.append('countInStock', '');
+    formData.append('numReviews', '');
+    formData.append('description', product.description);
+    formData.append('sellerInformation', product.sellerInformation);
+    formData.append('mrp', product.mrp);
+    formData.append('flavour', product.flavour);
+    formData.append('value', product.value);
+    formData.append('unit', product.value);
+    formData.append('color', product.color);
+    formData.append('nonVeg', product.nonVeg);
+    product.image.map(
+      (elem) => elem.file && formData.append('image', elem.file)
+    );
+    formData.append('otherColor', JSON.stringify(product.otherColor));
+    formData.append('otherUnit', JSON.stringify(product.otherUnit));
+    formData.append('otherFlavour', JSON.stringify(product.otherFlavour));
+    formData.append(
+      'suggestedProduct',
+      JSON.stringify(product.suggestedProduct)
+    );
+
+    dispatch(addProduct(formData, history));
   };
   return (
     <>
@@ -517,7 +551,6 @@ function AddProduct({ history }) {
                     />
                   </Colxx>
                 </Row>
-                {console.log({ otherUnit })}
                 <Row>
                   <Colxx lg="12" xs="12" sm="6">
                     <FormGroup>

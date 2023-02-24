@@ -82,7 +82,7 @@ function Product() {
               <tbody>
                 {ProductsData &&
                   ProductsData.map((data) => (
-                    <tr key={data._id}>
+                    <tr key={data?._id}>
                       <td>
                         <img
                           alt="Thumbnail"
@@ -90,18 +90,18 @@ function Product() {
                           className="list-thumbnail responsive border-0 card-img-left"
                         />
                       </td>
-                      <td>{data.name}</td>
-                      <td>{data.category}</td>
+                      <td>{data?.name}</td>
+                      <td>{data?.category}</td>
                       <td>
-                        {data.mrp}/{data.price}
+                        {data?.mrp}/{data?.price}
                       </td>
                       <td>
-                        {data.unit}/{data.value}
+                        {data?.unit}/{data?.value}
                       </td>
                       <td>
                         <img
                           src={
-                            data.nonVeg
+                            data?.nonVeg
                               ? `/assets/img/products/non-veg-icon.svg`
                               : `/assets/img/products/veg-icon.svg`
                           }
@@ -113,8 +113,8 @@ function Product() {
                         <i
                           style={{ cursor: 'pointer' }}
                           className="simple-icon-options-vertical"
-                          onClick={(e) => handleClick(e, data._id)}
-                          onKeyDown={(e) => handleClick(e, data._id)}
+                          onClick={(e) => handleClick(e, data?._id)}
+                          onKeyDown={(e) => handleClick(e, data?._id)}
                           aria-hidden="true"
                         />
                       </td>

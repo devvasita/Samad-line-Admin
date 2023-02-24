@@ -16,7 +16,7 @@ import {
   GET_SINGLE_PRODUCT_ERROR,
 } from '../contants';
 
-export const addProduct = ({ product, history }) => {
+export const addProduct = (product, history) => {
   return {
     type: ADD_PRODUCT,
     payload: { product, history },
