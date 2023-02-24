@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-return-assign */
 /* eslint no-underscore-dangle: 0 */
 import React, { useState, useEffect } from 'react';
 import {
@@ -27,7 +29,7 @@ import {
   updateBrandAndCategory,
 } from 'redux/actions';
 import { useDispatch, useSelector } from 'react-redux';
-import ReactCrop from 'react-image-crop';
+// import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 
 function Category() {
@@ -36,6 +38,7 @@ function Category() {
   );
   const dispatch = useDispatch();
 
+  const [image, setimage] = useState('');
   const [modalLong, setModalLong] = useState(false);
   const [modelEdit, setModelEdit] = useState('');
 
@@ -46,11 +49,14 @@ function Category() {
   });
 
   const handleChange = (e) => {
+    e.preventDefault();
+
     setState({
       name: state.name,
-      image: URL.createObjectURL(e.target.files[0]),
+      image: e.target.files[0],
       id: state.id,
     });
+    setimage(URL.createObjectURL(e.target.files[0]));
   };
   const handleCancelImage = () => {
     setState({
@@ -58,14 +64,19 @@ function Category() {
       image: '',
       id: state.id,
     });
+    setimage('');
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    Object.keys(state).map((elem) => formData.append(elem, state[elem]));
     if (modelEdit) {
-      dispatch(updateBrandAndCategory(state, 'category'));
+      dispatch(updateBrandAndCategory(formData, 'category'));
       setModalLong(false);
     } else {
-      dispatch(addBrandAndCategory(state, 'category'));
+      dispatch(addBrandAndCategory(formData, 'category'));
       setModalLong(false);
     }
     setModelEdit('');
@@ -79,7 +90,6 @@ function Category() {
   }, [dispatch]);
 
   const handleEdit = (index) => {
-    console.log(CategoryData);
     setModalLong(true);
     setState({
       ...state,
@@ -87,44 +97,6 @@ function Category() {
       image: CategoryData[index].image,
       id: CategoryData[index]._id,
     });
-  };
-
-  const [crop, setCrop] = useState({ aspect: 16 / 9 });
-  const [result, setResult] = useState(null);
-
-  const onImageLoaded = () => {
-    setCrop({ aspect: state.image.width / state.image.height });
-  };
-  const getCropImage = () => {
-    const canvas = document.createElement('Canvas');
-    const ctx = canvas.getContext('2d');
-    const scaleX = state.image.naturalWidth / state.image.width;
-    const scaleY = state.image.naturalHeight / state.image.height;
-    canvas.width = crop.width;
-    canvas.height = crop.height;
-
-    const img = new Image();
-    img.src = state.image;
-    console.log(img, '0000');
-    ctx.drawImage(
-      img,
-      0,
-      0,
-      crop.x * scaleX,
-      crop.y * scaleY,
-      crop.width * scaleX,
-      crop.height * scaleY,
-      0,
-      0,
-      crop.width,
-      crop.height
-    );
-
-    // canvas.toBlob((blob) => {
-    //   setResult(blob);
-    // }, 'image/jpeg');
-    const base64Image = canvas.toDataURL('image/jpeg');
-    setResult(base64Image);
   };
 
   return (
@@ -170,7 +142,7 @@ function Category() {
               <IntlMessages id="Upload Image : " />
             </Label>
             <div>
-              {!state.image ? (
+              {!image ? (
                 <div className="model">
                   <IconButton
                     color="primary"
@@ -194,7 +166,7 @@ function Category() {
                 </div>
               ) : (
                 <div>
-                  {state.image ? (
+                  {image ? (
                     <div
                       style={{
                         position: 'relative',
@@ -216,26 +188,8 @@ function Category() {
                         }}
                       />
 
-                      {/* <ReactCrop
-                        src="./assets/upload.png"
-                        crop={crop}
-                        onChange={(newCrop) => setCrop(newCrop)}
-                        onImageLoaded={onImageLoaded}
-                        onComplete={getCropImage}
-                      /> */}
-                      <ReactCrop
-                        crop={crop}
-                        onChange={(c) => {
-                          console.log('c=======', c);
-                          setCrop(c);
-                        }}
-                        onImageLoaded={onImageLoaded}
-                      >
-                        <img src={state.image} alt="crop" />
-                      </ReactCrop>
-                      <Button onClick={getCropImage}>Crop Image</Button>
-                      {/* <img
-                        src={state.image}
+                      <img
+                        src={image}
                         alt=""
                         style={{
                           objectFit: 'contain',
@@ -246,13 +200,13 @@ function Category() {
                           boxShadow:
                             '0px 16px 16px rgb(50 50 71 / 8%), 0px 24px 32px rgb(50 50 71 / 8%)',
                         }}
-                      /> */}
+                      />
 
-                      {result && (
+                      {/* {result && (
                         <div>
                           <img src={result} alt="result" />
                         </div>
-                      )}
+                      )} */}
                     </div>
                   ) : null}
                 </div>
@@ -267,12 +221,10 @@ function Category() {
               type="text"
               defaultValue={state.name}
               onChange={(event) => {
-                setState({
-                  name: event.target.value,
-                  image: state.image,
-                  id: state.id,
+                // formData.append('name', event.target.value);
+                setState((oldVal) => {
+                  return { ...oldVal, name: event.target.value };
                 });
-                // setState((oldState) => (oldState.name = event.target.value));
               }}
             />
           </ModalBody>
