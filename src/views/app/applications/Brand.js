@@ -38,6 +38,7 @@ function Brand() {
   );
   const dispatch = useDispatch();
 
+  const [image, setimage] = useState('');
   const [modalLong, setModalLong] = useState(false);
   const [modelEdit, setModelEdit] = useState('');
 
@@ -49,11 +50,13 @@ function Brand() {
 
   const handleChange = (e) => {
     e.preventDefault();
+
     setState({
       name: state.name,
       image: e.target.files[0],
       id: state.id,
     });
+    setimage(URL.createObjectURL(e.target.files[0]));
   };
   const handleCancelImage = () => {
     setState({
@@ -140,7 +143,7 @@ function Brand() {
               <IntlMessages id="Upload Image : " />
             </Label>
             <div>
-              {!state.image ? (
+              {!image ? (
                 <div className="model">
                   <IconButton
                     color="primary"
@@ -164,7 +167,7 @@ function Brand() {
                 </div>
               ) : (
                 <div>
-                  {state.image ? (
+                  {image ? (
                     <div
                       style={{
                         position: 'relative',
@@ -186,9 +189,9 @@ function Brand() {
                         }}
                       />
 
-                      {console.log({ img: state.image })}
+                      {console.log({ img: image })}
                       <img
-                        src="http://localhost:8080/uploads/1677145079572.jpg"
+                        src={image}
                         alt=""
                         style={{
                           objectFit: 'contain',
