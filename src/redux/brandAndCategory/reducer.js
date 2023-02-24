@@ -28,7 +28,6 @@ export default (state = INIT_STATE, action) => {
     case ADD_BRAND_AND_CATEGORY_SUCCESS: {
       const { item, type } = action.payload;
 
-      console.log(state[type], item, 'boooomm boomml');
       return {
         ...state,
         loaded: true,

@@ -252,11 +252,7 @@ function Brand() {
               <Colxx xxs="12" xs="6" md="3" lg="2" key={brand?._id}>
                 <Card className="mb-4">
                   <div className="position-relative">
-                    <CardImg
-                      top
-                      src={`http://localhost:8080/${brand?.image}`}
-                      alt="Card image cap"
-                    />
+                    <CardImg top src={brand?.image} alt="Card image cap" />
                   </div>
                   <CardBody className="p-2">
                     <CardSubtitle className="mb-3 font-weight-bold font-size-11">
