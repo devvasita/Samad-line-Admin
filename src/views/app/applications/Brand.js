@@ -45,7 +45,7 @@ function Brand() {
   const [state, setState] = useState({
     name: '',
     image: '',
-    id: '',
+    _id: '',
   });
 
   const handleChange = (e) => {
@@ -54,7 +54,7 @@ function Brand() {
     setState({
       name: state.name,
       image: e.target.files[0],
-      id: state.id,
+      _id: state._id,
     });
     setimage(URL.createObjectURL(e.target.files[0]));
   };
@@ -62,16 +62,22 @@ function Brand() {
     setState({
       name: state.name,
       image: '',
-      id: state.id,
+      _id: state._id,
     });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    Object.keys(state).map((elem) => formData.append(elem, state[elem]));
+    Object.keys(state).map(
+      (elem) => state[elem] && formData.append(elem, state[elem])
+    );
 
-    console.log({ name: formData.get('name'), image: formData.get('image') });
+    console.log({
+      state,
+      name: formData.get('name'),
+      image: formData.get('image'),
+    });
     if (modelEdit) {
       dispatch(updateBrandAndCategory(formData, 'brand'));
       setModalLong(false);
@@ -81,8 +87,8 @@ function Brand() {
     }
     setModelEdit('');
   };
-  const handleDelete = (id) => {
-    dispatch(deleteBrandAndCategory(id, 'brand'));
+  const handleDelete = (_id) => {
+    dispatch(deleteBrandAndCategory(_id, 'brand'));
   };
 
   useEffect(() => {
@@ -96,7 +102,7 @@ function Brand() {
       ...state,
       name: BrandData[index].name,
       image: BrandData[index].image,
-      id: BrandData[index]._id,
+      _id: BrandData[index]._id,
     });
   };
 
@@ -114,7 +120,7 @@ function Brand() {
               setState({
                 name: '',
                 image: '',
-                id: '',
+                _id: '',
               });
             }}
           >
@@ -189,7 +195,6 @@ function Brand() {
                         }}
                       />
 
-                      {console.log({ img: image })}
                       <img
                         src={image}
                         alt=""

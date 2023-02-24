@@ -70,25 +70,17 @@ export function* watchGetBrandAndCategory() {
   yield takeEvery(GET_BRAND_AND_CATEGORY, getBrandAndCategoryWorker);
 }
 
-const updateBrandAndCategoryAsync = async (name, image, id, type) => {
-  const res = await API.put(`/${type}`, {
-    name,
-    image,
-    _id: id,
-  });
-  console.log(res, 'response');
+const updateBrandAndCategoryAsync = async (item, type) => {
+  const res = await API.put(`/${type}`, item);
   return res;
 };
 
 function* updateBrandAndCategoryWorker({ payload }) {
-  const { name, image, id } = payload.item;
-  const { type } = payload;
+  const { item, type } = payload;
   try {
     const { data, status } = yield call(
       updateBrandAndCategoryAsync,
-      name,
-      image,
-      id,
+      item,
       type
     );
     if (status === 201) {
