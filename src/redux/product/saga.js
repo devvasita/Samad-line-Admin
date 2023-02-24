@@ -91,16 +91,15 @@ export function* watchGetSingleProduct() {
   yield takeEvery(GET_SINGLE_PRODUCT, getSingleProductWorker);
 }
 
-const updateProductAsync = async (product) => {
-  const res = await API.put(`/product/${product._id}`, product);
+const updateProductAsync = async (product, _id) => {
+  const res = await API.put(`/product/${_id}`, product);
   return res;
 };
 
 function* updateProductWorker({ payload }) {
-  const { product, history } = payload;
-  console.log({ product, history });
+  const { product, history, _id } = payload;
   try {
-    const { data, status } = yield call(updateProductAsync, product);
+    const { data, status } = yield call(updateProductAsync, product, _id);
     const { message } = data;
     if (status === 200) {
       history.push('/app/applications/product');

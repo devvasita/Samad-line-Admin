@@ -60,10 +60,10 @@ export const getSingleProductError = (message) => ({
   payload: { message },
 });
 
-export const updateProduct = (product, history) => {
+export const updateProduct = (product, history, id) => {
   return {
     type: UPDATE_PRODUCT,
-    payload: { product, history },
+    payload: { product, history, _id: id },
   };
 };
 export const updateProductSuccess = (item, type) => {
