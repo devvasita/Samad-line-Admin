@@ -45,7 +45,7 @@ function Category() {
   const [state, setState] = useState({
     name: '',
     image: '',
-    id: '',
+    _id: '',
   });
 
   const handleChange = (e) => {
@@ -54,7 +54,7 @@ function Category() {
     setState({
       name: state.name,
       image: e.target.files[0],
-      id: state.id,
+      _id: state._id,
     });
     setimage(URL.createObjectURL(e.target.files[0]));
   };
@@ -62,7 +62,7 @@ function Category() {
     setState({
       name: state.name,
       image: '',
-      id: state.id,
+      _id: state._id,
     });
     setimage('');
   };
@@ -71,7 +71,10 @@ function Category() {
     e.preventDefault();
 
     const formData = new FormData();
-    Object.keys(state).map((elem) => formData.append(elem, state[elem]));
+    Object.keys(state).map(
+      (elem) => state[elem] && formData.append(elem, state[elem])
+    );
+    console.log({ state });
     if (modelEdit) {
       dispatch(updateBrandAndCategory(formData, 'category'));
       setModalLong(false);
@@ -81,8 +84,8 @@ function Category() {
     }
     setModelEdit('');
   };
-  const handleDelete = (id) => {
-    dispatch(deleteBrandAndCategory(id, 'category'));
+  const handleDelete = (_id) => {
+    dispatch(deleteBrandAndCategory(_id, 'category'));
   };
 
   useEffect(() => {
@@ -95,7 +98,7 @@ function Category() {
       ...state,
       name: CategoryData[index].name,
       image: CategoryData[index].image,
-      id: CategoryData[index]._id,
+      _id: CategoryData[index]._id,
     });
   };
 
@@ -113,7 +116,7 @@ function Category() {
               setState({
                 name: '',
                 image: '',
-                id: '',
+                _id: '',
               });
             }}
           >
