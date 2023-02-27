@@ -270,19 +270,19 @@ function EditProduct({ history }) {
     if (brandData && brandData.length)
       setbrand(
         brandData.map((elem, i) => {
-          return { label: elem.name, value: elem.name, key: i };
+          return { label: elem.name, value: elem._id, key: i };
         })
       );
     if (categoryData && categoryData.length)
       setcategory(
         categoryData.map((elem, i) => {
-          return { label: elem.name, value: elem.name, key: i };
+          return { label: elem.name, value: elem._id, key: i };
         })
       );
     if (products && products.data.length)
       setRelavantProduct(
         products.data.map((elem, i) => {
-          return { label: elem.name, value: elem.name, key: i };
+          return { label: elem.name, value: elem._id, key: i };
         })
       );
   }, [categoryData, brandData, products]);
