@@ -273,7 +273,11 @@ function ViewProduct() {
               <CardBody>
                 <div className="d-flex align-items-center mb-2">
                   <img
-                    src="/assets/img/products/veg-icon.svg"
+                    src={
+                      data?.nonVeg
+                        ? `/assets/img/products/non-veg-icon.svg`
+                        : `/assets/img/products/veg-icon.svg`
+                    }
                     alt="Chitr - Veg Symbol - Svg - Veg And Non Veg mailto:icons@pngkey.com"
                     style={{
                       height: '30px',
@@ -299,7 +303,11 @@ function ViewProduct() {
                 <div>
                   <ul style={{ padding: '0px 0px 0px 15px' }}>
                     <li className="card-title">
-                      <p>{data?.description}</p>
+                      <p
+                        dangerouslySetInnerHTML={{
+                          __html: data?.description,
+                        }}
+                      />
                     </li>
                   </ul>
                 </div>
