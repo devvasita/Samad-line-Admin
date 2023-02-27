@@ -255,13 +255,22 @@ function Category() {
           {CategoryData &&
             CategoryData.map((category, index) => (
               <Colxx xxs="12" xs="6" md="3" lg="2" key={category?._id}>
-                <Card className="mb-4">
+                <Card className="mb-4" style={{ borderRadius: '0.75rem' }}>
                   <div className="position-relative">
-                    <CardImg top src={category?.image} alt="Card image cap" />
+                    <CardImg
+                      top
+                      src={category?.image}
+                      alt="Card image cap"
+                      style={{
+                        borderRadius: '0.75rem 0.75rem 0 0',
+                        height: '100px',
+                        objectFit: 'cover',
+                      }}
+                    />
                   </div>
                   <CardBody className="p-2">
                     <CardSubtitle className="mb-3 font-weight-bold font-size-11">
-                      <h2>{category?.name}</h2>
+                      <h2 className="truncate">{category?.name}</h2>
                     </CardSubtitle>
                     {/* <CardText className="text-muted text-small mb-0 font-weight-light">
                 09.04.2018

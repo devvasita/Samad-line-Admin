@@ -258,13 +258,22 @@ function Brand() {
           {BrandData &&
             BrandData.map((brand, index) => (
               <Colxx xxs="12" xs="6" md="3" lg="2" key={brand?._id}>
-                <Card className="mb-4">
+                <Card className="mb-4" style={{ borderRadius: '0.75rem' }}>
                   <div className="position-relative">
-                    <CardImg top src={brand?.image} alt="Card image cap" />
+                    <CardImg
+                      top
+                      src={brand?.image}
+                      alt="Card image cap"
+                      style={{
+                        borderRadius: '0.75rem 0.75rem 0 0',
+                        height: '100px',
+                        objectFit: 'cover',
+                      }}
+                    />
                   </div>
                   <CardBody className="p-2">
                     <CardSubtitle className="mb-3 font-weight-bold font-size-11">
-                      <h2>{brand?.name}</h2>
+                      <h2 className="truncate">{brand?.name}</h2>
                     </CardSubtitle>
                     {/* <CardText className="text-muted text-small mb-0 font-weight-light">
                 09.04.2018
