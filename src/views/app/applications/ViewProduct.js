@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { Colxx, Separator } from 'components/common/CustomBootstrap';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Row,
   Card,
@@ -216,12 +216,27 @@ const BasicCarouselItem = ({ title, img, detail }) => {
 function ViewProduct() {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const data = useSelector((state) => state?.product?.selectedProduct);
+  const [imgArr, setimgArr] = useState([]);
 
   useEffect(() => {
     dispatch(getSingleProduct(id));
   }, []);
 
-  const data = useSelector((state) => state?.product?.selectedProduct);
+  useEffect(() => {
+    if (data) {
+      const filteredImg = [];
+      data.image.map(
+        (elem, i) =>
+          elem.url !== '' &&
+          filteredImg.push({
+            img: elem.url,
+            key: i,
+          })
+      );
+      setimgArr(filteredImg);
+    }
+  }, [data]);
 
   return (
     <>
@@ -237,7 +252,7 @@ function ViewProduct() {
           {data?.unit}):-
         </h2>
       </CardTitle>
-
+      {console.log({ data })}
       <Row>
         <Colxx xxs="12" md="12" xl="6" className="col-right">
           <Row>
@@ -250,7 +265,7 @@ function ViewProduct() {
                   startAt: 0,
                   gap: 5,
                   perView: 1,
-                  data: detailImages,
+                  data: imgArr,
                 }}
                 settingsThumbs={{
                   bound: true,
@@ -259,7 +274,7 @@ function ViewProduct() {
                   startAt: 0,
                   gap: 10,
                   perView: 5,
-                  data: detailThumbs,
+                  data: imgArr,
                   breakpoints: {
                     576: {
                       perView: 4,
