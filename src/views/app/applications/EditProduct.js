@@ -673,7 +673,7 @@ function EditProduct({ history }) {
                         validate={() =>
                           product.otherunit.length === 0 && 'Required'
                         }
-                        // value={product.otherUnit}
+                        value={product.otherUnit}
                         onChange={(value) => handleChange(value, 'otherUnit')}
                         name="otherunit"
                         options={otherUnit}
@@ -699,7 +699,7 @@ function EditProduct({ history }) {
                           product.otherColor.length === 0 && 'Required'
                         }
                         name="otherColor"
-                        // value={product.otherColor}
+                        value={product.otherColor}
                         //  onChange={handleChange}
                         // value={selectedOptionsColor}
                         onChange={(value) => handleChange(value, 'otherColor')}
@@ -727,7 +727,7 @@ function EditProduct({ history }) {
                           validate={() =>
                             product.otherColor.length === 0 && 'Required'
                           }
-                          // value={product.otherFlavour}
+                          value={product.otherFlavour}
                           //  onChange={handleChange}
                           // value={selectedOptionsFlavour}
                           onChange={(value) =>
@@ -754,6 +754,7 @@ function EditProduct({ history }) {
                         classNamePrefix="react-select"
                         isMulti
                         name="relevantProduct"
+                        value={product.suggestedProduct}
                         validate={() =>
                           product.relevantProduct.length === 0 && 'Required'
                         }
