@@ -358,6 +358,12 @@ function EditProduct({ history }) {
 
     dispatch(updateProduct(formData, history, id));
   };
+  const handleKeyPress = (event) => {
+    const charCode = event.which ? event.which : event.keyCode;
+    if (String.fromCharCode(charCode).match(/[^0-9]/g)) {
+      event.preventDefault();
+    }
+  };
   return (
     <>
       <Row>
@@ -404,7 +410,7 @@ function EditProduct({ history }) {
               errors,
               touched,
               // handleChange,
-              handleBlur,
+              // handleBlur,
               handleSubmit,
             }) => (
               <Form
@@ -420,9 +426,14 @@ function EditProduct({ history }) {
                         name="name"
                         value={product.name}
                         onChange={(e) => handleChange(e.target.value, 'name')}
-                        onBlur={handleBlur}
-                        error={Boolean(errors.name && touched.name)}
+                        // onBlur={handleBlur}
+                        validate={() => product.name === '' && 'Required'}
                       />
+                      {errors.name && touched.name && (
+                        <div className="invalid-feedback d-block">
+                          {errors.name}
+                        </div>
+                      )}
                     </FormGroup>
                   </Colxx>
                   <Colxx lg="3" xs="12" sm="6">
@@ -448,9 +459,18 @@ function EditProduct({ history }) {
                       <Field
                         className="form-control"
                         name="mrp"
+                        onKeyPress={(event) => {
+                          handleKeyPress(event);
+                        }}
                         value={product.mrp}
+                        validate={() => product.mrp === '' && 'Required'}
                         onChange={(e) => handleChange(e.target.value, 'mrp')}
                       />
+                      {errors.mrp && touched.mrp && (
+                        <div className="invalid-feedback d-block">
+                          {errors.mrp}
+                        </div>
+                      )}
                     </FormGroup>
                   </Colxx>
                   <Colxx lg="3" xs="12" sm="6">
@@ -461,9 +481,18 @@ function EditProduct({ history }) {
                         className="form-control"
                         name="price"
                         value={product.price}
+                        onKeyPress={(event) => {
+                          handleKeyPress(event);
+                        }}
+                        validate={() => product.price === '' && 'Required'}
                         onChange={(e) => handleChange(e.target.value, 'price')}
                         error={Boolean(errors.price && touched.price)}
                       />
+                      {errors.price && touched.price && (
+                        <div className="invalid-feedback d-block">
+                          {errors.price}
+                        </div>
+                      )}
                     </FormGroup>
                   </Colxx>
                   <Colxx lg="3" xs="12" sm="6">
@@ -473,9 +502,17 @@ function EditProduct({ history }) {
                         className="react-select react-select__single-value"
                         classNamePrefix="react-select"
                         options={brand}
+                        validate={() =>
+                          product.brand.length === 0 && 'Required'
+                        }
                         name="brand"
                         onChange={({ value }) => handleChange(value, 'brand')}
                       />
+                      {errors.brand && touched.brand && (
+                        <div className="invalid-feedback d-block">
+                          {errors.brand}
+                        </div>
+                      )}
                     </FormGroup>
                   </Colxx>
                   <Colxx lg="3" xs="12" sm="6">
@@ -485,11 +522,19 @@ function EditProduct({ history }) {
                         className="react-select react-select__single-value"
                         classNamePrefix="react-select"
                         options={category}
+                        validate={() =>
+                          product.category.length === 0 && 'Required'
+                        }
                         name="category"
                         onChange={({ value }) =>
                           handleChange(value, 'category')
                         }
                       />
+                      {errors.category && touched.category && (
+                        <div className="invalid-feedback d-block">
+                          {errors.category}
+                        </div>
+                      )}
                     </FormGroup>
                   </Colxx>
                 </Row>
@@ -502,6 +547,7 @@ function EditProduct({ history }) {
                         className="react-select react-select__single-value"
                         classNamePrefix="react-select"
                         options={unit}
+                        validate={() => product.unit.length === 0 && 'Required'}
                         name="unit"
                         onChange={({ value }) => handleChange(value, 'unit')}
                         // value={product.unit}
@@ -516,8 +562,17 @@ function EditProduct({ history }) {
                         className="form-control"
                         name="value"
                         value={product.value}
+                        onKeyPress={(event) => {
+                          handleKeyPress(event);
+                        }}
+                        validate={() => product.value === '' && 'Required'}
                         onChange={(e) => handleChange(e.target.value, 'value')}
                       />
+                      {errors.value && touched.value && (
+                        <div className="invalid-feedback d-block">
+                          {errors.value}
+                        </div>
+                      )}
                     </FormGroup>
                   </Colxx>
                   <Colxx lg="3" xs="12" sm="6">
@@ -527,8 +582,14 @@ function EditProduct({ history }) {
                         className="form-control"
                         name="color"
                         value={product.color}
+                        validate={() => product.color === '' && 'Required'}
                         onChange={(e) => handleChange(e.target.value, 'color')}
                       />
+                      {errors.color && touched.color && (
+                        <div className="invalid-feedback d-block">
+                          {errors.color}
+                        </div>
+                      )}
                     </FormGroup>
                   </Colxx>
                   <Colxx lg="3" xs="12" sm="6">
@@ -538,10 +599,16 @@ function EditProduct({ history }) {
                         className="form-control"
                         name="flavour"
                         value={product.flavour}
+                        validate={() => product.flavour === '' && 'Required'}
                         onChange={(e) =>
                           handleChange(e.target.value, 'flavour')
                         }
                       />
+                      {errors.flavour && touched.flavour && (
+                        <div className="invalid-feedback d-block">
+                          {errors.flavour}
+                        </div>
+                      )}
                     </Form>
                     -{' '}
                   </Colxx>
@@ -555,11 +622,17 @@ function EditProduct({ history }) {
                       name="description"
                       value={product.description}
                       //  onChange={handleChange}
+                      validate={() => product.description === '' && 'Required'}
                       onChange={(value) => handleChange(value, 'description')}
                       modules={quillModules}
                       formats={quillFormats}
                       style={{ marginBottom: '10px' }}
                     />
+                    {errors.description && touched.description && (
+                      <div className="invalid-feedback d-block">
+                        {errors.description}
+                      </div>
+                    )}
                   </Colxx>
                 </Row>
 
@@ -570,6 +643,9 @@ function EditProduct({ history }) {
                       theme="snow"
                       name="sellerInformation"
                       value={product.sellerInformation}
+                      validate={() =>
+                        product.sellerInformation === '' && 'Required'
+                      }
                       //  onChange={handleChange}
                       onChange={(value) =>
                         handleChange(value, 'sellerInformation')
@@ -578,6 +654,11 @@ function EditProduct({ history }) {
                       formats={quillFormats}
                       style={{ marginBottom: '10px' }}
                     />
+                    {errors.sellerInformation && touched.sellerInformation && (
+                      <div className="invalid-feedback d-block">
+                        {errors.sellerInformation}
+                      </div>
+                    )}
                   </Colxx>
                 </Row>
                 <Row>
@@ -589,11 +670,19 @@ function EditProduct({ history }) {
                         className="react-select"
                         classNamePrefix="react-select"
                         isMulti
-                        value={product.otherUnit}
+                        validate={() =>
+                          product.otherunit.length === 0 && 'Required'
+                        }
+                        // value={product.otherUnit}
                         onChange={(value) => handleChange(value, 'otherUnit')}
                         name="otherunit"
                         options={otherUnit}
                       />
+                      {errors.otherunit && touched.otherunit && (
+                        <div className="invalid-feedback d-block">
+                          {errors.otherunit}
+                        </div>
+                      )}
                     </FormGroup>
                   </Colxx>
                 </Row>
@@ -606,13 +695,21 @@ function EditProduct({ history }) {
                         className="react-select"
                         classNamePrefix="react-select"
                         isMulti
+                        validate={() =>
+                          product.otherColor.length === 0 && 'Required'
+                        }
                         name="otherColor"
-                        value={product.otherColor}
+                        // value={product.otherColor}
                         //  onChange={handleChange}
                         // value={selectedOptionsColor}
                         onChange={(value) => handleChange(value, 'otherColor')}
                         options={otherColor}
                       />
+                      {errors.otherColor && touched.otherColor && (
+                        <div className="invalid-feedback d-block">
+                          {errors.otherColor}
+                        </div>
+                      )}
                     </FormGroup>
                   </Colxx>
                 </Row>
@@ -627,12 +724,22 @@ function EditProduct({ history }) {
                           classNamePrefix="react-select"
                           isMulti
                           name="otherFlavour"
-                          value={product.otherFlavour}
+                          validate={() =>
+                            product.otherColor.length === 0 && 'Required'
+                          }
+                          // value={product.otherFlavour}
+                          //  onChange={handleChange}
+                          // value={selectedOptionsFlavour}
                           onChange={(value) =>
                             handleChange(value, 'otherFlavour')
                           }
                           options={otherFlavour}
                         />
+                        {errors.otherFlavour && touched.otherFlavour && (
+                          <div className="invalid-feedback d-block">
+                            {errors.otherFlavour}
+                          </div>
+                        )}
                       </FormGroup>
                     </Form>
                   </Colxx>
@@ -647,12 +754,19 @@ function EditProduct({ history }) {
                         classNamePrefix="react-select"
                         isMulti
                         name="relevantProduct"
-                        value={product.suggestedProduct}
+                        validate={() =>
+                          product.relevantProduct.length === 0 && 'Required'
+                        }
                         onChange={(value) =>
                           handleChange(value, 'suggestedProduct')
                         }
                         options={relavantProduct}
                       />
+                      {errors.relevantProduct && touched.relevantProduct && (
+                        <div className="invalid-feedback d-block">
+                          {errors.relevantProduct}
+                        </div>
+                      )}
                     </FormGroup>
                   </Colxx>
                 </Row>
@@ -662,7 +776,11 @@ function EditProduct({ history }) {
                   </Button>
 
                   <NavLink to="./product">
-                    <Button outline className={classes.cancel}>
+                    <Button
+                      outline
+                      className={classes.cancel}
+                      // style={{ background: '#6c757d', border: 'none' }}
+                    >
                       Cancel
                     </Button>
                   </NavLink>
