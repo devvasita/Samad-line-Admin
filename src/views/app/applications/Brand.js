@@ -40,7 +40,7 @@ function Brand() {
 
   const [image, setimage] = useState('');
   const [modalLong, setModalLong] = useState(false);
-  const [modelEdit, setModelEdit] = useState('');
+  const [modelEdit, setModelEdit] = useState(false);
 
   const [state, setState] = useState({
     name: '',
@@ -96,7 +96,6 @@ function Brand() {
   }, [dispatch]);
 
   const handleEdit = (index) => {
-    console.log(BrandData);
     setModalLong(true);
     setState({
       ...state,
@@ -116,6 +115,7 @@ function Brand() {
             color="primary"
             outline
             onClick={() => {
+              setModelEdit(false);
               setModalLong(true);
               setState({
                 name: '',
@@ -142,14 +142,14 @@ function Brand() {
         >
           <ModalBody>
             <ModalHeader style={{ padding: '5px 0px 5px 0px' }}>
-              Add Brand
+              {modelEdit ? 'Edit Brand' : 'Add Brand'}
             </ModalHeader>
 
             <Label className="mt-4">
               <IntlMessages id="Upload Image : " />
             </Label>
             <div>
-              {!image ? (
+              {!state.image ? (
                 <div className="model">
                   <IconButton
                     color="primary"
@@ -173,7 +173,7 @@ function Brand() {
                 </div>
               ) : (
                 <div>
-                  {image ? (
+                  {state.image ? (
                     <div
                       style={{
                         position: 'relative',
@@ -196,7 +196,7 @@ function Brand() {
                       />
 
                       <img
-                        src={image}
+                        src={state.image.length ? state.image : image}
                         alt=""
                         style={{
                           objectFit: 'contain',

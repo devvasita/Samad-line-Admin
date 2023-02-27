@@ -77,8 +77,8 @@ export default (state = INIT_STATE, action) => {
       return { ...state, loaded: false };
 
     case DELETE_BRAND_AND_CATEGORY_SUCCESS: {
-      const { id, type } = action.payload;
-      const index = [...state[type].data].map((e) => e._id).indexOf(id);
+      const { _id, type } = action.payload;
+      const index = [...state[type].data].map((e) => e._id).indexOf(_id);
       const dataToUpdate = [...state[type].data];
       dataToUpdate.splice(index - 1, 1);
 

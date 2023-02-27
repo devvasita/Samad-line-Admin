@@ -27,3 +27,10 @@
 .secondary-new:hover {
   background-color: #6c757d !important;
 }
+.model {
+  border: 1px dotted;
+  display: flex;
+  width: 50%;
+  margin: 0 auto;
+  height: 115px;
+}

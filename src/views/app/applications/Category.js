@@ -40,7 +40,7 @@ function Category() {
 
   const [image, setimage] = useState('');
   const [modalLong, setModalLong] = useState(false);
-  const [modelEdit, setModelEdit] = useState('');
+  const [modelEdit, setModelEdit] = useState(false);
 
   const [state, setState] = useState({
     name: '',
@@ -112,6 +112,7 @@ function Category() {
             color="primary"
             outline
             onClick={() => {
+              setModelEdit(false);
               setModalLong(true);
               setState({
                 name: '',
@@ -138,14 +139,14 @@ function Category() {
         >
           <ModalBody>
             <ModalHeader style={{ padding: '5px 0px 5px 0px' }}>
-              Add Category
+              {modelEdit ? 'Edit Category' : 'Add Category'}
             </ModalHeader>
 
             <Label className="mt-4">
               <IntlMessages id="Upload Image : " />
             </Label>
             <div>
-              {!image ? (
+              {!state.image ? (
                 <div className="model">
                   <IconButton
                     color="primary"
@@ -169,7 +170,7 @@ function Category() {
                 </div>
               ) : (
                 <div>
-                  {image ? (
+                  {state.image ? (
                     <div
                       style={{
                         position: 'relative',
@@ -192,7 +193,7 @@ function Category() {
                       />
 
                       <img
-                        src={image}
+                        src={state.image.length ? state.image : image}
                         alt=""
                         style={{
                           objectFit: 'contain',
