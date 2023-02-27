@@ -114,13 +114,15 @@ const quillFormats = [
   'image',
 ];
 
-function NewComp({ setimgArr, i, imgArr }) {
+function NewComp({ setimgArr, i, imgArr, setImgIndex }) {
   const handleChange = (e) => {
     e.stopPropagation();
     imgArr.splice(i, 1, {
       file: e.target.files[0],
       url: URL.createObjectURL(e.target.files[0]),
     });
+    setImgIndex(i);
+    setimgArr(imgArr);
   };
 
   const classes = useStyles();
@@ -220,6 +222,7 @@ function EditProduct({ history }) {
       { id: 8 },
       { id: 9 },
     ],
+    updatedImageIds: [],
     brand: '',
     category: '',
     countInStock: '',
@@ -259,7 +262,8 @@ function EditProduct({ history }) {
   }, [dispatch]);
 
   useEffect(() => {
-    if (selectedProduct) setProduct(selectedProduct);
+    if (selectedProduct)
+      setProduct({ ...selectedProduct, updatedImageIds: [] });
   }, [selectedProduct]);
 
   useEffect(() => {
@@ -322,6 +326,8 @@ function EditProduct({ history }) {
     // eslint-disable-next-line array-callback-return
     // const list = ['image', 'otherColor', 'otherFlavour', 'suggestedProduct'];
 
+    // sort image index
+
     formData.append('name', product.name);
     formData.append('price', product.price);
     formData.append('brand', product.brand);
@@ -337,6 +343,8 @@ function EditProduct({ history }) {
     formData.append('color', product.color);
     formData.append('nonVeg', product.nonVeg);
     formData.append('_id', id);
+    const sortedIndex = product.updatedImageIds.sort((a, b) => a - b);
+    formData.append('updatedImageIds', JSON.stringify(sortedIndex));
     product.image.map(
       (elem) => elem.file && formData.append('image', elem.file)
     );
@@ -369,6 +377,14 @@ function EditProduct({ history }) {
                   setimgArr={(val) =>
                     setProduct((oldVal) => {
                       return { ...oldVal, image: val };
+                    })
+                  }
+                  setImgIndex={(imgIndex) =>
+                    setProduct((oldVal) => {
+                      return {
+                        ...oldVal,
+                        updatedImageIds: [...oldVal.updatedImageIds, imgIndex],
+                      };
                     })
                   }
                   imgArr={product.image}
