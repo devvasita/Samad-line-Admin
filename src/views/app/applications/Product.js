@@ -86,7 +86,7 @@ function Product() {
                       <td>
                         <img
                           alt="Thumbnail"
-                          src="/assets/img/products/gym3.jpg"
+                          src={data?.image[0]?.url}
                           className="list-thumbnail responsive border-0 card-img-left"
                         />
                       </td>
