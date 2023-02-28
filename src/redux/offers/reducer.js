@@ -1,8 +1,15 @@
 /* eslint no-underscore-dangle: 0 */
-import { ADD_OFFER, ADD_OFFER_SUCCESS, ADD_OFFER_ERROR } from '../contants';
+import {
+  ADD_OFFER,
+  ADD_OFFER_SUCCESS,
+  ADD_OFFER_ERROR,
+  GET_OFFERS,
+  GET_OFFERS_SUCCESS,
+  GET_OFFERS_ERROR,
+} from '../contants';
 
 const INIT_STATE = {
-  offer: null,
+  offer: [],
   selectedOffers: null,
   loading: false,
   error: '',
@@ -27,6 +34,25 @@ export default (state = INIT_STATE, action) => {
     }
     case ADD_OFFER_ERROR:
       return { ...state, loaded: true, error: action.payload.message };
+
+    case GET_OFFERS:
+      return { ...state, loading: true, error: '' };
+    case GET_OFFERS_SUCCESS: {
+      // const { data } = action.payload;
+      console.log(action.payload, 'paylod');
+      return {
+        ...state,
+        loading: false,
+        offer: action.payload,
+        error: '',
+      };
+    }
+    case GET_OFFERS_ERROR:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload.message,
+      };
 
     default:
       return { ...state };

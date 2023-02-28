@@ -37,9 +37,9 @@ export const getOffers = (data) => ({
   type: GET_OFFERS,
   payload: data,
 });
-export const getOfferSuccess = (list, key) => ({
+export const getOfferSuccess = (data) => ({
   type: GET_OFFERS_SUCCESS,
-  payload: { list, key },
+  payload: data,
 });
 export const getOffersError = (message) => ({
   type: GET_OFFERS_ERROR,

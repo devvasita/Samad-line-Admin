@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Row,
   Card,
@@ -19,13 +19,20 @@ import offersData from 'data/Offers';
 import { Menu, MenuItem } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import IntlMessages from 'helpers/IntlMessages';
+import { deleteOffer, getOffers } from 'redux/actions';
+import { useDispatch, useSelector } from 'react-redux';
 
 const ResponsiveEllipsis = responsiveHOC()(LinesEllipsis);
 
 function Offers() {
   const [anchorEl, setAnchorEl] = useState(null);
-  const handleClick = (event) => {
+  const [activeOfferId, setActiveOfferId] = useState(null);
+
+  const dispatch = useDispatch();
+
+  const handleClick = (event, id) => {
     setAnchorEl(event.currentTarget);
+    setActiveOfferId(id);
   };
   const history = useHistory();
 
@@ -38,9 +45,19 @@ function Offers() {
   const handleViewOffer = () => {
     history.push(`/app/applications/viewOffer`);
   };
+  useEffect(() => {
+    dispatch(getOffers());
+  }, [dispatch]);
+
+  const OffersData = useSelector((state) => state?.offer);
+  console.log(OffersData, 'offerdata');
+
   const open = Boolean(anchorEl);
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  const handleDeleteOffer = () => {
+    dispatch(deleteOffer(activeOfferId));
   };
   return (
     <>
@@ -169,7 +186,7 @@ function Offers() {
                     />
                     <span style={{ marginLeft: '5px' }}>View</span>
                   </MenuItem>
-                  <MenuItem>
+                  <MenuItem onClick={handleDeleteOffer}>
                     <i
                       className="iconsminds-delete-file"
                       style={{ color: '#6fb327', marginRight: '5px' }}
