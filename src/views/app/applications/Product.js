@@ -90,7 +90,7 @@ function Product() {
                           className="list-thumbnail responsive border-0 card-img-left"
                         />
                       </td>
-                      <td>{data?.name}</td>
+                      <td className="truncate">{data?.name}</td>
                       <td>{data?.category}</td>
                       <td>
                         {data?.mrp}/{data?.price}
