@@ -99,7 +99,7 @@ function GlideComponentThumbs(props = defaultProps) {
     mountTimeOut = setTimeout(() => {
       const event = document.createEvent('HTMLEvents');
       event.initEvent('resize', false, false);
-      window.dispatchEvent(event);
+      // window.dispatchEvent(event);
       carouselImages.on('resize', onResize);
     }, 500);
 

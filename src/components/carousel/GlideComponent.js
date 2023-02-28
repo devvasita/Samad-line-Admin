@@ -30,7 +30,7 @@ function GlideComponent(props) {
     mountTimeOut = setTimeout(() => {
       const event = document.createEvent('HTMLEvents');
       event.initEvent('resize', false, false);
-      window.dispatchEvent(event);
+      // window.dispatchEvent(event);
     }, 500);
   };
 

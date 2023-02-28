@@ -1,4 +1,6 @@
-import { useParams } from 'react-router-dom';
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+import { useHistory, useParams } from 'react-router-dom';
 import { Colxx, Separator } from 'components/common/CustomBootstrap';
 import React, { useEffect, useState } from 'react';
 import {
@@ -179,12 +181,27 @@ export const items = [
     ],
   },
 ];
-const BasicCarouselItem = ({ title, img, detail }) => {
+const BasicCarouselItem = ({ name, image, createdAt, _id }) => {
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const handleViewProduct = () => {
+    dispatch(getSingleProduct(_id));
+    history.push(`/app/applications/viewProduct/${_id}`);
+  };
   return (
     <div className="glide-item">
-      <Card className="flex-row d-block" style={{ borderRadius: '0.75rem' }}>
+      <Card
+        onClick={handleViewProduct}
+        className="flex-row d-block"
+        style={{ borderRadius: '0.75rem' }}
+      >
         <div className="w-100 position-relative h-50 p-2">
-          <img className="card-img-left" src={img} alt={title} />
+          <img
+            className="card-img-left"
+            style={{ height: 200, width: 200 }}
+            src={image ? image.find((elem) => elem.url !== '').url : null}
+            alt={name}
+          />
         </div>
         <div className="w-100">
           <CardBody>
@@ -199,11 +216,11 @@ const BasicCarouselItem = ({ title, img, detail }) => {
                 whiteSpace: 'normal',
               }}
             >
-              {title}
+              {name}
             </p>
             <footer>
               <p className="text-muted text-small mb-0 font-weight-light">
-                {detail}
+                {createdAt?.split('T')[0]}
               </p>
             </footer>
           </CardBody>
@@ -216,7 +233,9 @@ const BasicCarouselItem = ({ title, img, detail }) => {
 function ViewProduct() {
   const { id } = useParams();
   const dispatch = useDispatch();
+
   const data = useSelector((state) => state?.product?.selectedProduct);
+
   const [imgArr, setimgArr] = useState([]);
 
   useEffect(() => {
@@ -248,7 +267,7 @@ function ViewProduct() {
       </Row>
       <CardTitle style={{ padding: '5px' }}>
         <h2>
-          {data?.brand}({data?.value}
+          {data?.name}({data?.value}
           {data?.unit}):-
         </h2>
       </CardTitle>
@@ -422,7 +441,6 @@ function ViewProduct() {
                       >
                         MRP(₹)
                       </CardSubtitle>
-
                       <CardText className="mb-2" style={{ color: '#6fb327' }}>
                         <b>₹{data?.mrp}</b>
                       </CardText>
@@ -535,31 +553,33 @@ function ViewProduct() {
           <Row>
             <Colxx xl="12">
               <Card style={{ borderRadius: '0.75rem' }}>
-                <CardBody>
-                  <CardTitle>
-                    <IntlMessages id="Other Unit" />
-                  </CardTitle>
-                  <GlideComponent
-                    settings={{
-                      gap: 5,
-                      perView: 2,
-                      type: 'carousel',
-                      breakpoints: {
-                        480: { perView: 1 },
-                        800: { perView: 2 },
-                        1200: { perView: 3 },
-                      },
-                    }}
-                  >
-                    {items.map((item) => {
-                      return (
-                        <div key={item.id}>
-                          <BasicCarouselItem {...item} />
-                        </div>
-                      );
-                    })}
-                  </GlideComponent>
-                </CardBody>
+                {data && data.otherUnit.length ? (
+                  <CardBody>
+                    <CardTitle>
+                      <IntlMessages id="Other Unit" />
+                    </CardTitle>
+                    <GlideComponent
+                      settings={{
+                        gap: 5,
+                        perView: 2,
+                        type: 'carousel',
+                        breakpoints: {
+                          480: { perView: 1 },
+                          800: { perView: 2 },
+                          1200: { perView: 3 },
+                        },
+                      }}
+                    >
+                      {data.otherUnit.map((item) => {
+                        return (
+                          <div key={item._id}>
+                            <BasicCarouselItem {...item.value} />
+                          </div>
+                        );
+                      })}
+                    </GlideComponent>
+                  </CardBody>
+                ) : null}
               </Card>
             </Colxx>
           </Row>
@@ -567,32 +587,33 @@ function ViewProduct() {
           <Row>
             <Colxx xl="12">
               <Card style={{ borderRadius: '0.75rem', marginTop: '20px' }}>
-                <CardBody>
-                  <CardTitle>
-                    <IntlMessages id="Other Color" />
-                  </CardTitle>
-
-                  <GlideComponent
-                    settings={{
-                      gap: 5,
-                      perView: 2,
-                      type: 'carousel',
-                      breakpoints: {
-                        480: { perView: 1 },
-                        800: { perView: 2 },
-                        1200: { perView: 3 },
-                      },
-                    }}
-                  >
-                    {items.map((item) => {
-                      return (
-                        <div key={item.id}>
-                          <BasicCarouselItem {...item} />
-                        </div>
-                      );
-                    })}
-                  </GlideComponent>
-                </CardBody>
+                {data && data.otherColor.length ? (
+                  <CardBody>
+                    <CardTitle>
+                      <IntlMessages id="Other Color" />
+                    </CardTitle>
+                    <GlideComponent
+                      settings={{
+                        gap: 5,
+                        perView: 2,
+                        type: 'carousel',
+                        breakpoints: {
+                          480: { perView: 1 },
+                          800: { perView: 2 },
+                          1200: { perView: 3 },
+                        },
+                      }}
+                    >
+                      {data.otherColor.map((item) => {
+                        return (
+                          <div key={item._id}>
+                            <BasicCarouselItem {...item.value} />
+                          </div>
+                        );
+                      })}
+                    </GlideComponent>
+                  </CardBody>
+                ) : null}
               </Card>
             </Colxx>
           </Row>
@@ -600,31 +621,33 @@ function ViewProduct() {
           <Row>
             <Colxx xl="12">
               <Card style={{ borderRadius: '0.75rem', marginTop: '20px' }}>
-                <CardBody>
-                  <CardTitle>
-                    <IntlMessages id="Other Flavours" />
-                  </CardTitle>
-                  <GlideComponent
-                    settings={{
-                      gap: 5,
-                      perView: 2,
-                      type: 'carousel',
-                      breakpoints: {
-                        480: { perView: 1 },
-                        800: { perView: 2 },
-                        1200: { perView: 3 },
-                      },
-                    }}
-                  >
-                    {items.map((item) => {
-                      return (
-                        <div key={item.id}>
-                          <BasicCarouselItem {...item} />
-                        </div>
-                      );
-                    })}
-                  </GlideComponent>
-                </CardBody>
+                {data && data.otherFlavour.length ? (
+                  <CardBody>
+                    <CardTitle>
+                      <IntlMessages id="Other Flavours" />
+                    </CardTitle>
+                    <GlideComponent
+                      settings={{
+                        gap: 5,
+                        perView: 2,
+                        type: 'carousel',
+                        breakpoints: {
+                          480: { perView: 1 },
+                          800: { perView: 2 },
+                          1200: { perView: 3 },
+                        },
+                      }}
+                    >
+                      {data.otherFlavour.map((item) => {
+                        return (
+                          <div key={item._id}>
+                            <BasicCarouselItem {...item.value} />
+                          </div>
+                        );
+                      })}
+                    </GlideComponent>
+                  </CardBody>
+                ) : null}
               </Card>
             </Colxx>
           </Row>
@@ -636,28 +659,31 @@ function ViewProduct() {
             <h3>Suggested Product:</h3>
           </CardTitle>
         </Colxx>
-        <Colxx xxs="12" className="pl-0 pr-0 mb-5">
-          <GlideComponent
-            settings={{
-              gap: 5,
-              perView: 4,
-              type: 'carousel',
-              breakpoints: {
-                480: { perView: 1 },
-                800: { perView: 2 },
-                1200: { perView: 3 },
-              },
-            }}
-          >
-            {items.map((item) => {
-              return (
-                <div key={item.id}>
-                  <BasicCarouselItem {...item} />
-                </div>
-              );
-            })}
-          </GlideComponent>
-        </Colxx>
+        {data && data.suggestedProduct.length ? (
+          <Colxx xxs="12" className="pl-0 pr-0 mb-5">
+            <GlideComponent
+              settings={{
+                gap: 5,
+                perView: 4,
+                type: 'carousel',
+                rewind: false,
+                breakpoints: {
+                  480: { perView: 1 },
+                  800: { perView: 2 },
+                  1200: { perView: 3 },
+                },
+              }}
+            >
+              {data.suggestedProduct.map((item) => {
+                return (
+                  <div key={item._id}>
+                    <BasicCarouselItem {...item.value} />
+                  </div>
+                );
+              })}
+            </GlideComponent>
+          </Colxx>
+        ) : null}
       </Row>
     </>
   );
