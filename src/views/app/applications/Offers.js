@@ -73,7 +73,7 @@ function Offers() {
           <Separator className="mb-4" />
         </Colxx>
 
-        {OffersData.map((offersItem) => {
+        {OffersData?.map((offersItem) => {
           return (
             <Colxx
               xxs="12"
