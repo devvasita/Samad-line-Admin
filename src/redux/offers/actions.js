@@ -16,16 +16,16 @@ import {
   GET_SINGLE_OFFER_ERROR,
 } from '../contants';
 
-export const addOffer = (product, history) => {
+export const addOffer = (offer, history) => {
   return {
     type: ADD_OFFER,
-    payload: { product, history },
+    payload: { offer, history },
   };
 };
-export const addOfferSuccess = (product) => {
+export const addOfferSuccess = (offer) => {
   return {
     type: ADD_OFFER_SUCCESS,
-    payload: { product },
+    payload: { offer },
   };
 };
 export const addOfferError = (message) => ({
@@ -60,10 +60,10 @@ export const getSingleOfferError = (message) => ({
   payload: { message },
 });
 
-export const updateOffer = (product, history, id) => {
+export const updateOffer = (offer, history, id) => {
   return {
     type: UPDATE_OFFER,
-    payload: { product, history, _id: id },
+    payload: { offer, history, _id: id },
   };
 };
 export const updateOfferSuccess = (item, type) => {

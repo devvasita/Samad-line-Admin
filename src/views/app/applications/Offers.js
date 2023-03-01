@@ -12,6 +12,8 @@ import {
 import LinesEllipsis from 'react-lines-ellipsis';
 import responsiveHOC from 'react-lines-ellipsis/lib/responsiveHOC';
 import { useHistory } from 'react-router-dom';
+import Moment from 'moment';
+
 import { Separator, Colxx } from 'components/common/CustomBootstrap';
 // import offersData from 'data/Offers';
 // import PreviewIcon from '@mui/icons-material/Preview';
@@ -93,24 +95,28 @@ function Offers() {
                   />
                 </div>
                 <div className="w-60 d-flex align-items-center">
-                  <CardBody>
+                  <CardBody style={{ overflow: 'hidden' }}>
                     <ResponsiveEllipsis
-                      className="mb-3 listing-heading font-weight-bold"
+                      className="mb-3 listing-heading font-weight-bold  overflow"
                       text={offersItem?.title}
-                      maxLine="2"
+                      maxLine="1"
                       trimRight
                       basedOn="words"
                       component="h3"
                     />
 
-                    <ResponsiveEllipsis
-                      className="listing-desc text-muted"
-                      text={offersItem?.description}
-                      maxLine="2"
-                      trimRight
-                      basedOn="words"
-                      component="p"
+                    <p
+                      style={{
+                        whiteSpace: 'nowrap',
+                        margin: '0px',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                      }}
+                      dangerouslySetInnerHTML={{
+                        __html: offersItem?.description,
+                      }}
                     />
+
                     <div
                       className="listing-heading"
                       style={{ color: '#6fb327' }}
@@ -121,7 +127,10 @@ function Offers() {
                     </div>
 
                     <small>
-                      <b>Valid till {offersItem?.validTill} </b>
+                      <b>
+                        Valid till{' '}
+                        {Moment(offersItem?.validTill).format('DD MMMM, YYYY')}
+                      </b>
                     </small>
                   </CardBody>
                 </div>

@@ -64,7 +64,11 @@ function ViewOffer() {
             <CardBody>
               <div className="mb-5">
                 <h5 className="card-title">Offer Features</h5>
-                <p>{data?.description}</p>
+                <p
+                  dangerouslySetInnerHTML={{
+                    __html: data?.description,
+                  }}
+                />
               </div>
             </CardBody>
             <div

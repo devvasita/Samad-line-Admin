@@ -12,6 +12,9 @@ import {
   DELETE_OFFER,
   DELETE_OFFER_SUCCESS,
   DELETE_OFFER_ERROR,
+  UPDATE_OFFER,
+  UPDATE_OFFER_SUCCESS,
+  UPDATE_OFFER_ERROR,
 } from '../contants';
 
 const INIT_STATE = {
@@ -28,18 +31,36 @@ export default (state = INIT_STATE, action) => {
 
     case ADD_OFFER_SUCCESS: {
       const { offer } = action.payload;
-
       return {
         ...state,
         loaded: true,
-        offer: {
-          ...state.offer,
-          data: [...state.offer.data, offer],
+        offers: {
+          ...state.offers,
+          data: [...state.offers.data, offer],
         },
       };
     }
     case ADD_OFFER_ERROR:
       return { ...state, loaded: true, error: action.payload.message };
+
+    case UPDATE_OFFER:
+      return { ...state, loaded: false };
+
+    case UPDATE_OFFER_SUCCESS: {
+      const { item } = action.payload;
+      const { _id } = item;
+      const index = [...state.offers.data].map((e) => e._id).indexOf(_id);
+      const dataToUpdate = [...state.offers.data];
+      dataToUpdate.splice(index, 1, item);
+
+      return {
+        ...state,
+        loaded: true,
+        offers: { ...state.offers, data: dataToUpdate },
+      };
+    }
+    case UPDATE_OFFER_ERROR:
+      return { ...state, loaded: true, error: action.payload };
 
     case GET_OFFERS:
       return { ...state, loading: true, error: '' };
@@ -82,6 +103,7 @@ export default (state = INIT_STATE, action) => {
       const { _id } = action.payload;
       const index = [...state.offers.data].map((e) => e._id).indexOf(_id);
       const dataToUpdate = [...state.offers.data];
+      console.log(dataToUpdate, '----=-=-============333333333333');
       dataToUpdate.splice(index, 1);
 
       return {

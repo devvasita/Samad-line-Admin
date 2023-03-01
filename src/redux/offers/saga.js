@@ -6,6 +6,7 @@ import {
   DELETE_OFFER,
   GET_OFFERS,
   GET_SINGLE_OFFER,
+  UPDATE_OFFER,
 } from '../contants';
 import {
   addOfferSuccess,
@@ -16,33 +17,32 @@ import {
   getSingleOfferError,
   deleteOfferSuccess,
   deleteOfferError,
+  updateOfferSuccess,
+  updateOfferError,
 } from './actions';
 
 const addOfferAsync = async (offer) => {
   const res = await API.post('/offer', offer);
   return res;
 };
-
 function* addOfferWorker({ payload }) {
   const { offer, history } = payload;
   try {
     const { data, status } = yield call(addOfferAsync, offer);
     const { messgae } = data;
     if (status === 201) {
-      history.push('/app/applications/offer');
+      history.push('/app/applications/Offers');
       yield put(addOfferSuccess(data));
     } else {
-      yield put(addOfferSuccess(messgae));
+      yield put(addOfferError(messgae));
     }
   } catch (error) {
     yield put(addOfferError(error));
   }
 }
-
 export function* watchAddOffer() {
   yield takeEvery(ADD_OFFER, addOfferWorker);
 }
-
 const getOfferAsync = async () => {
   try {
     const res = await API.get(`/offer`);
@@ -51,7 +51,6 @@ const getOfferAsync = async () => {
     return error;
   }
 };
-
 export function* getOfferWorker() {
   try {
     const { data, messgae } = yield call(getOfferAsync);
@@ -64,11 +63,9 @@ export function* getOfferWorker() {
     yield put(getOffersError('something went wrong'));
   }
 }
-
 export function* watchGetOffer() {
   yield takeEvery(GET_OFFERS, getOfferWorker);
 }
-
 const getSingleOfferAsync = async (id) => {
   const res = await API.get(`/offer/${id}`);
   return res;
@@ -83,21 +80,42 @@ function* getSingleOfferWorker({ payload }) {
       yield put(getSingleOfferError(message));
     }
   } catch (error) {
-    console.log({ error });
-    yield put(getSingleOfferError('something went wrong'));
+    yield put(getSingleOfferError(error));
   }
 }
 export function* watchGetSingleOffer() {
   yield takeEvery(GET_SINGLE_OFFER, getSingleOfferWorker);
 }
 
+const updateOfferAsync = async (offer, _id) => {
+  const res = await API.put(`/offer/${_id}`, offer);
+  return res;
+};
+
+function* updateOfferWorker({ payload }) {
+  const { offer, history, _id } = payload;
+  try {
+    const { data, status } = yield call(updateOfferAsync, offer, _id);
+    const { message } = data;
+    if (status === 200) {
+      history.push('/app/applications/Offers');
+      yield put(updateOfferSuccess(data));
+    } else {
+      yield put(updateOfferError(message));
+    }
+  } catch (error) {
+    yield put(updateOfferError(error));
+  }
+}
+export function* watchUpdateOffer() {
+  yield takeEvery(UPDATE_OFFER, updateOfferWorker);
+}
+
 const deleteOfferAsync = async (_id) => {
-  console.log({ _id });
   const res = await API.delete(`/offer/${_id}`);
   return res;
 };
 function* deleteOfferWorker({ payload }) {
-  console.log({ payload });
   const { _id } = payload;
   try {
     const { status, data } = yield call(deleteOfferAsync, _id);
@@ -111,7 +129,6 @@ function* deleteOfferWorker({ payload }) {
     yield put(deleteOfferError(error));
   }
 }
-
 export function* watchDeleteOffer() {
   yield takeEvery(DELETE_OFFER, deleteOfferWorker);
 }
@@ -121,6 +138,7 @@ export default function* rootSaga() {
     fork(watchAddOffer),
     fork(watchGetOffer),
     fork(watchGetSingleOffer),
+    fork(watchUpdateOffer),
     fork(watchDeleteOffer),
   ]);
 }

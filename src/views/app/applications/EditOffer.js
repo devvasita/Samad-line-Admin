@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Colxx, Separator } from 'components/common/CustomBootstrap';
 // import DropzoneExample from 'containers/forms/DropzoneExample';
 import { Formik, Form, Field } from 'formik';
@@ -7,14 +7,16 @@ import { FormGroup, Label, Button, Row } from 'reactstrap';
 // import DatePicker from 'react-datepicker';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import 'react-quill/dist/quill.snow.css';
 import CancelIcon from '@mui/icons-material/Cancel';
 import IconButton from '@mui/material/IconButton';
-import 'react-quill/dist/quill.snow.css';
-import { makeStyles } from '@mui/styles';
-import { NavLink } from 'react-router-dom';
 import Select from 'react-select';
+import { makeStyles } from '@mui/styles';
+import { NavLink, useParams } from 'react-router-dom';
+import { getSingleOffer, updateOffer } from 'redux/actions';
+import { useDispatch, useSelector } from 'react-redux';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(() => ({
   cancel: {
     border: '1px solid #6c757d',
     background: 'none',
@@ -26,9 +28,6 @@ const useStyles = makeStyles({
       background: '#6c757d',
       border: '1px solid #6c757d',
     },
-  },
-  date: {
-    height: '40px',
   },
   image: {
     border: '1px dotted',
@@ -57,7 +56,11 @@ const useStyles = makeStyles({
       height: '90px',
     },
   },
-});
+
+  date: {
+    height: '40px',
+  },
+}));
 
 const quillModules = {
   toolbar: [
@@ -87,39 +90,101 @@ const quillFormats = [
   'image',
 ];
 
-function EditOffer() {
-  const [textQuillStandart, setTextQuillStandart] = useState('');
-  const [startDate, setStartDate] = useState(new Date());
-  const [file, setFile] = useState();
-
+function EditOffer({ history }) {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const { id } = useParams();
 
-  function handleChange(e) {
-    setFile(URL.createObjectURL(e.target.files[0]));
+  useEffect(() => {
+    dispatch(getSingleOffer(id));
+  }, [dispatch]);
+
+  const selectedOffer = useSelector((state) => state?.offer?.selectedOffer);
+
+  const [offer, setOffer] = useState({
+    image: { file: '', url: '' },
+    title: '',
+    validTill: new Date(),
+    discountType: {},
+    value: '',
+    description: '',
+  });
+  useEffect(() => {
+    if (selectedOffer) setOffer(selectedOffer);
+  }, [selectedOffer]);
+
+  function handleChangeImage(e) {
+    e.stopPropagation();
+    setOffer({
+      image: {
+        file: e.target.files[0],
+        url: URL.createObjectURL(e.target.files[0]),
+      },
+    });
   }
   const handleCancelImage = () => {
-    setFile(null);
+    setOffer({
+      image: {
+        file: null,
+        url: '',
+      },
+    });
+  };
+  const onSubmit = () => {
+    const formData = new FormData();
+    formData.append('title', offer.title);
+    formData.append('validTill', offer.validTill);
+    formData.append('value', offer.value);
+    formData.append('description', offer.description);
+    formData.append('discountType', JSON.stringify(offer.discountType));
+
+    if (offer.image.file) formData.append('image', offer.image.file);
+    dispatch(updateOffer(formData, history, id));
+  };
+  const handleChange = (value, key) => {
+    setOffer((oldVal) => {
+      return { ...oldVal, [key]: value };
+    });
   };
 
-  const onSubmit = (values) => {
-    console.log(values);
-  };
+  // const validate = (values) => {
+  //   console.log(values, '--');
+  //   const errors = {};
+
+  //   if (!values.name) {
+  //     errors.name = 'Please enter Blog Title';
+  //   } else if (values.name === 'admin') {
+  //     errors.name = 'Value must be longer than 2 characters';
+  //   }
+  //   if (!values.date) {
+  //     errors.date = 'Please select date';
+  //   }
+  //   if (!values.value) {
+  //     errors.value = 'Please enter value';
+  //   }
+  //   return errors;
+  // };
 
   const options = [
     { value: 'food', label: 'Flat' },
     { value: 'beingfabulous', label: 'Percentage(%)', disabled: true },
   ];
+  // const handleChangeselect = (val) => {
+  //   onChange(name, val);
+  // };
 
-  const validate = (values) => {
-    const errors = {};
-
-    if (!values.name) {
-      errors.name = 'Please enter Blog Title';
-    } else if (values.name === 'admin') {
-      errors.name = 'Value must be longer than 2 characters';
-    }
-    return errors;
+  // const handleBlur = () => {
+  //   onBlur(name, true);
+  // };
+  const initialValues = {
+    image: { file: '', url: '' },
+    title: '',
+    validTill: new Date(),
+    discountType: {},
+    value: '',
+    description: '',
   };
+
   return (
     <div>
       <Colxx xxs="12">
@@ -129,21 +194,27 @@ function EditOffer() {
           <Colxx xxs="12">
             <Label>Image</Label>
             {/* <DropzoneExample /> */}
+
             <div>
-              {!file ? (
+              {!offer.image.url ? (
                 <div aria-hidden="true" className={classes.image}>
                   <IconButton
                     color="primary"
                     aria-label="upload picture"
                     component="label"
-                    style={{ margin: 'auto' }}
+                    style={{
+                      margin: 'auto',
+                      borderRadius: 0,
+                      width: '100%',
+                      height: '100%',
+                    }}
                   >
                     <input
                       hidden
                       accept="image/*"
                       type="file"
                       // ref={hiddenFileInput}
-                      onChange={handleChange}
+                      onChange={handleChangeImage}
                     />
 
                     <img
@@ -155,7 +226,7 @@ function EditOffer() {
                 </div>
               ) : (
                 <div>
-                  {file ? (
+                  {offer.image.url ? (
                     <div className={classes.upload}>
                       <CancelIcon
                         onClick={handleCancelImage}
@@ -167,7 +238,7 @@ function EditOffer() {
                         }}
                       />
                       <img
-                        src={file}
+                        src={offer.image.url}
                         alt=""
                         style={{
                           objectFit: 'contain',
@@ -186,19 +257,27 @@ function EditOffer() {
             </div>
 
             <Formik
-              validate={validate}
-              initialValues={{
-                name: '',
-              }}
+              // validate={validate}
+              initialValues={initialValues}
               onSubmit={onSubmit}
             >
-              {({ errors, touched }) => (
-                <Form className="av-tooltip tooltip-label-right mt-4">
+              {({ errors, touched, handleSubmit }) => (
+                <Form
+                  onSubmit={handleSubmit}
+                  className="av-tooltip tooltip-label-right mt-4"
+                >
                   <Row>
                     <Colxx lg="6" xs="12" sm="6">
                       <FormGroup>
                         <Label>Title</Label>
-                        <Field className="form-control" name="name" />
+                        <Field
+                          className="form-control"
+                          name="title"
+                          value={offer?.title}
+                          onChange={(e) =>
+                            handleChange(e.target.value, 'title')
+                          }
+                        />
                         {errors.name && touched.name && (
                           <div className="invalid-feedback d-block">
                             {errors.name}
@@ -212,12 +291,14 @@ function EditOffer() {
                         <div>
                           <div>
                             <DatePicker
-                              selected={startDate}
-                              onChange={setStartDate}
+                              onChange={(date) => {
+                                handleChange(date, 'validTill');
+                              }}
                               className={classes.date}
                               placeholderText=""
                               size="small"
-                              name="date"
+                              name="validTill"
+                              value={offer?.validTill}
                             />
                             <div>
                               <i
@@ -251,9 +332,13 @@ function EditOffer() {
                           className="react-select react-select__single-value"
                           classNamePrefix="react-select"
                           options={options}
-                          name="select"
+                          name="discountType"
                           // isMulti={isMulti}
+                          value={offer?.discountType}
                           // onChange={handleChangeselect}
+                          onChange={(value) => {
+                            handleChange(value, 'discountType');
+                          }}
                           // onBlur={handleBlur}
                         />
                         {errors.select && touched.select ? (
@@ -266,7 +351,14 @@ function EditOffer() {
                     <Colxx lg="6" xs="12" sm="6">
                       <FormGroup>
                         <Label>Value</Label>
-                        <Field className="form-control" name="value" />
+                        <Field
+                          className="form-control"
+                          value={offer.value}
+                          onChange={(e) =>
+                            handleChange(e.target.value, 'value')
+                          }
+                          name="value"
+                        />
 
                         {errors.value && touched.value && (
                           <div className="invalid-feedback d-block">
@@ -276,33 +368,44 @@ function EditOffer() {
                       </FormGroup>
                     </Colxx>
                   </Row>
+
+                  <Row>
+                    <Colxx lg="12" xs="6" sm="6">
+                      <Label>Description</Label>
+                      <ReactQuill
+                        theme="snow"
+                        name="description"
+                        value={offer.description || ''}
+                        onChange={(value) => handleChange(value, 'description')}
+                        modules={quillModules}
+                        formats={quillFormats}
+                        style={{ marginBottom: '10px' }}
+                      />
+                    </Colxx>
+                  </Row>
+                  <div
+                    style={{
+                      textAlign: 'end',
+                      margin: '15px 0px 15px 0px',
+                    }}
+                  >
+                    <Button color="primary" type="submit">
+                      Submit
+                    </Button>
+
+                    <NavLink to="./Offers">
+                      <Button
+                        outline
+                        className={classes.cancel}
+                        // style={{ background: '#6c757d', border: 'none' }}
+                      >
+                        Cancel
+                      </Button>
+                    </NavLink>
+                  </div>
                 </Form>
               )}
             </Formik>
-
-            <Label>Description</Label>
-            <ReactQuill
-              theme="snow"
-              value={textQuillStandart}
-              onChange={(val) => setTextQuillStandart(val)}
-              modules={quillModules}
-              formats={quillFormats}
-              style={{ marginBottom: '10px' }}
-            />
-            <div style={{ textAlign: 'end', margin: '15px 0px 15px 0px' }}>
-              <Button color="primary" type="submit">
-                Submit
-              </Button>
-              <NavLink to="./Offers">
-                <Button
-                  outline
-                  className={classes.cancel}
-                  // style={{ background: '#6c757d', border: 'none' }}
-                >
-                  Cancel
-                </Button>
-              </NavLink>
-            </div>
           </Colxx>
         </Row>
       </Colxx>

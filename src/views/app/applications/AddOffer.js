@@ -12,7 +12,9 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import IconButton from '@mui/material/IconButton';
 import Select from 'react-select';
 import { makeStyles } from '@mui/styles';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
+import { addOffer } from 'redux/actions';
+import { useDispatch } from 'react-redux';
 
 const useStyles = makeStyles(() => ({
   cancel: {
@@ -90,38 +92,67 @@ const quillFormats = [
 
 function AddOffer() {
   const classes = useStyles();
-  const [textQuillStandart, setTextQuillStandart] = useState('');
-  const [startDate, setStartDate] = useState(new Date());
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const [offer, setOffer] = useState({
+    image: { file: '', url: '' },
+    title: '',
+    validTill: new Date(),
+    discountType: {},
+    value: '',
+    description: '',
+  });
 
-  const [file, setFile] = useState();
-
-  function handleChange(e) {
-    setFile(URL.createObjectURL(e.target.files[0]));
+  function handleChangeImage(e) {
+    e.stopPropagation();
+    setOffer({
+      image: {
+        file: e.target.files[0],
+        url: URL.createObjectURL(e.target.files[0]),
+      },
+    });
   }
   const handleCancelImage = () => {
-    setFile(null);
+    setOffer({
+      image: {
+        file: null,
+        url: '',
+      },
+    });
   };
-  const onSubmit = (values) => {
-    console.log(values);
+  const onSubmit = () => {
+    const formData = new FormData();
+    formData.append('title', offer.title);
+    formData.append('validTill', offer.validTill);
+    formData.append('value', offer.value);
+    formData.append('description', offer.description);
+    formData.append('discountType', JSON.stringify(offer.discountType));
+    formData.append('image', offer.image.file);
+    dispatch(addOffer(formData, history));
+  };
+  const handleChange = (value, key) => {
+    setOffer((oldVal) => {
+      return { ...oldVal, [key]: value };
+    });
   };
 
-  const validate = (values) => {
-    console.log(values, '--');
-    const errors = {};
+  // const validate = (values) => {
+  //   console.log(values, '--');
+  //   const errors = {};
 
-    if (!values.name) {
-      errors.name = 'Please enter Blog Title';
-    } else if (values.name === 'admin') {
-      errors.name = 'Value must be longer than 2 characters';
-    }
-    if (!values.date) {
-      errors.date = 'Please select date';
-    }
-    if (!values.value) {
-      errors.value = 'Please enter value';
-    }
-    return errors;
-  };
+  //   if (!values.name) {
+  //     errors.name = 'Please enter Blog Title';
+  //   } else if (values.name === 'admin') {
+  //     errors.name = 'Value must be longer than 2 characters';
+  //   }
+  //   if (!values.date) {
+  //     errors.date = 'Please select date';
+  //   }
+  //   if (!values.value) {
+  //     errors.value = 'Please enter value';
+  //   }
+  //   return errors;
+  // };
 
   const options = [
     { value: 'food', label: 'Flat' },
@@ -134,6 +165,14 @@ function AddOffer() {
   // const handleBlur = () => {
   //   onBlur(name, true);
   // };
+  const initialValues = {
+    title: '',
+    validTill: new Date(),
+    value: '',
+    description: '',
+    discountType: {},
+    image: {},
+  };
 
   return (
     <div>
@@ -146,7 +185,7 @@ function AddOffer() {
             {/* <DropzoneExample /> */}
 
             <div>
-              {!file ? (
+              {!offer.image.file ? (
                 <div aria-hidden="true" className={classes.image}>
                   <IconButton
                     color="primary"
@@ -164,7 +203,7 @@ function AddOffer() {
                       accept="image/*"
                       type="file"
                       // ref={hiddenFileInput}
-                      onChange={handleChange}
+                      onChange={handleChangeImage}
                     />
 
                     <img
@@ -176,7 +215,7 @@ function AddOffer() {
                 </div>
               ) : (
                 <div>
-                  {file ? (
+                  {offer.image.file ? (
                     <div className={classes.upload}>
                       <CancelIcon
                         onClick={handleCancelImage}
@@ -188,7 +227,7 @@ function AddOffer() {
                         }}
                       />
                       <img
-                        src={file}
+                        src={offer.image.url}
                         alt=""
                         style={{
                           objectFit: 'contain',
@@ -207,22 +246,27 @@ function AddOffer() {
             </div>
 
             <Formik
-              validate={validate}
-              initialValues={{
-                name: '',
-                select: '',
-                value: '',
-                date: '',
-              }}
+              // validate={validate}
+              initialValues={initialValues}
               onSubmit={onSubmit}
             >
-              {({ errors, touched }) => (
-                <Form className="av-tooltip tooltip-label-right mt-4">
+              {({ errors, touched, handleSubmit }) => (
+                <Form
+                  onSubmit={handleSubmit}
+                  className="av-tooltip tooltip-label-right mt-4"
+                >
                   <Row>
                     <Colxx lg="6" xs="12" sm="6">
                       <FormGroup>
                         <Label>Title</Label>
-                        <Field className="form-control" name="name" />
+                        <Field
+                          className="form-control"
+                          name="title"
+                          value={offer.title}
+                          onChange={(e) =>
+                            handleChange(e.target.value, 'title')
+                          }
+                        />
                         {errors.name && touched.name && (
                           <div className="invalid-feedback d-block">
                             {errors.name}
@@ -236,12 +280,14 @@ function AddOffer() {
                         <div>
                           <div>
                             <DatePicker
-                              selected={startDate}
-                              onChange={setStartDate}
+                              selected={offer.validTill}
+                              onChange={(value) =>
+                                handleChange(value, 'validTill')
+                              }
                               className={classes.date}
                               placeholderText=""
                               size="small"
-                              name="date"
+                              name="validTill"
                             />
                             <div>
                               <i
@@ -275,9 +321,12 @@ function AddOffer() {
                           className="react-select react-select__single-value"
                           classNamePrefix="react-select"
                           options={options}
-                          name="select"
+                          name="discountType"
                           // isMulti={isMulti}
                           // onChange={handleChangeselect}
+                          onChange={(value) => {
+                            handleChange(value, 'discountType');
+                          }}
                           // onBlur={handleBlur}
                         />
                         {errors.select && touched.select ? (
@@ -290,7 +339,14 @@ function AddOffer() {
                     <Colxx lg="6" xs="12" sm="6">
                       <FormGroup>
                         <Label>Value</Label>
-                        <Field className="form-control" name="value" />
+                        <Field
+                          className="form-control"
+                          value={offer.value}
+                          onChange={(e) =>
+                            handleChange(e.target.value, 'value')
+                          }
+                          name="value"
+                        />
 
                         {errors.value && touched.value && (
                           <div className="invalid-feedback d-block">
@@ -300,34 +356,44 @@ function AddOffer() {
                       </FormGroup>
                     </Colxx>
                   </Row>
+
+                  <Row>
+                    <Colxx lg="12" xs="6" sm="6">
+                      <Label>Description</Label>
+                      <ReactQuill
+                        theme="snow"
+                        name="description"
+                        value={offer.description || ''}
+                        onChange={(value) => handleChange(value, 'description')}
+                        modules={quillModules}
+                        formats={quillFormats}
+                        style={{ marginBottom: '10px' }}
+                      />
+                    </Colxx>
+                  </Row>
+                  <div
+                    style={{
+                      textAlign: 'end',
+                      margin: '15px 0px 15px 0px',
+                    }}
+                  >
+                    <Button color="primary" type="submit">
+                      Submit
+                    </Button>
+
+                    <NavLink to="./Offers">
+                      <Button
+                        outline
+                        className={classes.cancel}
+                        // style={{ background: '#6c757d', border: 'none' }}
+                      >
+                        Cancel
+                      </Button>
+                    </NavLink>
+                  </div>
                 </Form>
               )}
             </Formik>
-
-            <Label>Description</Label>
-            <ReactQuill
-              theme="snow"
-              value={textQuillStandart}
-              onChange={(val) => setTextQuillStandart(val)}
-              modules={quillModules}
-              formats={quillFormats}
-              style={{ marginBottom: '10px' }}
-            />
-            <div style={{ textAlign: 'end', margin: '15px 0px 15px 0px' }}>
-              <Button color="primary" type="submit">
-                Submit
-              </Button>
-
-              <NavLink to="./Offers">
-                <Button
-                  outline
-                  className={classes.cancel}
-                  // style={{ background: '#6c757d', border: 'none' }}
-                >
-                  Cancel
-                </Button>
-              </NavLink>
-            </div>
           </Colxx>
         </Row>
       </Colxx>
