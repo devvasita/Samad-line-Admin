@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Colxx, Separator } from 'components/common/CustomBootstrap';
 import {
   Row,
@@ -11,8 +11,10 @@ import {
 } from 'reactstrap';
 import SingleLightbox from 'components/pages/SingleLightbox';
 // import ThumbnailImage from 'components/cards/ThumbnailImage';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
+import { getSingleOffer } from 'redux/actions';
+import { useDispatch, useSelector } from 'react-redux';
 
 const useStyles = makeStyles({
   cancel: {
@@ -31,7 +33,13 @@ const useStyles = makeStyles({
 
 function ViewOffer() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const { id } = useParams();
 
+  const data = useSelector((state) => state?.offer?.selectedOffer);
+  useEffect(() => {
+    dispatch(getSingleOffer(id));
+  }, []);
   return (
     <>
       <Row>
@@ -41,7 +49,7 @@ function ViewOffer() {
         </Colxx>
       </Row>
       <CardTitle style={{ padding: '5px' }}>
-        <h2>Laptop :-</h2>
+        <h2>{data?.title} :-</h2>
         {/* <IntlMessages id="Game Changing Features :-" /> */}
       </CardTitle>
       <Row>
@@ -49,42 +57,14 @@ function ViewOffer() {
           {' '}
           <Card className="mb-4" style={{ borderRadius: '0.75rem' }}>
             <SingleLightbox
-              thumb="/assets/offers/laptop.jpg"
-              large="/assets/offers/laptop.jpg"
+              thumb={data?.image?.url}
+              large={data?.image?.url}
               className="responsive border-0 card-img-top mb-3"
             />
             <CardBody>
               <div className="mb-5">
-                <h5 className="card-title">Laptop Features</h5>
-                <p>
-                  Blended value human-centered social innovation resist scale
-                  and impact issueoutcomesbandwidth efficient. A; social return
-                  on investment, change-makers, support a,co-createcommitment
-                  because sustainable. Rubric when vibrant black lives matter
-                  benefitcorporation human-centered. Save the world,
-                  problem-solvers support silo massincarceration.
-                </p>
-                <p>
-                  Mass incarceration, preliminary thinking systems thinking
-                  vibrant thought leadershipcorporate social responsibility.
-                  Green space global, policymaker; shared
-                  valuedisruptsegmentation social capital.
-                </p>
-              </div>
-
-              <div>
-                <h5 className="card-title">Revolutionary Bandwidth</h5>
-                <p>
-                  The great thing is that these promotions rarely cost anything.
-                  In fact, they’re designed to increase revenue. For example,
-                  let’s say you pay $3 for a product that you sell for $10. If
-                  you offer a 50% discount, you’d be making $2 from selling just
-                  one at the discounted price. However, running a BOGO discount
-                  means you can sell one item at full price minus your cost for
-                  two items so, in the end, you’d be earning $4. With more
-                  people buying that product as a result of your promo, your
-                  profits would soar.
-                </p>
+                <h5 className="card-title">Offer Features</h5>
+                <p>{data?.description}</p>
               </div>
             </CardBody>
             <div
@@ -93,7 +73,7 @@ function ViewOffer() {
                 padding: '0 1.75rem 1.75rem 1.75rem',
               }}
             >
-              <NavLink to="./Offers">
+              <NavLink to="/app/applications/Offers">
                 <Button
                   outline
                   className={classes.cancel}
@@ -131,7 +111,7 @@ function ViewOffer() {
                   </CardSubtitle>
 
                   <CardText className="mb-2" style={{ color: '#6fb327' }}>
-                    <b>50% off</b>
+                    <b>{data?.percentage} off</b>
                   </CardText>
                 </div>
               </CardBody>
@@ -162,7 +142,7 @@ function ViewOffer() {
                   </CardSubtitle>
 
                   <CardText className="mb-2">
-                    <b> 29 March,2023</b>
+                    <b>{data?.validTill}</b>
                   </CardText>
                 </div>
               </CardBody>

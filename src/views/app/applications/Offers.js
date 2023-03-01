@@ -1,18 +1,19 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect } from 'react';
 import {
   Row,
   Card,
   CardBody,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
+  // Pagination,
+  // PaginationItem,
+  // PaginationLink,
   Button,
 } from 'reactstrap';
 import LinesEllipsis from 'react-lines-ellipsis';
 import responsiveHOC from 'react-lines-ellipsis/lib/responsiveHOC';
 import { useHistory } from 'react-router-dom';
 import { Separator, Colxx } from 'components/common/CustomBootstrap';
-import offersData from 'data/Offers';
+// import offersData from 'data/Offers';
 // import PreviewIcon from '@mui/icons-material/Preview';
 // import EditIcon from '@mui/icons-material/Edit';
 // import DeleteIcon from '@mui/icons-material/Delete';
@@ -40,25 +41,25 @@ function Offers() {
     history.push(`/app/applications/addoffer`);
   };
   const handleEditOffer = () => {
-    history.push(`/app/applications/editOffer`);
+    history.push(`/app/applications/editOffer/${activeOfferId}`);
   };
   const handleViewOffer = () => {
-    history.push(`/app/applications/viewOffer`);
+    history.push(`/app/applications/viewOffer/${activeOfferId}`);
+  };
+  const handleDeleteOffer = () => {
+    dispatch(deleteOffer(activeOfferId));
   };
   useEffect(() => {
     dispatch(getOffers());
   }, [dispatch]);
 
-  const OffersData = useSelector((state) => state?.offer);
-  console.log(OffersData, 'offerdata');
+  const OffersData = useSelector((state) => state?.offer?.offers);
 
   const open = Boolean(anchorEl);
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const handleDeleteOffer = () => {
-    dispatch(deleteOffer(activeOfferId));
-  };
+
   return (
     <>
       <Row>
@@ -72,13 +73,13 @@ function Offers() {
           <Separator className="mb-4" />
         </Colxx>
 
-        {offersData.map((offersItem) => {
+        {OffersData.map((offersItem) => {
           return (
             <Colxx
               xxs="12"
               lg="4"
               className="mb-5"
-              key={`offersItem_${offersItem.id}`}
+              key={`offersItem_${offersItem?._id}`}
             >
               <Card
                 className="flex-row listing-card-container"
@@ -87,7 +88,7 @@ function Offers() {
                 <div className="w-40 position-relative">
                   <img
                     className="card-img-left"
-                    src={offersItem.thumb}
+                    src={offersItem.image?.url}
                     alt="Card cap"
                   />
                 </div>
@@ -95,7 +96,7 @@ function Offers() {
                   <CardBody>
                     <ResponsiveEllipsis
                       className="mb-3 listing-heading font-weight-bold"
-                      text={offersItem.title}
+                      text={offersItem?.title}
                       maxLine="2"
                       trimRight
                       basedOn="words"
@@ -104,7 +105,7 @@ function Offers() {
 
                     <ResponsiveEllipsis
                       className="listing-desc text-muted"
-                      text={offersItem.description}
+                      text={offersItem?.description}
                       maxLine="2"
                       trimRight
                       basedOn="words"
@@ -115,18 +116,18 @@ function Offers() {
                       style={{ color: '#6fb327' }}
                     >
                       <h5>
-                        <b>{offersItem.discount} off</b>
+                        <b>{offersItem?.percentage} off</b>
                       </h5>
                     </div>
 
                     <small>
-                      <b>Valid till 29th Dec, 2022 </b>
+                      <b>Valid till {offersItem?.validTill} </b>
                     </small>
                   </CardBody>
                 </div>
 
                 <MoreVertIcon
-                  onClick={(e) => handleClick(e)}
+                  onClick={(e) => handleClick(e, offersItem?._id)}
                   size="small"
                   sx={{
                     position: 'absolute',
@@ -199,7 +200,7 @@ function Offers() {
           );
         })}
       </Row>
-      <Row>
+      {/* <Row>
         <Colxx xxs="12">
           <Pagination listClassName="justify-content-center">
             <PaginationItem>
@@ -223,7 +224,7 @@ function Offers() {
             </PaginationItem>
           </Pagination>
         </Colxx>
-      </Row>
+      </Row> */}
     </>
   );
 }

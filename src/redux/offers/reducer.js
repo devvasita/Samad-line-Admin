@@ -6,11 +6,17 @@ import {
   GET_OFFERS,
   GET_OFFERS_SUCCESS,
   GET_OFFERS_ERROR,
+  GET_SINGLE_OFFER,
+  GET_SINGLE_OFFER_SUCCESS,
+  GET_SINGLE_OFFER_ERROR,
+  DELETE_OFFER,
+  DELETE_OFFER_SUCCESS,
+  DELETE_OFFER_ERROR,
 } from '../contants';
 
 const INIT_STATE = {
-  offer: [],
-  selectedOffers: null,
+  offers: [],
+  selectedOffer: null,
   loading: false,
   error: '',
 };
@@ -38,12 +44,10 @@ export default (state = INIT_STATE, action) => {
     case GET_OFFERS:
       return { ...state, loading: true, error: '' };
     case GET_OFFERS_SUCCESS: {
-      // const { data } = action.payload;
-      console.log(action.payload, 'paylod');
       return {
         ...state,
         loading: false,
-        offer: action.payload,
+        offers: action.payload,
         error: '',
       };
     }
@@ -54,6 +58,45 @@ export default (state = INIT_STATE, action) => {
         error: action.payload.message,
       };
 
+    case GET_SINGLE_OFFER:
+      return { ...state, loading: true, error: '' };
+    case GET_SINGLE_OFFER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        selectedOffer: action.payload,
+        error: '',
+      };
+    case GET_SINGLE_OFFER_ERROR:
+      return {
+        ...state,
+        loading: false,
+        selectedOffer: null,
+        error: action.payload.message,
+      };
+
+    case DELETE_OFFER:
+      return { ...state, loaded: false };
+
+    case DELETE_OFFER_SUCCESS: {
+      const { _id } = action.payload;
+      const index = [...state.offers.data].map((e) => e._id).indexOf(_id);
+      const dataToUpdate = [...state.offers.data];
+      dataToUpdate.splice(index, 1);
+
+      return {
+        ...state,
+        loaded: true,
+        offers: { ...state.offers, data: dataToUpdate },
+      };
+    }
+    case DELETE_OFFER_ERROR: {
+      return {
+        ...state,
+        loading: false,
+        error: action.payload.message,
+      };
+    }
     default:
       return { ...state };
   }

@@ -112,12 +112,12 @@ const Applications = ({ match }) => (
         render={(props) => <EditProduct {...props} />}
       />
       <Route
-        path={`${match.url}/editOffer`}
+        path={`${match.url}/editOffer/:id`}
         render={(props) => <EditOffer {...props} />}
       />
 
       <Route
-        path={`${match.url}/viewOffer`}
+        path={`${match.url}/viewOffer/:id`}
         render={(props) => <ViewOffer {...props} />}
       />
       <Route
