@@ -321,7 +321,7 @@ function AddProduct({ history }) {
     formData.append('mrp', product.mrp);
     formData.append('flavour', product.flavour);
     formData.append('value', product.value);
-    formData.append('unit', product.value);
+    formData.append('unit', product.unit);
     formData.append('color', product.color);
     formData.append('nonVeg', product.nonVeg);
     product.image.map(
@@ -478,7 +478,7 @@ function AddProduct({ history }) {
                           product.brand.length === 0 && 'Required'
                         }
                         name="brand"
-                        onChange={({ value }) => handleChange(value, 'brand')}
+                        onChange={({ label }) => handleChange(label, 'brand')}
                       />
                       {errors.brand && touched.brand && (
                         <div className="invalid-feedback d-block">
@@ -498,8 +498,8 @@ function AddProduct({ history }) {
                           product.category.length === 0 && 'Required'
                         }
                         name="category"
-                        onChange={({ value }) =>
-                          handleChange(value, 'category')
+                        onChange={({ label }) =>
+                          handleChange(label, 'category')
                         }
                       />
                       {errors.category && touched.category && (
