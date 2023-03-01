@@ -268,8 +268,6 @@ function AddProduct({ history }) {
           return { label: elem?.name, value: elem?._id, key: i };
         })
       );
-    // dispatch(getProducts({ filterBy: 'color', key: 'otherColor' }));
-    // dispatch(getProducts({ filterBy: 'flavour', key: 'otherFlavour' }));
   }, [categoryData, brandData, products]);
 
   const handleChange = (value, key) => {

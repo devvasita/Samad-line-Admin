@@ -23,6 +23,15 @@ import {
 } from 'redux/actions';
 // import * as Yup from 'yup';
 
+const fetchOtherDetails = (list) => {
+  return list.map((element) => {
+    return {
+      label: element.label,
+      value: element.value._id,
+    };
+  });
+};
+
 const useStyles = makeStyles(() => ({
   cancel: {
     border: '1px solid #6c757d',
@@ -255,15 +264,25 @@ function EditProduct({ history }) {
   const { otherUnit, otherColor, otherFlavour, products } = productState;
 
   useEffect(() => {
+    dispatch(getSingleProduct(id));
     dispatch(getBrandAndCategory('brand'));
     dispatch(getBrandAndCategory('category'));
-    dispatch(getSingleProduct(id));
     dispatch(getProducts({}));
+    dispatch(getProducts({ filterBy: 'flavour', key: 'otherFlavour' }));
+    dispatch(getProducts({ filterBy: 'color', key: 'otherColor' }));
   }, [dispatch]);
 
   useEffect(() => {
-    if (selectedProduct)
-      setProduct({ ...selectedProduct, updatedImageIds: [] });
+    if (selectedProduct) {
+      setProduct({
+        ...selectedProduct,
+        otherFlavour: fetchOtherDetails(selectedProduct.otherFlavour),
+        otherUnit: fetchOtherDetails(selectedProduct.otherUnit),
+        otherColor: fetchOtherDetails(selectedProduct.otherColor),
+        suggestedProduct: fetchOtherDetails(selectedProduct.suggestedProduct),
+        updatedImageIds: [],
+      });
+    }
   }, [selectedProduct]);
 
   useEffect(() => {
@@ -291,12 +310,8 @@ function EditProduct({ history }) {
     setProduct((oldVal) => {
       return { ...oldVal, [key]: value };
     });
-    if (value !== '' && key === 'unit')
+    if (key === 'unit')
       dispatch(getProducts({ unit: value, key: 'otherUnit' }));
-    if (key === 'color' && !product.color)
-      dispatch(getProducts({ filterBy: 'color', key: 'otherColor' }));
-    if (key === 'flavour' && !product.flavour)
-      dispatch(getProducts({ filterBy: 'flavour', key: 'otherFlavour' }));
   };
 
   const initialValues = {
