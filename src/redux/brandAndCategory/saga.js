@@ -31,7 +31,11 @@ function* addBrandAndCategoryWorker({ payload }) {
     if (status === 201) {
       yield put(addBrandAndCategorySuccess(data, type));
     } else {
-      yield put(addBrandAndCategoryError(message));
+      yield put(
+        addBrandAndCategoryError(
+          message ?? message.message ?? 'something went wrong'
+        )
+      );
     }
   } catch (error) {
     console.log({ error });
@@ -59,7 +63,7 @@ export function* getBrandAndCategoryWorker({ payload }) {
     if (data) {
       yield put(getBrandAndCategorySuccess(data, type));
     } else {
-      yield put(getBrandAndCategoryError('token expired'));
+      yield put(getBrandAndCategoryError('something went wrong'));
     }
   } catch (error) {
     yield put(getBrandAndCategoryError('something went wrong'));
@@ -83,10 +87,15 @@ function* updateBrandAndCategoryWorker({ payload }) {
       item,
       type
     );
-    if (status === 201) {
+    const { message } = data;
+    if (status === 200) {
       yield put(updateBrandAndCategorySuccess(data, type));
     } else {
-      yield put(updateBrandAndCategoryError('token expired'));
+      yield put(
+        updateBrandAndCategoryError(
+          message ?? message.message ?? 'something went wrong'
+        )
+      );
     }
   } catch (error) {
     console.log({ error });
@@ -111,10 +120,15 @@ function* deleteBrandAndCategoryWorker({ payload }) {
   const { id, type } = payload;
   try {
     const { data, status } = yield call(deleteBrandAndCategoryAsync, id, type);
-    if (status === 201) {
+    const { message } = data;
+    if (status === 200) {
       yield put(deleteBrandAndCategorySuccess(data, type));
     } else {
-      yield put(deleteBrandAndCategoryError('token expired'));
+      yield put(
+        deleteBrandAndCategoryError(
+          message ?? message.message ?? 'something went wrong'
+        )
+      );
     }
   } catch (error) {
     console.log({ error });

@@ -31,6 +31,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 // import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
+import { NotificationManager } from 'components/common/react-notifications';
 
 function Category() {
   const CategoryData = useSelector(
@@ -47,6 +48,25 @@ function Category() {
     image: '',
     _id: '',
   });
+
+  const { error, message } = useSelector(
+    (brandState) => brandState.brandAndCategory
+  );
+
+  useEffect(() => {
+    if (error && error.message) {
+      NotificationManager.error(
+        error.message,
+        'Brand Error',
+        3000,
+        null,
+        null,
+        ''
+      );
+    }
+    if (message)
+      NotificationManager.success(message, 'success', 3000, null, null, '');
+  }, [error]);
 
   const handleChange = (e) => {
     e.preventDefault();

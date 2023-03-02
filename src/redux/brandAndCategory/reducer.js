@@ -18,6 +18,8 @@ const INIT_STATE = {
   loaded: false,
   brand: [],
   category: [],
+  message: '',
+  error: '',
 };
 
 export default (state = INIT_STATE, action) => {
@@ -86,6 +88,7 @@ export default (state = INIT_STATE, action) => {
         ...state,
         loaded: true,
         [type]: { ...state[type], data: dataToUpdate },
+        message: `${type} deleted successfully`,
       };
     }
     case DELETE_BRAND_AND_CATEGORY_ERROR: {
