@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 /* eslint no-underscore-dangle: 0 */
 import {
   ADD_OFFER,
@@ -25,6 +26,7 @@ const INIT_STATE = {
 };
 
 export default (state = INIT_STATE, action) => {
+  console.log({ type: action.type });
   switch (action.type) {
     case ADD_OFFER:
       return { ...state, loaded: false };
@@ -100,18 +102,18 @@ export default (state = INIT_STATE, action) => {
       return { ...state, loaded: false };
 
     case DELETE_OFFER_SUCCESS: {
-      const { _id } = action.payload;
-      const index = [...state.offers.data].map((e) => e._id).indexOf(_id);
-      const dataToUpdate = [...state.offers.data];
-      console.log(dataToUpdate, '----=-=-============333333333333');
+      const _id = action.payload;
+      const index = [...state.offers].map((e) => e._id).indexOf(_id);
+      const dataToUpdate = [...state.offers];
       dataToUpdate.splice(index, 1);
 
       return {
         ...state,
         loaded: true,
-        offers: { ...state.offers, data: dataToUpdate },
+        offers: dataToUpdate,
       };
     }
+
     case DELETE_OFFER_ERROR: {
       return {
         ...state,

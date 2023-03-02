@@ -115,19 +115,25 @@ function EditOffer({ history }) {
 
   function handleChangeImage(e) {
     e.stopPropagation();
-    setOffer({
-      image: {
-        file: e.target.files[0],
-        url: URL.createObjectURL(e.target.files[0]),
-      },
+    setOffer((oldVal) => {
+      return {
+        ...oldVal,
+        image: {
+          file: null,
+          url: '',
+        },
+      };
     });
   }
   const handleCancelImage = () => {
-    setOffer({
-      image: {
-        file: null,
-        url: '',
-      },
+    setOffer((oldVal) => {
+      return {
+        ...oldVal,
+        image: {
+          file: null,
+          url: '',
+        },
+      };
     });
   };
   const onSubmit = () => {
@@ -298,7 +304,7 @@ function EditOffer({ history }) {
                               placeholderText=""
                               size="small"
                               name="validTill"
-                              value={offer?.validTill}
+                              value={offer?.validTill.toString()}
                             />
                             <div>
                               <i
