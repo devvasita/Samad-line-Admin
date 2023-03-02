@@ -26,7 +26,6 @@ const INIT_STATE = {
 };
 
 export default (state = INIT_STATE, action) => {
-  console.log({ type: action.type });
   switch (action.type) {
     case ADD_OFFER:
       return { ...state, loaded: false };

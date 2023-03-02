@@ -130,7 +130,10 @@ function NewComp({ setimgArr, i, imgArr, setImgIndex }) {
       file: e.target.files[0],
       url: URL.createObjectURL(e.target.files[0]),
     });
-    setImgIndex(i);
+    setImgIndex({
+      index: i,
+      removed: false,
+    });
     setimgArr(imgArr);
   };
 
@@ -140,6 +143,10 @@ function NewComp({ setimgArr, i, imgArr, setImgIndex }) {
     imgArr.splice(i, 1, {
       file: null,
       url: '',
+    });
+    setImgIndex({
+      index: i,
+      removed: true,
     });
     setimgArr(imgArr);
   };
@@ -281,6 +288,15 @@ function EditProduct({ history }) {
         otherColor: fetchOtherDetails(selectedProduct.otherColor),
         suggestedProduct: fetchOtherDetails(selectedProduct.suggestedProduct),
         updatedImageIds: [],
+        brand: { label: selectedProduct.brand, value: selectedProduct.brand },
+        category: {
+          label: selectedProduct.category,
+          value: selectedProduct.category,
+        },
+        unit: {
+          label: selectedProduct.unit,
+          value: selectedProduct.unit,
+        },
       });
     }
   }, [selectedProduct]);
@@ -313,7 +329,6 @@ function EditProduct({ history }) {
     if (key === 'unit')
       dispatch(getProducts({ unit: value, key: 'otherUnit' }));
   };
-
   const initialValues = {
     name: '',
     price: '',
@@ -323,6 +338,7 @@ function EditProduct({ history }) {
     countInStock: '',
     numReviews: '',
     description: '',
+    sellerInformation: '',
     mrp: '',
     flavour: '',
     value: '',
@@ -334,9 +350,50 @@ function EditProduct({ history }) {
     otherFlavour: [],
     suggestedProduct: [],
   };
+  const validationSchema = () => {
+    const errors = {};
 
+    if (!product.name) {
+      errors.name = 'Required';
+    }
+    if (!product.price) {
+      errors.price = 'Required';
+    }
+    if (!product.brand) {
+      errors.brand = 'Required';
+    }
+    if (!product.category) {
+      errors.category = 'Required';
+    }
+    if (!product.description) {
+      errors.description = 'Required';
+    }
+    if (!product.mrp) {
+      errors.mrp = 'Required';
+    }
+    if (!product.unit) {
+      errors.unit = 'Required';
+    }
+    if (!product.value) {
+      errors.value = 'Required';
+    }
+    if (!product.sellerInformation) {
+      errors.sellerInformation = 'Required';
+    }
+    return errors;
+  };
+  const imageValidation = (data) => {
+    if (data) {
+      const count = data.filter((item) => item?.url);
+      return count && count.length > 0;
+    }
+    return false;
+  };
   const onSubmit = () => {
     // update product
+    if (!imageValidation(product.image)) {
+      return;
+    }
     const formData = new FormData();
     // eslint-disable-next-line array-callback-return
     // const list = ['image', 'otherColor', 'otherFlavour', 'suggestedProduct'];
@@ -379,6 +436,7 @@ function EditProduct({ history }) {
       event.preventDefault();
     }
   };
+
   return (
     <>
       <Row>
@@ -408,15 +466,20 @@ function EditProduct({ history }) {
                       };
                     })
                   }
-                  imgArr={product.image}
+                  imgArr={product?.image}
                   i={index}
-                  key={elm.id}
+                  key={elm?.id}
                 />
               ))}
+            {!imageValidation(product.image) && (
+              <div className="invalid-feedback d-block">
+                Upload At least One Image
+              </div>
+            )}
           </Row>
 
           <Formik
-            // validate={validationSchema}
+            validate={validationSchema}
             initialValues={initialValues}
             onSubmit={onSubmit}
           >
@@ -442,7 +505,6 @@ function EditProduct({ history }) {
                         value={product.name}
                         onChange={(e) => handleChange(e.target.value, 'name')}
                         // onBlur={handleBlur}
-                        validate={() => product.name === '' && 'Required'}
                       />
                       {errors.name && touched.name && (
                         <div className="invalid-feedback d-block">
@@ -478,7 +540,6 @@ function EditProduct({ history }) {
                           handleKeyPress(event);
                         }}
                         value={product.mrp}
-                        validate={() => product.mrp === '' && 'Required'}
                         onChange={(e) => handleChange(e.target.value, 'mrp')}
                       />
                       {errors.mrp && touched.mrp && (
@@ -499,7 +560,6 @@ function EditProduct({ history }) {
                         onKeyPress={(event) => {
                           handleKeyPress(event);
                         }}
-                        validate={() => product.price === '' && 'Required'}
                         onChange={(e) => handleChange(e.target.value, 'price')}
                         error={Boolean(errors.price && touched.price)}
                       />
@@ -512,15 +572,13 @@ function EditProduct({ history }) {
                   </Colxx>
                   <Colxx lg="3" xs="12" sm="6">
                     <FormGroup>
-                      <Label>Brand:</Label>
+                      <Label> :</Label>
                       <Select
                         className="react-select react-select__single-value"
                         classNamePrefix="react-select"
                         options={brand}
-                        validate={() =>
-                          product.brand.length === 0 && 'Required'
-                        }
                         name="brand"
+                        value={product.brand}
                         onChange={({ label }) => handleChange(label, 'brand')}
                       />
                       {errors.brand && touched.brand && (
@@ -537,9 +595,7 @@ function EditProduct({ history }) {
                         className="react-select react-select__single-value"
                         classNamePrefix="react-select"
                         options={category}
-                        validate={() =>
-                          product.category.length === 0 && 'Required'
-                        }
+                        value={product.category}
                         name="category"
                         onChange={({ label }) =>
                           handleChange(label, 'category')
@@ -562,12 +618,18 @@ function EditProduct({ history }) {
                         className="react-select react-select__single-value"
                         classNamePrefix="react-select"
                         options={unit}
+                        value={product.unit}
                         validate={() => product.unit.length === 0 && 'Required'}
                         name="unit"
                         onChange={({ value }) => handleChange(value, 'unit')}
                         // value={product.unit}
                         //  onChange={handleChange}
                       />
+                      {errors.unit && touched.unit && (
+                        <div className="invalid-feedback d-block">
+                          {errors.unit}
+                        </div>
+                      )}
                     </FormGroup>
                   </Colxx>
                   <Colxx lg="3" xs="12" sm="6">
@@ -580,7 +642,6 @@ function EditProduct({ history }) {
                         onKeyPress={(event) => {
                           handleKeyPress(event);
                         }}
-                        validate={() => product.value === '' && 'Required'}
                         onChange={(e) => handleChange(e.target.value, 'value')}
                       />
                       {errors.value && touched.value && (
@@ -597,7 +658,6 @@ function EditProduct({ history }) {
                         className="form-control"
                         name="color"
                         value={product.color}
-                        validate={() => product.color === '' && 'Required'}
                         onChange={(e) => handleChange(e.target.value, 'color')}
                       />
                       {errors.color && touched.color && (
@@ -613,8 +673,7 @@ function EditProduct({ history }) {
                       <Field
                         className="form-control"
                         name="flavour"
-                        value={product.flavour}
-                        validate={() => product.flavour === '' && 'Required'}
+                        value={product.flavour ? product.flavour : ''}
                         onChange={(e) =>
                           handleChange(e.target.value, 'flavour')
                         }
@@ -637,7 +696,7 @@ function EditProduct({ history }) {
                       name="description"
                       value={product.description}
                       //  onChange={handleChange}
-                      validate={() => product.description === '' && 'Required'}
+
                       onChange={(value) => handleChange(value, 'description')}
                       modules={quillModules}
                       formats={quillFormats}
@@ -658,9 +717,6 @@ function EditProduct({ history }) {
                       theme="snow"
                       name="sellerInformation"
                       value={product.sellerInformation}
-                      validate={() =>
-                        product.sellerInformation === '' && 'Required'
-                      }
                       //  onChange={handleChange}
                       onChange={(value) =>
                         handleChange(value, 'sellerInformation')
@@ -685,9 +741,6 @@ function EditProduct({ history }) {
                         className="react-select"
                         classNamePrefix="react-select"
                         isMulti
-                        validate={() =>
-                          product.otherunit.length === 0 && 'Required'
-                        }
                         value={product.otherUnit}
                         onChange={(value) => handleChange(value, 'otherUnit')}
                         name="otherunit"
@@ -715,8 +768,6 @@ function EditProduct({ history }) {
                         }
                         name="otherColor"
                         value={product.otherColor}
-                        //  onChange={handleChange}
-                        // value={selectedOptionsColor}
                         onChange={(value) => handleChange(value, 'otherColor')}
                         options={otherColor}
                       />

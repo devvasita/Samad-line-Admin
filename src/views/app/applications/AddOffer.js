@@ -136,23 +136,26 @@ function AddOffer() {
     });
   };
 
-  // const validate = (values) => {
-  //   console.log(values, '--');
-  //   const errors = {};
+  const validate = () => {
+    const errors = {};
 
-  //   if (!values.name) {
-  //     errors.name = 'Please enter Blog Title';
-  //   } else if (values.name === 'admin') {
-  //     errors.name = 'Value must be longer than 2 characters';
-  //   }
-  //   if (!values.date) {
-  //     errors.date = 'Please select date';
-  //   }
-  //   if (!values.value) {
-  //     errors.value = 'Please enter value';
-  //   }
-  //   return errors;
-  // };
+    if (!offer?.image?.file) {
+      errors.image = 'Image Required';
+    }
+    if (!offer?.title) {
+      errors.title = 'Required';
+    }
+    if (!offer?.discountType?.value) {
+      errors.discountType = 'Required';
+    }
+    if (!offer?.value) {
+      errors.value = 'Required';
+    }
+    if (!offer?.description) {
+      errors.description = 'Required';
+    }
+    return errors;
+  };
 
   const options = [
     { value: 'food', label: 'Flat' },
@@ -181,72 +184,8 @@ function AddOffer() {
         <Separator className="mb-5" />
         <Row>
           <Colxx xxs="12">
-            <Label>Image</Label>
-            {/* <DropzoneExample /> */}
-
-            <div>
-              {!offer.image.file ? (
-                <div aria-hidden="true" className={classes.image}>
-                  <IconButton
-                    color="primary"
-                    aria-label="upload picture"
-                    component="label"
-                    style={{
-                      margin: 'auto',
-                      borderRadius: 0,
-                      width: '100%',
-                      height: '100%',
-                    }}
-                  >
-                    <input
-                      hidden
-                      accept="image/*"
-                      type="file"
-                      // ref={hiddenFileInput}
-                      onChange={handleChangeImage}
-                    />
-
-                    <img
-                      src="/assets/uploadicon.svg"
-                      alt=""
-                      style={{ height: '35px' }}
-                    />
-                  </IconButton>
-                </div>
-              ) : (
-                <div>
-                  {offer.image.file ? (
-                    <div className={classes.upload}>
-                      <CancelIcon
-                        onClick={handleCancelImage}
-                        style={{
-                          position: 'absolute',
-                          top: 0,
-                          right: '-25px',
-                          cursor: 'pointer',
-                        }}
-                      />
-                      <img
-                        src={offer.image.url}
-                        alt=""
-                        style={{
-                          objectFit: 'contain',
-                          borderRadius: '10px',
-                          height: '100%',
-                          width: '100%',
-                          border: '1px solid',
-                          // boxShadow:
-                          //   '0px 16px 16px rgb(50 50 71 / 8%), 0px 24px 32px rgb(50 50 71 / 8%)',
-                        }}
-                      />
-                    </div>
-                  ) : null}
-                </div>
-              )}
-            </div>
-
             <Formik
-              // validate={validate}
+              validate={validate}
               initialValues={initialValues}
               onSubmit={onSubmit}
             >
@@ -255,6 +194,81 @@ function AddOffer() {
                   onSubmit={handleSubmit}
                   className="av-tooltip tooltip-label-right mt-4"
                 >
+                  <Row>
+                    <Colxx lg="12" xs="12" sm="6">
+                      <FormGroup>
+                        <Label>Image</Label>
+                        {/* <DropzoneExample /> */}
+
+                        <div>
+                          {!offer.image.file ? (
+                            <div aria-hidden="true" className={classes.image}>
+                              <IconButton
+                                color="primary"
+                                aria-label="upload picture"
+                                component="label"
+                                style={{
+                                  margin: 'auto',
+                                  borderRadius: 0,
+                                  width: '100%',
+                                  height: '100%',
+                                }}
+                              >
+                                <input
+                                  hidden
+                                  accept="image/*"
+                                  type="file"
+                                  // ref={hiddenFileInput}
+                                  onChange={handleChangeImage}
+                                />
+
+                                <img
+                                  src="/assets/uploadicon.svg"
+                                  alt=""
+                                  style={{ height: '35px' }}
+                                />
+                              </IconButton>
+                            </div>
+                          ) : (
+                            <div>
+                              {offer.image.file ? (
+                                <div className={classes.upload}>
+                                  <CancelIcon
+                                    onClick={handleCancelImage}
+                                    style={{
+                                      position: 'absolute',
+                                      top: 0,
+                                      right: '-25px',
+                                      cursor: 'pointer',
+                                    }}
+                                  />
+                                  <img
+                                    src={offer.image.url}
+                                    alt=""
+                                    style={{
+                                      objectFit: 'contain',
+                                      borderRadius: '10px',
+                                      height: '100%',
+                                      width: '100%',
+                                      border: '1px solid',
+                                      // boxShadow:
+                                      //   '0px 16px 16px rgb(50 50 71 / 8%), 0px 24px 32px rgb(50 50 71 / 8%)',
+                                    }}
+                                  />
+                                </div>
+                              ) : null}
+                            </div>
+                          )}
+                        </div>
+                        {errors.image && touched.image && (
+                          <div className="invalid-feedback d-block">
+                            {errors.image}
+                          </div>
+                        )}
+                      </FormGroup>
+                    </Colxx>
+                  </Row>
+
                   <Row>
                     <Colxx lg="6" xs="12" sm="6">
                       <FormGroup>
@@ -267,9 +281,9 @@ function AddOffer() {
                             handleChange(e.target.value, 'title')
                           }
                         />
-                        {errors.name && touched.name && (
+                        {errors.title && touched.title && (
                           <div className="invalid-feedback d-block">
-                            {errors.name}
+                            {errors.title}
                           </div>
                         )}
                       </FormGroup>
@@ -305,9 +319,9 @@ function AddOffer() {
                           </div>
                         </div>
 
-                        {errors.date && touched.date && (
+                        {errors.validTill && touched.validTill && (
                           <div className="invalid-feedback d-block">
-                            {errors.date}
+                            {errors.validTill}
                           </div>
                         )}
                       </FormGroup>
@@ -329,9 +343,9 @@ function AddOffer() {
                           }}
                           // onBlur={handleBlur}
                         />
-                        {errors.select && touched.select ? (
+                        {errors.discountType && touched.discountType ? (
                           <div className="invalid-feedback d-block">
-                            {errors.select}
+                            {errors.discountType}
                           </div>
                         ) : null}
                       </FormGroup>
@@ -369,6 +383,11 @@ function AddOffer() {
                         formats={quillFormats}
                         style={{ marginBottom: '10px' }}
                       />
+                      {errors.description && touched.description && (
+                        <div className="invalid-feedback d-block">
+                          {errors.description}
+                        </div>
+                      )}
                     </Colxx>
                   </Row>
                   <div

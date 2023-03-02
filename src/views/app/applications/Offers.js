@@ -123,7 +123,7 @@ function Offers() {
                         style={{ color: '#6fb327' }}
                       >
                         <h5>
-                          <b>{offersItem?.percentage} off</b>
+                          <b>{offersItem?.value} off</b>
                         </h5>
                       </div>
 

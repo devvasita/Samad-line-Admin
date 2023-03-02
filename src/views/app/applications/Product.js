@@ -86,7 +86,11 @@ function Product() {
                       <td>
                         <img
                           alt="Thumbnail"
-                          src={data?.image[0]?.url}
+                          src={
+                            data.image
+                              ? data.image.find((elem) => elem.url !== '').url
+                              : null
+                          }
                           className="list-thumbnail responsive border-0 card-img-left"
                         />
                       </td>

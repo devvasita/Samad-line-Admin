@@ -303,6 +303,48 @@ function AddProduct({ history }) {
     suggestedProduct: [],
   };
 
+  const validationSchema = () => {
+    const errors = {};
+
+    if (!product.name) {
+      errors.name = 'Required';
+    }
+    if (!product.price) {
+      errors.price = 'Required';
+    }
+    if (!product.brand) {
+      errors.brand = 'Required';
+    }
+    if (!product.category) {
+      errors.category = 'Required';
+    }
+    if (!product.description) {
+      errors.description = 'Required';
+    }
+    if (!product.mrp) {
+      errors.mrp = 'Required';
+    }
+    if (!product.unit) {
+      errors.unit = 'Required';
+    }
+    if (!product.value) {
+      errors.value = 'Required';
+    }
+    if (!product.sellerInformation) {
+      errors.sellerInformation = 'Required';
+    }
+
+    return errors;
+  };
+
+  const imageValidation = (data) => {
+    if (data) {
+      const count = data.filter((item) => item?.url);
+      return count && count.length > 0;
+    }
+    return false;
+  };
+
   const onSubmit = () => {
     const formData = new FormData();
     // eslint-disable-next-line array-callback-return
@@ -368,10 +410,15 @@ function AddProduct({ history }) {
                   key={elm.id}
                 />
               ))}
+            {!imageValidation(product.image) && (
+              <div className="invalid-feedback d-block">
+                Upload At least One Image
+              </div>
+            )}
           </Row>
 
           <Formik
-            // validate={validationSchema}
+            validate={validationSchema}
             initialValues={initialValues}
             onSubmit={onSubmit}
           >
@@ -397,7 +444,7 @@ function AddProduct({ history }) {
                         value={product.name}
                         onChange={(e) => handleChange(e.target.value, 'name')}
                         // onBlur={handleBlur}
-                        validate={() => product.name === '' && 'Required'}
+                        // validate={() => product.name === '' && 'Required'}
                       />
                       {errors.name && touched.name && (
                         <div className="invalid-feedback d-block">
@@ -433,7 +480,7 @@ function AddProduct({ history }) {
                         }}
                         name="mrp"
                         value={product.mrp}
-                        validate={() => product.mrp === '' && 'Required'}
+                        // validate={() => product.mrp === '' && 'Required'}
                         onChange={(e) => handleChange(e.target.value, 'mrp')}
                       />
                       {errors.mrp && touched.mrp && (
@@ -451,7 +498,7 @@ function AddProduct({ history }) {
                         className="form-control"
                         name="price"
                         value={product.price}
-                        validate={() => product.price === '' && 'Required'}
+                        // validate={() => product.price === '' && 'Required'}
                         onChange={(e) => handleChange(e.target.value, 'price')}
                         error={Boolean(errors.price && touched.price)}
                         onKeyPress={(event) => {
@@ -472,9 +519,7 @@ function AddProduct({ history }) {
                         className="react-select react-select__single-value"
                         classNamePrefix="react-select"
                         options={brand}
-                        validate={() =>
-                          product.brand.length === 0 && 'Required'
-                        }
+                        // validate={() => product.brand === '' && 'Required'}
                         name="brand"
                         onChange={({ label }) => handleChange(label, 'brand')}
                       />
@@ -492,9 +537,9 @@ function AddProduct({ history }) {
                         className="react-select react-select__single-value"
                         classNamePrefix="react-select"
                         options={category}
-                        validate={() =>
-                          product.category.length === 0 && 'Required'
-                        }
+                        // validate={() =>
+                        //   product.category.length === 0 && 'Required'
+                        // }
                         name="category"
                         onChange={({ label }) =>
                           handleChange(label, 'category')
@@ -517,12 +562,17 @@ function AddProduct({ history }) {
                         className="react-select react-select__single-value"
                         classNamePrefix="react-select"
                         options={unit}
-                        validate={() => product.unit.length === 0 && 'Required'}
+                        // validate={() => product.unit.length === 0 && 'Required'}
                         name="unit"
                         onChange={({ value }) => handleChange(value, 'unit')}
                         // value={product.unit}
                         //  onChange={handleChange}
                       />
+                      {errors.unit && touched.unit && (
+                        <div className="invalid-feedback d-block">
+                          {errors.unit}
+                        </div>
+                      )}
                     </FormGroup>
                   </Colxx>
                   <Colxx lg="3" xs="12" sm="6">
@@ -535,7 +585,7 @@ function AddProduct({ history }) {
                           handleKeyPress(event);
                         }}
                         value={product.value}
-                        validate={() => product.value === '' && 'Required'}
+                        // validate={() => product.value === '' && 'Required'}
                         onChange={(e) => handleChange(e.target.value, 'value')}
                       />
                       {errors.value && touched.value && (
@@ -552,7 +602,7 @@ function AddProduct({ history }) {
                         className="form-control"
                         name="color"
                         value={product.color}
-                        validate={() => product.color === '' && 'Required'}
+                        // validate={() => product.color === '' && 'Required'}
                         onChange={(e) => handleChange(e.target.value, 'color')}
                       />
                       {errors.color && touched.color && (
@@ -568,7 +618,7 @@ function AddProduct({ history }) {
                       <Field
                         className="form-control"
                         name="flavour"
-                        value={product.flavour}
+                        // value={product.flavour}
                         validate={() => product.flavour === '' && 'Required'}
                         onChange={(e) =>
                           handleChange(e.target.value, 'flavour')
@@ -592,7 +642,7 @@ function AddProduct({ history }) {
                       name="description"
                       value={product.description}
                       //  onChange={handleChange}
-                      validate={() => product.description === '' && 'Required'}
+                      // validate={() => product.description === '' && 'Required'}
                       onChange={(value) => handleChange(value, 'description')}
                       modules={quillModules}
                       formats={quillFormats}
@@ -613,9 +663,9 @@ function AddProduct({ history }) {
                       theme="snow"
                       name="sellerInformation"
                       value={product.sellerInformation}
-                      validate={() =>
-                        product.sellerInformation === '' && 'Required'
-                      }
+                      // validate={() =>
+                      //   product.sellerInformation === '' && 'Required'
+                      // }
                       //  onChange={handleChange}
                       onChange={(value) =>
                         handleChange(value, 'sellerInformation')
