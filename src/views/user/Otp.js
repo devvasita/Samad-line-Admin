@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Row, Card, CardTitle, Label, FormGroup, Button } from 'reactstrap';
 import { Formik, Form, Field } from 'formik';
 import { Colxx } from 'components/common/CustomBootstrap';
 import IntlMessages from 'helpers/IntlMessages';
 import { NavLink, useHistory } from 'react-router-dom';
 import { verifyOtp } from 'redux/auth/actions';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { NotificationManager } from 'components/common/react-notifications';
 
 // const validateEmail = (value) => {
 //   let error;
@@ -28,6 +29,8 @@ const Otp = ({ loading }) => {
   const { mobileNo, resetPass } =
     JSON.parse(localStorage.getItem('mobileNo')) ?? {};
 
+  const { error } = useSelector((state) => state?.authUser);
+
   const onVerifyOtp = (values) => {
     if (!loading) {
       if (values.otp !== '') {
@@ -35,6 +38,11 @@ const Otp = ({ loading }) => {
       }
     }
   };
+  useEffect(() => {
+    if (error) {
+      NotificationManager.warning(error, 'Login Error', 3000, null, null, '');
+    }
+  }, [error]);
   const initialValues = { otp: '' };
   return (
     <Row className="h-100">
