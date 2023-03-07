@@ -22,6 +22,7 @@ import {
   CHANGE_PASSWORD,
   CHANGE_PASSWORD_ERROR,
   CHANGE_PASSWORD_SUCCESS,
+  USER_AUTH_SUCCESS,
 } from '../contants';
 
 const INIT_STATE = {
@@ -31,6 +32,7 @@ const INIT_STATE = {
   resetPasswordCode: '',
   loading: false,
   error: '',
+  success: '',
 };
 
 export default (state = INIT_STATE, action) => {
@@ -59,6 +61,11 @@ export default (state = INIT_STATE, action) => {
         loading: false,
         currentUser: action.payload,
         error: '',
+      };
+    case USER_AUTH_SUCCESS:
+      return {
+        ...state,
+        loading: false,
       };
     case LOGIN_USER_ERROR:
       return {
@@ -141,11 +148,16 @@ export default (state = INIT_STATE, action) => {
       return {
         ...state,
         loading: false,
+        error: action.payload.message,
+        success: '',
       };
     case CHANGE_PASSWORD_SUCCESS:
+      console.log(action.payload.message, '00000');
       return {
         ...state,
         loading: false,
+        success: action.payload.message,
+        error: '',
       };
     case LOGOUT_USER:
       return { ...state, currentUser: null, error: '' };

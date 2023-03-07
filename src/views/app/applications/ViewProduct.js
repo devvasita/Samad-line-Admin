@@ -198,7 +198,7 @@ const BasicCarouselItem = ({ name, image, createdAt, _id }) => {
         <div className="w-100 position-relative h-50 p-2">
           <img
             className="card-img-left"
-            style={{ height: 200, width: 200 }}
+            style={{ height: 200 }}
             src={image ? image.find((elem) => elem.url !== '').url : null}
             alt={name}
           />

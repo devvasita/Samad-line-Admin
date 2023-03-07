@@ -19,6 +19,16 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
     if (token) {
       return <Component {...props} />;
     }
+    if (!token) {
+      return (
+        <Redirect
+          to={{
+            pathname: '/',
+            state: { from: props.location },
+          }}
+        />
+      );
+    }
     return (
       <Redirect
         to={{

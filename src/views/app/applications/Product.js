@@ -73,7 +73,7 @@ function Product() {
                   <th>Image</th>
                   <th>Product Name</th>
                   <th>Category</th>
-                  <th>MRP / Price</th>
+                  <th>MRP(₹) / Price(₹)</th>
                   <th>Unit & Value</th>
                   <th>Symbol</th>
                   <th>Action</th>
@@ -94,13 +94,14 @@ function Product() {
                           className="list-thumbnail responsive border-0 card-img-left"
                         />
                       </td>
-                      <td className="truncate">{data?.name}</td>
+                      <td style={{ width: '275px' }}>{data?.name}</td>
                       <td>{data?.category}</td>
                       <td>
                         {data?.mrp}/{data?.price}
                       </td>
                       <td>
-                        {data?.unit}/{data?.value}
+                        {data?.value}
+                        {data?.unit}
                       </td>
                       <td>
                         <img

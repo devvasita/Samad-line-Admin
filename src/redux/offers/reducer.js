@@ -104,7 +104,7 @@ export default (state = INIT_STATE, action) => {
       const _id = action.payload;
       const index = [...state.offers].map((e) => e._id).indexOf(_id);
       const dataToUpdate = [...state.offers];
-      dataToUpdate.splice(index, 1);
+      dataToUpdate.splice(index - 1, 1);
 
       return {
         ...state,

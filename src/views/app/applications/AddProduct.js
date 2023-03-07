@@ -380,7 +380,7 @@ function AddProduct({ history }) {
 
   const handleKeyPress = (event) => {
     const charCode = event.which ? event.which : event.keyCode;
-    if (String.fromCharCode(charCode).match(/[^0-9]/g)) {
+    if (String.fromCharCode(charCode).match(/[^0-9.]/g)) {
       event.preventDefault();
     }
   };
@@ -481,6 +481,7 @@ function AddProduct({ history }) {
                         name="mrp"
                         value={product.mrp}
                         // validate={() => product.mrp === '' && 'Required'}
+
                         onChange={(e) => handleChange(e.target.value, 'mrp')}
                       />
                       {errors.mrp && touched.mrp && (
@@ -618,8 +619,8 @@ function AddProduct({ history }) {
                       <Field
                         className="form-control"
                         name="flavour"
-                        // value={product.flavour}
-                        validate={() => product.flavour === '' && 'Required'}
+                        value={product.flavour}
+                        // validate={() => product.flavour === '' && 'Required'}
                         onChange={(e) =>
                           handleChange(e.target.value, 'flavour')
                         }

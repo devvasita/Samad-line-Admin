@@ -26,8 +26,8 @@ import {
 const fetchOtherDetails = (list) => {
   return list.map((element) => {
     return {
-      label: element.label,
-      value: element.value._id,
+      label: element?.label,
+      value: element?.value?._id,
     };
   });
 };
@@ -432,7 +432,7 @@ function EditProduct({ history }) {
   };
   const handleKeyPress = (event) => {
     const charCode = event.which ? event.which : event.keyCode;
-    if (String.fromCharCode(charCode).match(/[^0-9]/g)) {
+    if (String.fromCharCode(charCode).match(/[^0-9.]/g)) {
       event.preventDefault();
     }
   };
@@ -502,7 +502,7 @@ function EditProduct({ history }) {
                       <Field
                         className="form-control"
                         name="name"
-                        value={product.name}
+                        value={product?.name}
                         onChange={(e) => handleChange(e.target.value, 'name')}
                         // onBlur={handleBlur}
                       />
@@ -522,7 +522,7 @@ function EditProduct({ history }) {
                         onChange={(value) => handleChange(value, 'nonVeg')}
                         // onChange={(primary) => setCheckedPrimary(primary)}
                         name="nonVeg"
-                        value={product.nonVeg}
+                        value={product?.nonVeg}
                       />
                     </Form>
                   </Colxx>
@@ -539,7 +539,7 @@ function EditProduct({ history }) {
                         onKeyPress={(event) => {
                           handleKeyPress(event);
                         }}
-                        value={product.mrp}
+                        value={product?.mrp}
                         onChange={(e) => handleChange(e.target.value, 'mrp')}
                       />
                       {errors.mrp && touched.mrp && (
@@ -556,7 +556,7 @@ function EditProduct({ history }) {
                       <Field
                         className="form-control"
                         name="price"
-                        value={product.price}
+                        value={product?.price}
                         onKeyPress={(event) => {
                           handleKeyPress(event);
                         }}
@@ -578,7 +578,7 @@ function EditProduct({ history }) {
                         classNamePrefix="react-select"
                         options={brand}
                         name="brand"
-                        value={product.brand}
+                        value={product?.brand}
                         onChange={({ label }) => handleChange(label, 'brand')}
                       />
                       {errors.brand && touched.brand && (
@@ -595,7 +595,7 @@ function EditProduct({ history }) {
                         className="react-select react-select__single-value"
                         classNamePrefix="react-select"
                         options={category}
-                        value={product.category}
+                        value={product?.category}
                         name="category"
                         onChange={({ label }) =>
                           handleChange(label, 'category')
@@ -618,7 +618,7 @@ function EditProduct({ history }) {
                         className="react-select react-select__single-value"
                         classNamePrefix="react-select"
                         options={unit}
-                        value={product.unit}
+                        value={product?.unit}
                         validate={() => product.unit.length === 0 && 'Required'}
                         name="unit"
                         onChange={({ value }) => handleChange(value, 'unit')}
@@ -842,7 +842,7 @@ function EditProduct({ history }) {
                     Submit
                   </Button>
 
-                  <NavLink to="./product">
+                  <NavLink to="/app/applications/product">
                     <Button
                       outline
                       className={classes.cancel}

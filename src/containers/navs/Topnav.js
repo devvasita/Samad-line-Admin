@@ -1,30 +1,28 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable no-use-before-define */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { injectIntl } from 'react-intl';
-
 import {
   UncontrolledDropdown,
   DropdownItem,
   DropdownToggle,
   DropdownMenu,
+  Modal,
 } from 'reactstrap';
-
 import { NavLink } from 'react-router-dom';
-import { connect } from 'react-redux';
-
+import { connect, useSelector } from 'react-redux';
 import { searchPath, adminRoot } from 'constants/defaultValues';
 import { MobileMenuIcon, MenuIcon } from 'components/svg';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-
+import ChangePassword from 'views/user/changePassword';
 import {
   setContainerClassnames,
   clickOnMobileMenu,
   logoutUser,
   changeLocale,
 } from 'redux/actions';
-
+import { NotificationManager } from 'components/common/react-notifications';
 import TopnavNotifications from './Topnav.Notifications';
 
 const TopNav = ({
@@ -38,15 +36,42 @@ const TopNav = ({
 }) => {
   const [isInFullScreen, setIsInFullScreen] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState('');
+  const [changePasswordModal, setChangePasswordModal] = useState(false);
 
   const search = () => {
     history.push(`${searchPath}?key=${searchKeyword}`);
     setSearchKeyword('');
   };
 
+  const { error, success } = useSelector((state) => state?.authUser);
+
+  useEffect(() => {
+    if (error && !changePasswordModal) {
+      NotificationManager.error(
+        error,
+        'Change Password Error',
+        3000,
+        null,
+        null,
+        ''
+      );
+    } else if (success && !changePasswordModal) {
+      NotificationManager.success(
+        'Password Change SuccessFully',
+        'sucess',
+        3000,
+        null,
+        null,
+        ''
+      );
+    }
+  }, [error, changePasswordModal, success]);
+
   const handleChangePassword = () => {
-    console.log('ojokj');
-    history.push('/user/changePassword');
+    setChangePasswordModal(true);
+  };
+  const modalClose = () => {
+    setChangePasswordModal(false);
   };
 
   const isInFullScreenFn = () => {
@@ -207,6 +232,18 @@ const TopNav = ({
           </UncontrolledDropdown>
         </div>
       </div>
+
+      <Modal
+        centered
+        backdrop="static"
+        isOpen={changePasswordModal}
+        toggle={() => setChangePasswordModal(!changePasswordModal)}
+        style={{
+          boxShadow: 'none',
+        }}
+      >
+        <ChangePassword modalClose={modalClose} />
+      </Modal>
     </nav>
   );
 };

@@ -317,7 +317,11 @@ function EditOffer({ history }) {
                               placeholderText=""
                               size="small"
                               name="validTill"
-                              value={offer?.validTill.toString()}
+                              value={
+                                offer?.validTill.toString() !== 'undefined'
+                                  ? offer.validTill
+                                  : ''
+                              }
                             />
                             <div>
                               <i
@@ -375,6 +379,16 @@ function EditOffer({ history }) {
                           onChange={(e) =>
                             handleChange(e.target.value, 'value')
                           }
+                          onKeyPress={(event) => {
+                            const charCode = event.which
+                              ? event.which
+                              : event.keyCode;
+                            if (
+                              String.fromCharCode(charCode).match(/[^0-9.]/g)
+                            ) {
+                              event.preventDefault();
+                            }
+                          }}
                           name="value"
                         />
 
@@ -416,7 +430,7 @@ function EditOffer({ history }) {
                       Submit
                     </Button>
 
-                    <NavLink to="./Offers">
+                    <NavLink to="/app/applications/Offers">
                       <Button
                         outline
                         className={classes.cancel}

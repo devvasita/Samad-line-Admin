@@ -86,6 +86,7 @@ function Brand() {
   };
 
   const handleSubmit = (e) => {
+    console.log('dsaf');
     e.preventDefault();
     const formData = new FormData();
     Object.keys(state).map(
@@ -150,124 +151,137 @@ function Brand() {
         <Separator className="mb-4" />
       </Colxx>
       <Card className="mb-4">
-        <Modal
-          centered
-          backdrop="static"
-          isOpen={modalLong}
-          toggle={() => setModalLong(!modalLong)}
-          style={{
-            boxShadow: 'none',
-          }}
-        >
-          <ModalBody>
-            <ModalHeader style={{ padding: '5px 0px 5px 0px' }}>
-              {modelEdit ? 'Edit Brand' : 'Add Brand'}
-            </ModalHeader>
+        <form onSubmit={handleSubmit}>
+          <Modal
+            centered
+            backdrop="static"
+            isOpen={modalLong}
+            toggle={() => setModalLong(!modalLong)}
+            style={{
+              boxShadow: 'none',
+            }}
+          >
+            <ModalBody>
+              <ModalHeader style={{ padding: '5px 0px 5px 0px' }}>
+                {modelEdit ? 'Edit Brand' : 'Add Brand'}
+              </ModalHeader>
 
-            <Label className="mt-4">
-              <IntlMessages id="Upload Image : " />
-            </Label>
-            <div>
-              {!state.image ? (
-                <div className="model">
-                  <IconButton
-                    color="primary"
-                    aria-label="upload picture"
-                    component="label"
-                    style={{ margin: 'auto' }}
-                  >
-                    <input
-                      hidden
-                      accept="image/*"
-                      type="file"
-                      onChange={handleChange}
-                    />
-
-                    <img
-                      src="/assets/uploadicon.svg"
-                      alt=""
-                      style={{ height: '35px' }}
-                    />
-                  </IconButton>
-                </div>
-              ) : (
-                <div>
-                  {state.image ? (
-                    <div
+              <Label className="mt-4">
+                <IntlMessages id="Upload Image : " />
+              </Label>
+              <div>
+                {!state.image ? (
+                  <div className="model">
+                    <IconButton
+                      color="primary"
+                      aria-label="upload picture"
+                      component="label"
                       style={{
-                        position: 'relative',
-                        // display: 'flex',
-                        justifyContent: 'center',
                         margin: 'auto',
-                        width: '50%',
-                        height: 'auto',
-                        textAlign: 'center',
+                        borderRadius: 0,
+                        width: '100%',
+                        height: '100%',
                       }}
                     >
-                      <CancelIcon
-                        onClick={handleCancelImage}
-                        style={{
-                          position: 'absolute',
-                          top: 0,
-                          right: '-25px',
-                          cursor: 'pointer',
-                        }}
+                      <input
+                        hidden
+                        accept="image/*"
+                        type="file"
+                        onChange={handleChange}
                       />
 
                       <img
-                        src={state.image.length ? state.image : image}
+                        src="/assets/uploadicon.svg"
                         alt=""
-                        style={{
-                          objectFit: 'contain',
-                          borderRadius: '10px',
-                          height: '100%',
-                          width: '100%',
-                          border: '1px solid',
-                          boxShadow:
-                            '0px 16px 16px rgb(50 50 71 / 8%), 0px 24px 32px rgb(50 50 71 / 8%)',
-                        }}
+                        style={{ height: '35px' }}
                       />
+                    </IconButton>
+                  </div>
+                ) : (
+                  <div>
+                    {state.image ? (
+                      <div
+                        style={{
+                          position: 'relative',
+                          // display: 'flex',
+                          justifyContent: 'center',
+                          margin: 'auto',
+                          width: '50%',
+                          height: 'auto',
+                          textAlign: 'center',
+                        }}
+                      >
+                        <CancelIcon
+                          onClick={handleCancelImage}
+                          style={{
+                            position: 'absolute',
+                            top: 0,
+                            right: '-25px',
+                            cursor: 'pointer',
+                          }}
+                        />
 
-                      {/* {result && (
+                        <img
+                          src={state.image.length ? state.image : image}
+                          alt=""
+                          style={{
+                            objectFit: 'contain',
+                            borderRadius: '10px',
+                            height: '100%',
+                            width: '100%',
+                            border: '1px solid',
+                            boxShadow:
+                              '0px 16px 16px rgb(50 50 71 / 8%), 0px 24px 32px rgb(50 50 71 / 8%)',
+                          }}
+                        />
+
+                        {/* {result && (
                         <div>
                           <img src={result} alt="result" />
                         </div>
                       )} */}
-                    </div>
-                  ) : null}
-                </div>
-              )}
-            </div>
+                      </div>
+                    ) : null}
+                  </div>
+                )}
+              </div>
 
-            <Label className="mt-4">
-              <IntlMessages id="Title :" />
-            </Label>
+              <Label className="mt-4">
+                <IntlMessages id="Title :" />
+              </Label>
 
-            <Input
-              type="text"
-              defaultValue={state.name}
-              onChange={(event) => {
-                // formData.append('name', event.target.value);
-                setState((oldVal) => {
-                  return { ...oldVal, name: event.target.value };
-                });
-              }}
-            />
-          </ModalBody>
-          <ModalFooter style={{ borderTop: 'none' }}>
-            <Button outline className="primary-new" onClick={handleSubmit}>
-              Submit
-            </Button>{' '}
-            <Button
-              outline
-              className="secondary-new"
-              // style={{ background: '#6c757d', border: 'none' }}
-              onClick={() => setModalLong(false)}
-            >
-              Cancel
-            </Button>
-          </ModalFooter>
-        </Modal>
+              <Input
+                type="text"
+                defaultValue={state.name}
+                onChange={(event) => {
+                  // formData.append('name', event.target.value);
+                  setState((oldVal) => {
+                    return { ...oldVal, name: event.target.value };
+                  });
+                }}
+              />
+            </ModalBody>
+            <ModalFooter style={{ borderTop: 'none' }}>
+              <Button
+                outline
+                className="primary-new"
+                type="submit"
+                onClick={handleSubmit}
+                press
+              >
+                Submit
+              </Button>{' '}
+              <Button
+                outline
+                className="secondary-new"
+                // style={{ background: '#6c757d', border: 'none' }}
+                onClick={() => setModalLong(false)}
+              >
+                Cancel
+              </Button>
+            </ModalFooter>
+          </Modal>
+        </form>
       </Card>
       <Colxx xxs="12">
         <CardTitle className="mb-4">
@@ -275,7 +289,7 @@ function Brand() {
         </CardTitle>
         <Row>
           {BrandData &&
-            BrandData.map((brand, index) => (
+            BrandData.reverse().map((brand, index) => (
               <Colxx xxs="12" xs="6" md="3" lg="2" key={brand?._id}>
                 <Card className="mb-4" style={{ borderRadius: '0.75rem' }}>
                   <div className="position-relative">
@@ -292,7 +306,7 @@ function Brand() {
                   </div>
                   <CardBody className="p-2">
                     <CardSubtitle className="mb-3 font-weight-bold font-size-11">
-                      <h2 className="truncate">{brand?.name}</h2>
+                      <h6 className="truncate">{brand?.name}</h6>
                     </CardSubtitle>
                     {/* <CardText className="text-muted text-small mb-0 font-weight-light">
                 09.04.2018

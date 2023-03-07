@@ -21,6 +21,7 @@ import {
   CHANGE_PASSWORD_ERROR,
   CHANGE_PASSWORD_SUCCESS,
   CHANGE_PASSWORD,
+  USER_AUTH_SUCCESS,
 } from '../contants';
 
 export const getUserDetails = (history) => ({
@@ -91,8 +92,9 @@ export const changePassword = (values, history) => ({
   type: CHANGE_PASSWORD,
   payload: { ...values, history },
 });
-export const changePasswordSuccess = () => ({
+export const changePasswordSuccess = (message) => ({
   type: CHANGE_PASSWORD_SUCCESS,
+  payload: { message },
 });
 export const changePasswordError = (message) => ({
   type: CHANGE_PASSWORD_ERROR,
@@ -111,7 +113,9 @@ export const registerUserError = (message) => ({
   type: REGISTER_USER_ERROR,
   payload: { message },
 });
-
+export const authSuccess = () => ({
+  type: USER_AUTH_SUCCESS,
+});
 export const logoutUser = (history) => ({
   type: LOGOUT_USER,
   payload: { history },

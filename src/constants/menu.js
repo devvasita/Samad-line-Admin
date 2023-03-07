@@ -2,9 +2,9 @@ import { adminRoot } from './defaultValues';
 
 const data = [
   {
-    id: 'dashboards',
+    id: 'dashboard',
     icon: 'simple-icon-basket-loaded',
-    label: 'menu.dashboards',
+    label: 'Dashboard',
     to: `${adminRoot}/dashboards/ecommerce`,
     // roles: [UserRole.Admin, UserRole.Editor],
     // subs: [

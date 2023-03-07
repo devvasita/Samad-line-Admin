@@ -34,7 +34,9 @@ const Otp = ({ loading }) => {
   const onVerifyOtp = (values) => {
     if (!loading) {
       if (values.otp !== '') {
-        dispatch(verifyOtp({ mobileNo, otp: values.otp, resetPass }, history));
+        dispatch(
+          verifyOtp({ mobileNo, otp: Number(values.otp), resetPass }, history)
+        );
       }
     }
   };
@@ -73,9 +75,17 @@ const Otp = ({ loading }) => {
                     <Field
                       className="form-control"
                       name="otp"
-                      type="number"
+                      // type="number"
                       // validate={validateEmail}
                       maxlength={6}
+                      onKeyPress={(event) => {
+                        const charCode = event.which
+                          ? event.which
+                          : event.keyCode;
+                        if ((charCode > 31 && charCode < 48) || charCode > 57) {
+                          event.preventDefault();
+                        }
+                      }}
                     />
                     {errors.otp && touched.otp && (
                       <div className="invalid-feedback d-block">
@@ -86,7 +96,7 @@ const Otp = ({ loading }) => {
 
                   <div className="d-flex justify-content-between align-items-center">
                     <NavLink to="/">
-                      <IntlMessages id="Change MobileNumber ?" />
+                      <IntlMessages id="Change Number" />
                     </NavLink>
                     <Button
                       color="primary"

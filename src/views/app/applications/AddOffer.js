@@ -359,6 +359,16 @@ function AddOffer() {
                           onChange={(e) =>
                             handleChange(e.target.value, 'value')
                           }
+                          onKeyPress={(event) => {
+                            const charCode = event.which
+                              ? event.which
+                              : event.keyCode;
+                            if (
+                              String.fromCharCode(charCode).match(/[^0-9.]/g)
+                            ) {
+                              event.preventDefault();
+                            }
+                          }}
                           name="value"
                         />
 

@@ -34,6 +34,7 @@ import {
   verifyOtpError,
   changePasswordError,
   changePasswordSuccess,
+  authSuccess,
 } from './actions';
 
 const getUSerDetailsAsync = async () => {
@@ -104,6 +105,7 @@ function* loginWithPhoneNumberPassword({ payload }) {
 
     if (status === 200) {
       yield call(GenerateOtpAsync, mobileNo);
+      yield put(authSuccess());
       localStorage.setItem('mobileNo', JSON.stringify({ mobileNo }));
       history.push('/user/otp');
     } else {
@@ -273,15 +275,15 @@ const changePasswordAsync = async (oldPassword, newPassword) => {
   }
 };
 function* changePassword({ payload }) {
-  const { oldPassword, newPassword, history } = payload;
+  const { oldPassword, newPassword } = payload;
   try {
     const {
       status,
       data: { success, message },
     } = yield call(changePasswordAsync, oldPassword, newPassword);
+    console.log(message, 'message');
     if (status === 200 && success) {
-      yield put(changePasswordSuccess());
-      history.push('/app/dashboards/default');
+      yield put(changePasswordSuccess(message));
     } else {
       yield put(changePasswordError(message));
     }

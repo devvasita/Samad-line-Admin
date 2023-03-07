@@ -56,7 +56,7 @@ function Offers() {
   }, [dispatch]);
 
   const OffersData = useSelector((state) => state?.offer?.offers);
-
+  console.log(OffersData, '-OffersData');
   const open = Boolean(anchorEl);
   const handleClose = () => {
     setAnchorEl(null);
@@ -123,15 +123,29 @@ function Offers() {
                         style={{ color: '#6fb327' }}
                       >
                         <h5>
-                          <b>{offersItem?.value} off</b>
+                          <>
+                            {offersItem.discountType?.label ===
+                            'Percentage(%)' ? (
+                              <b>{offersItem?.value}% off</b>
+                            ) : (
+                              <b>{offersItem?.value}₹ off</b>
+                            )}
+                          </>
                         </h5>
                       </div>
 
                       <small>
                         <b>
                           Valid till{' '}
-                          {Moment(offersItem?.validTill).format(
-                            'DD MMMM, YYYY'
+                          {offersItem?.validTill.toString() !== 'undefined' ? (
+                            <b>
+                              {' '}
+                              {Moment(offersItem?.validTill).format(
+                                'DD MMMM, YYYY'
+                              )}
+                            </b>
+                          ) : (
+                            <b>N/A</b>
                           )}
                         </b>
                       </small>

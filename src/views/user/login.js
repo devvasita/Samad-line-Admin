@@ -81,8 +81,17 @@ const Login = ({ loading, error, loginUserAction }) => {
                       <Field
                         className="form-control"
                         name="mobile"
+                        maxLength={10}
                         // validate={validateEmail}
                         // component={TextField}
+                        onKeyPress={(event) => {
+                          const charCode = event.which
+                            ? event.which
+                            : event.keyCode;
+                          if (String.fromCharCode(charCode).match(/[^0-9]/g)) {
+                            event.preventDefault();
+                          }
+                        }}
                         size="small"
                         InputProps={{
                           endAdornment: (

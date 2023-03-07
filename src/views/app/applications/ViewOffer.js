@@ -146,7 +146,11 @@ function ViewOffer() {
                   </CardSubtitle>
 
                   <CardText className="mb-2">
-                    <b>{data?.validTill}</b>
+                    {data?.validTill.toString() !== 'undefined' ? (
+                      <b>{data?.validTill}</b>
+                    ) : (
+                      <b>N/A</b>
+                    )}
                   </CardText>
                 </div>
               </CardBody>
