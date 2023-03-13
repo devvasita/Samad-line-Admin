@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable no-plusplus */
 /* eslint-disable jsx-a11y/label-has-for */
 /* eslint-disable jsx-a11y/label-has-associated-control */
@@ -9,6 +10,7 @@ import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 
 // / This function is used to convert base64 encoding to mime type (blob)
+
 function dataURItoBlob(dataURI) {
   const binary = atob(dataURI.split(',')[1]);
   const array = [];
@@ -59,7 +61,7 @@ function setCanvasImage(image, canvas, crop, setCropedImage) {
   }
 }
 
-export default function CropImage({ setCropedImage, upImg, setUpImg }) {
+export default function CropImage({ setCropedImage, upImg, setUpImg, src }) {
   const imgRef = useRef(null);
   const previewCanvasRef = useRef(null);
 
@@ -90,25 +92,31 @@ export default function CropImage({ setCropedImage, upImg, setUpImg }) {
     );
   }, [completedCrop]);
 
-  console.log({ upImg });
   return (
     <>
-      {/* <img src="/assets/uploadicon.svg" alt="" style={{ height: '35px' }} /> */}
-
-      {upImg ? (
-        <img src="/assets/uploadicon.svg" alt="" style={{ height: '35px' }} />
+      {src && src.length ? (
+        <img src={src} style={{ height: 113, width: 113 }} />
       ) : (
-        <label>
-          <ReactCrop
-            src={upImg}
-            onImageLoaded={onLoad}
-            crop={crop}
-            onChange={(c) => setCrop(c)}
-            onComplete={(c) => setCompletedCrop(c)}
-            maxHeight={113}
-            maxWidth={113}
-            style={{ height: 113, width: 238 }}
-          />
+        <>
+          {upImg ? (
+            <ReactCrop
+              src={src ?? upImg}
+              onImageLoaded={onLoad}
+              crop={crop}
+              onChange={(c) => setCrop(c)}
+              onComplete={(c) => setCompletedCrop(c)}
+              maxHeight={113}
+              maxWidth={113}
+              style={{ height: 113, width: 238 }}
+            />
+          ) : (
+            <img
+              src="/assets/uploadicon.svg"
+              alt=""
+              style={{ height: '35px' }}
+            />
+          )}
+
           <input
             hidden
             required
@@ -117,10 +125,8 @@ export default function CropImage({ setCropedImage, upImg, setUpImg }) {
             type="file"
             onChange={onSelectFile}
           />
-          <img src="/assets/uploadicon.svg" alt="" style={{ height: '35px' }} />
-        </label>
+        </>
       )}
-
       <div>
         {/* Canvas to display cropped image */}
         <canvas
