@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-useless-computed-key */
 import { Colxx, Separator } from 'components/common/CustomBootstrap';
@@ -21,6 +22,7 @@ import {
   getSingleProduct,
   updateProduct,
 } from 'redux/actions';
+import CropImage from '../ui/components/crop';
 // import * as Yup from 'yup';
 
 const fetchOtherDetails = (list) => {
@@ -124,11 +126,11 @@ const quillFormats = [
 ];
 
 function NewComp({ setimgArr, i, imgArr, setImgIndex }) {
-  const handleChange = (e) => {
-    e.stopPropagation();
+  const [upImg, setUpImg] = useState();
+  const handleChange = (img) => {
     imgArr.splice(i, 1, {
-      file: e.target.files[0],
-      url: URL.createObjectURL(e.target.files[0]),
+      file: img,
+      url: URL.createObjectURL(img),
     });
     setImgIndex({
       index: i,
@@ -140,6 +142,7 @@ function NewComp({ setimgArr, i, imgArr, setImgIndex }) {
   const classes = useStyles();
 
   const handleCancelImage = () => {
+    console.log('cancle???????????');
     imgArr.splice(i, 1, {
       file: null,
       url: '',
@@ -149,13 +152,15 @@ function NewComp({ setimgArr, i, imgArr, setImgIndex }) {
       removed: true,
     });
     setimgArr(imgArr);
+    setUpImg(null);
   };
 
   return (
     <Colxx xxs="3">
-      {imgArr[i] && imgArr[i].url ? (
-        <div>
-          <div className={classes.upload}>
+      {i === 0 && <span className={classes.required}>* Cover Image</span>}
+      <div aria-hidden="true" className={classes.image}>
+        <div className={classes.upload}>
+          {imgArr[i] && imgArr[i].url && (
             <CancelIcon
               onClick={handleCancelImage}
               style={{
@@ -165,23 +170,7 @@ function NewComp({ setimgArr, i, imgArr, setImgIndex }) {
                 cursor: 'pointer',
               }}
             />
-            <img
-              src={imgArr[i].url}
-              alt=""
-              style={{
-                objectFit: 'contain',
-                borderRadius: '10px',
-                height: '100%',
-                width: '100%',
-                border: '1px solid',
-              }}
-            />
-          </div>
-        </div>
-      ) : (
-        <div aria-hidden="true" className={classes.image}>
-          {i === 0 && <span className={classes.required}>* Cover Image</span>}
-
+          )}
           <IconButton
             color="primary"
             aria-label="upload picture"
@@ -191,25 +180,18 @@ function NewComp({ setimgArr, i, imgArr, setImgIndex }) {
               borderRadius: 0,
               width: '100%',
               height: '100%',
+              // background: 'red',
             }}
           >
-            <input
-              hidden
-              required
-              accept="image/*"
-              requiredStar
-              type="file"
-              onChange={(e) => handleChange(e, i)}
-            />
-
-            <img
-              src="/assets/uploadicon.svg"
-              alt=""
-              style={{ height: '35px' }}
+            <CropImage
+              upImg={upImg}
+              setUpImg={(val) => setUpImg(val)}
+              setCropedImage={(e) => handleChange(e, i)}
+              src={imgArr[i].url}
             />
           </IconButton>
         </div>
-      )}
+      </div>
     </Colxx>
   );
 }
@@ -415,7 +397,9 @@ function EditProduct({ history }) {
     formData.append('color', product.color);
     formData.append('nonVeg', product.nonVeg);
     formData.append('_id', id);
-    const sortedIndex = product.updatedImageIds.sort((a, b) => a - b);
+    const sortedIndex = product.updatedImageIds.sort(
+      (a, b) => a.index - b.index
+    );
     formData.append('updatedImageIds', JSON.stringify(sortedIndex));
     product.image.map(
       (elem) => elem.file && formData.append('image', elem.file)
@@ -442,6 +426,7 @@ function EditProduct({ history }) {
       <Row>
         <Colxx xxs="12">
           <h1> Edit Product</h1>
+          <CropImage />
           <Separator className="mb-5" />
         </Colxx>
       </Row>
@@ -462,7 +447,13 @@ function EditProduct({ history }) {
                     setProduct((oldVal) => {
                       return {
                         ...oldVal,
-                        updatedImageIds: [...oldVal.updatedImageIds, imgIndex],
+                        updatedImageIds: [
+                          ...oldVal.updatedImageIds,
+                          imgIndex,
+                        ].filter(
+                          (v, i, a) =>
+                            a.findIndex((v2) => v2.index === v.index) === i
+                        ),
                       };
                     })
                   }
