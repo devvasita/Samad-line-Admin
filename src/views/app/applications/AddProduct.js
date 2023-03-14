@@ -16,6 +16,7 @@ import 'react-quill/dist/quill.snow.css';
 import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addProduct, getBrandAndCategory, getProducts } from 'redux/actions';
+import CropImage from '../ui/components/crop';
 // import * as Yup from 'yup';
 
 const useStyles = makeStyles(() => ({
@@ -110,11 +111,11 @@ const quillFormats = [
 ];
 
 function NewComp({ setimgArr, i, imgArr }) {
-  const handleChange = (e) => {
-    e.stopPropagation();
+  const [upImg, setUpImg] = useState();
+  const handleChange = (img) => {
     imgArr.splice(i, 1, {
-      file: e.target.files[0],
-      url: URL.createObjectURL(e.target.files[0]),
+      file: img,
+      url: URL.createObjectURL(img),
     });
 
     setimgArr(imgArr);
@@ -123,72 +124,53 @@ function NewComp({ setimgArr, i, imgArr }) {
   const classes = useStyles();
 
   const handleCancelImage = () => {
+    console.log('cancle???????????');
     imgArr.splice(i, 1, {
       file: null,
       url: '',
     });
+
     setimgArr(imgArr);
+    setUpImg(null);
   };
 
   return (
     <Colxx xxs="3">
-      {imgArr[i] && imgArr[i].url ? (
-        <div>
+      {i === 0 && <span className={classes.required}>* Cover Image</span>}
+      <div aria-hidden="true" className={classes.image}>
+        {imgArr[i] && imgArr[i].url && (
+          <CancelIcon
+            onClick={handleCancelImage}
+            style={{
+              position: 'absolute',
+              top: 0,
+              right: '-5px',
+              cursor: 'pointer',
+            }}
+          />
+        )}
+        <IconButton
+          color="primary"
+          aria-label="upload picture"
+          component="label"
+          style={{
+            margin: 'auto',
+            borderRadius: 0,
+            width: '100%',
+            height: '100%',
+            // background: 'red',
+          }}
+        >
           <div className={classes.upload}>
-            <CancelIcon
-              onClick={handleCancelImage}
-              style={{
-                position: 'absolute',
-                top: 0,
-                right: '-25px',
-                cursor: 'pointer',
-              }}
-            />
-            <img
-              src={imgArr[i].url}
-              alt=""
-              style={{
-                objectFit: 'contain',
-                borderRadius: '10px',
-                height: '100%',
-                width: '100%',
-                border: '1px solid',
-              }}
+            <CropImage
+              upImg={upImg}
+              setUpImg={(val) => setUpImg(val)}
+              setCropedImage={(e) => handleChange(e, i)}
+              src={imgArr[i]?.url || ''}
             />
           </div>
-        </div>
-      ) : (
-        <div aria-hidden="true" className={classes.image}>
-          {i === 0 && <span className={classes.required}>* Cover Image</span>}
-
-          <IconButton
-            color="primary"
-            aria-label="upload picture"
-            component="label"
-            style={{
-              margin: 'auto',
-              borderRadius: 0,
-              width: '100%',
-              height: '100%',
-            }}
-          >
-            <input
-              hidden
-              required
-              accept="image/*"
-              requiredStar
-              type="file"
-              onChange={(e) => handleChange(e, i)}
-            />
-
-            <img
-              src="/assets/uploadicon.svg"
-              alt=""
-              style={{ height: '35px' }}
-            />
-          </IconButton>
-        </div>
-      )}
+        </IconButton>
+      </div>
     </Colxx>
   );
 }

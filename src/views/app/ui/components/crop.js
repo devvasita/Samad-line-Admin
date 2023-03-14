@@ -133,25 +133,22 @@ export default function CropImage({ setCropedImage, upImg, setUpImg, src }) {
     startDownload();
   }, []);
 
-  useEffect(() => {
-    setCanvasImage(
-      imgRef.current,
-      previewCanvasRef.current,
-      completedCrop,
-      setCropedImage
-    );
-  }, [completedCrop]);
-
   return (
     <>
       {src && src.length ? (
-        // <img src={src} style={{ height: 113, width: 113 }} />
         <ReactCrop
           src={upImg}
           onImageLoaded={onLoad}
           crop={crop}
           onChange={(c) => setCrop(c)}
-          onComplete={(c) => setCompletedCrop(c)}
+          onComplete={(c) =>
+            setCanvasImage(
+              imgRef.current,
+              previewCanvasRef.current,
+              completedCrop,
+              setCropedImage
+            )
+          }
           style={{
             maxHeight: 113,
             minHeight: 113,

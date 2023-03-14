@@ -32,6 +32,7 @@ import { useDispatch, useSelector } from 'react-redux';
 // import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import { NotificationManager } from 'components/common/react-notifications';
+import CropImage from '../ui/components/crop';
 
 function Brand() {
   const BrandData = useSelector(
@@ -39,7 +40,7 @@ function Brand() {
   );
   const dispatch = useDispatch();
 
-  const [image, setimage] = useState('');
+  const [upImg, setUpImg] = useState();
   const [modalLong, setModalLong] = useState(false);
   const [modelEdit, setModelEdit] = useState(false);
   const [state, setState] = useState({
@@ -68,16 +69,14 @@ function Brand() {
   }, [error]);
 
   const handleChange = (e) => {
-    e.preventDefault();
-
     setState({
       name: state.name,
-      image: e.target.files[0],
+      image: e,
       _id: state._id,
     });
-    setimage(URL.createObjectURL(e.target.files[0]));
   };
   const handleCancelImage = () => {
+    setUpImg(null);
     setState({
       name: state.name,
       image: '',
@@ -170,80 +169,38 @@ function Brand() {
                 <IntlMessages id="Upload Image : " />
               </Label>
               <div>
-                {!state.image ? (
-                  <div className="model">
-                    <IconButton
-                      color="primary"
-                      aria-label="upload picture"
-                      component="label"
+                <div className="model">
+                  {state.image && (
+                    <CancelIcon
+                      onClick={handleCancelImage}
                       style={{
-                        margin: 'auto',
-                        borderRadius: 0,
-                        width: '100%',
-                        height: '100%',
+                        position: 'absolute',
+                        top: '-25px',
+                        right: '-30px',
+                        cursor: 'pointer',
                       }}
-                    >
-                      <input
-                        hidden
-                        accept="image/*"
-                        type="file"
-                        onChange={handleChange}
-                      />
+                    />
+                  )}
 
-                      <img
-                        src="/assets/uploadicon.svg"
-                        alt=""
-                        style={{ height: '35px' }}
-                      />
-                    </IconButton>
-                  </div>
-                ) : (
-                  <div>
-                    {state.image ? (
-                      <div
-                        style={{
-                          position: 'relative',
-                          // display: 'flex',
-                          justifyContent: 'center',
-                          margin: 'auto',
-                          width: '50%',
-                          height: 'auto',
-                          textAlign: 'center',
-                        }}
-                      >
-                        <CancelIcon
-                          onClick={handleCancelImage}
-                          style={{
-                            position: 'absolute',
-                            top: 0,
-                            right: '-25px',
-                            cursor: 'pointer',
-                          }}
-                        />
-
-                        <img
-                          src={state.image.length ? state.image : image}
-                          alt=""
-                          style={{
-                            objectFit: 'contain',
-                            borderRadius: '10px',
-                            height: '100%',
-                            width: '100%',
-                            border: '1px solid',
-                            boxShadow:
-                              '0px 16px 16px rgb(50 50 71 / 8%), 0px 24px 32px rgb(50 50 71 / 8%)',
-                          }}
-                        />
-
-                        {/* {result && (
-                        <div>
-                          <img src={result} alt="result" />
-                        </div>
-                      )} */}
-                      </div>
-                    ) : null}
-                  </div>
-                )}
+                  <IconButton
+                    color="primary"
+                    aria-label="upload picture"
+                    component="label"
+                    style={{
+                      margin: 'auto',
+                      borderRadius: 0,
+                      width: '100%',
+                      height: '100%',
+                    }}
+                  >
+                    <CropImage
+                      upImg={upImg}
+                      setUpImg={(val) => setUpImg(val)}
+                      setCropedImage={(e) => handleChange(e)}
+                      src={state.image || null}
+                    />
+                  </IconButton>
+                </div>
               </div>
 
               <Label className="mt-4">
@@ -275,7 +232,10 @@ function Brand() {
                 outline
                 className="secondary-new"
                 // style={{ background: '#6c757d', border: 'none' }}
-                onClick={() => setModalLong(false)}
+                onClick={() => {
+                  setUpImg(null);
+                  setModalLong(false);
+                }}
               >
                 Cancel
               </Button>
@@ -289,7 +249,7 @@ function Brand() {
         </CardTitle>
         <Row>
           {BrandData &&
-            BrandData.reverse().map((brand, index) => (
+            BrandData.map((brand, index) => (
               <Colxx xxs="12" xs="6" md="3" lg="2" key={brand?._id}>
                 <Card className="mb-4" style={{ borderRadius: '0.75rem' }}>
                   <div className="position-relative">
