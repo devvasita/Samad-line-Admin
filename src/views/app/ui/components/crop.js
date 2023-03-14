@@ -16,10 +16,10 @@ const useStyles = makeStyles(() => ({
   react__crop: {
     '&>div': {
       '&>img': {
-        maxHeight: 113,
-        minHeight: 113,
-        width: 'fit-content',
-        margin: '0 auto',
+        // maxHeight: 113,
+        // minHeight: 113,
+        // width: 'fit-content',
+        // margin: '0 auto',
       },
     },
   },
@@ -52,8 +52,8 @@ function setCanvasImage(image, canvas, crop, setCropedImage) {
   canvas.height = crop.height * pixelRatio * scaleY;
 
   // refer https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setTransform
-  ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-  ctx.imageSmoothingQuality = 'high';
+  // ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+  // ctx.imageSmoothingQuality = 'high';
 
   // refer https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
   ctx.drawImage(
@@ -152,9 +152,12 @@ export default function CropImage({ setCropedImage, upImg, setUpImg, src }) {
           crop={crop}
           onChange={(c) => setCrop(c)}
           onComplete={(c) => setCompletedCrop(c)}
-          maxHeight={113}
-          maxWidth={113}
-          style={{ height: 113, width: 238 }}
+          style={{
+            maxHeight: 113,
+            minHeight: 113,
+            width: 'fit-content',
+            margin: '0 auto',
+          }}
           className={classes.react__crop}
         />
       ) : (
@@ -166,9 +169,12 @@ export default function CropImage({ setCropedImage, upImg, setUpImg, src }) {
               crop={crop}
               onChange={(c) => setCrop(c)}
               onComplete={(c) => setCompletedCrop(c)}
-              maxHeight={113}
-              maxWidth={113}
-              style={{ height: 113, width: 238 }}
+              style={{
+                maxHeight: 113,
+                minHeight: 113,
+                width: 'fit-content',
+                margin: '0 auto',
+              }}
               className={classes.react__crop}
             />
           ) : (
