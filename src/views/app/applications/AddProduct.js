@@ -334,8 +334,9 @@ function AddProduct({ history }) {
 
     formData.append('name', product.name);
     formData.append('price', product.price);
-    formData.append('brand', product.brand);
-    formData.append('category', product.category);
+    formData.append('brand', product.brand.value);
+    formData.append('unit', product.unit.value);
+    formData.append('category', product.category.value);
     formData.append('countInStock', '');
     formData.append('numReviews', '');
     formData.append('description', product.description);
@@ -343,7 +344,6 @@ function AddProduct({ history }) {
     formData.append('mrp', product.mrp);
     formData.append('flavour', product.flavour);
     formData.append('value', product.value);
-    formData.append('unit', product.unit);
     formData.append('color', product.color);
     formData.append('nonVeg', product.nonVeg);
     product.image.map(
