@@ -70,10 +70,11 @@ const useStyles = makeStyles(() => ({
     position: 'relative',
     display: 'flex',
     justifyContent: 'center',
-    margin: 'auto',
+    // margin: 'auto',
     // width: '30%',
     height: '115px',
-    marginTop: '15px',
+    alignItems: 'center',
+    // marginTop: '15px',
 
     '@media (max-width: 450px)': {
       width: '70%',
