@@ -334,9 +334,9 @@ function AddProduct({ history }) {
 
     formData.append('name', product.name);
     formData.append('price', product.price);
-    formData.append('brand', product.brand.value);
-    formData.append('unit', product.unit.value);
-    formData.append('category', product.category.value);
+    formData.append('brand', product.brand.label);
+    formData.append('unit', product.unit.label);
+    formData.append('category', product.category.label);
     formData.append('countInStock', '');
     formData.append('numReviews', '');
     formData.append('description', product.description);
