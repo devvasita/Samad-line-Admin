@@ -145,7 +145,7 @@ export default function CropImage({ setCropedImage, upImg, setUpImg, src }) {
             setCanvasImage(
               imgRef.current,
               previewCanvasRef.current,
-              completedCrop,
+              c,
               setCropedImage
             )
           }
@@ -165,7 +165,14 @@ export default function CropImage({ setCropedImage, upImg, setUpImg, src }) {
               onImageLoaded={onLoad}
               crop={crop}
               onChange={(c) => setCrop(c)}
-              onComplete={(c) => setCompletedCrop(c)}
+              onComplete={(c) =>
+                setCanvasImage(
+                  imgRef.current,
+                  previewCanvasRef.current,
+                  c,
+                  setCropedImage
+                )
+              }
               style={{
                 maxHeight: 113,
                 minHeight: 113,
