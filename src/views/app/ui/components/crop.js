@@ -5,11 +5,25 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-param-reassign */
+import { makeStyles } from '@mui/styles';
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 
 // / This function is used to convert base64 encoding to mime type (blob)
+
+const useStyles = makeStyles(() => ({
+  react__crop: {
+    '&>div': {
+      '&>img': {
+        maxHeight: 113,
+        minHeight: 113,
+        width: 'fit-content',
+        margin: '0 auto',
+      },
+    },
+  },
+}));
 
 function dataURItoBlob(dataURI) {
   const binary = atob(dataURI.split(',')[1]);
@@ -27,7 +41,7 @@ function setCanvasImage(image, canvas, crop, setCropedImage) {
   if (!crop || !canvas || !image) {
     return;
   }
-
+  console.log({ image });
   const scaleX = image.naturalWidth / image.width;
   const scaleY = image.naturalHeight / image.height;
   const ctx = canvas.getContext('2d');
@@ -64,6 +78,7 @@ function setCanvasImage(image, canvas, crop, setCropedImage) {
 export default function CropImage({ setCropedImage, upImg, setUpImg, src }) {
   const imgRef = useRef(null);
   const previewCanvasRef = useRef(null);
+  const classes = useStyles();
 
   const [crop, setCrop] = useState({ unit: 'px', width: 30, aspect: 1 });
   const [completedCrop, setCompletedCrop] = useState(null);
@@ -140,6 +155,7 @@ export default function CropImage({ setCropedImage, upImg, setUpImg, src }) {
           maxHeight={113}
           maxWidth={113}
           style={{ height: 113, width: 238 }}
+          className={classes.react__crop}
         />
       ) : (
         <>
@@ -153,6 +169,7 @@ export default function CropImage({ setCropedImage, upImg, setUpImg, src }) {
               maxHeight={113}
               maxWidth={113}
               style={{ height: 113, width: 238 }}
+              className={classes.react__crop}
             />
           ) : (
             <img
