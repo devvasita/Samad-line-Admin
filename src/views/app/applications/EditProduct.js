@@ -159,38 +159,38 @@ function NewComp({ setimgArr, i, imgArr, setImgIndex }) {
     <Colxx xxs="3">
       {i === 0 && <span className={classes.required}>* Cover Image</span>}
       <div aria-hidden="true" className={classes.image}>
-        <div className={classes.upload}>
-          {imgArr[i] && imgArr[i].url && (
-            <CancelIcon
-              onClick={handleCancelImage}
-              style={{
-                position: 'absolute',
-                top: 0,
-                right: '-25px',
-                cursor: 'pointer',
-              }}
-            />
-          )}
-          <IconButton
-            color="primary"
-            aria-label="upload picture"
-            component="label"
+        {imgArr[i] && imgArr[i].url && (
+          <CancelIcon
+            onClick={handleCancelImage}
             style={{
-              margin: 'auto',
-              borderRadius: 0,
-              width: '100%',
-              height: '100%',
-              // background: 'red',
+              position: 'absolute',
+              top: 0,
+              right: '-5px',
+              cursor: 'pointer',
             }}
-          >
+          />
+        )}
+        <IconButton
+          color="primary"
+          aria-label="upload picture"
+          component="label"
+          style={{
+            margin: 'auto',
+            borderRadius: 0,
+            width: '100%',
+            height: '100%',
+            // background: 'red',
+          }}
+        >
+          <div className={classes.upload}>
             <CropImage
               upImg={upImg}
               setUpImg={(val) => setUpImg(val)}
               setCropedImage={(e) => handleChange(e, i)}
-              src={imgArr[i].url}
+              src={imgArr[i]?.url || ''}
             />
-          </IconButton>
-        </div>
+          </div>
+        </IconButton>
       </div>
     </Colxx>
   );

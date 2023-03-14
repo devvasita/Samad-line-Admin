@@ -83,6 +83,41 @@ export default function CropImage({ setCropedImage, upImg, setUpImg, src }) {
     imgRef.current = img;
   }, []);
 
+  let downloadedImg = '';
+
+  function imageReceived() {
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+
+    canvas.width = downloadedImg.width;
+    canvas.height = downloadedImg.height;
+    canvas.innerText = downloadedImg.alt;
+    context.drawImage(downloadedImg, 0, 0);
+    console.log({ canvas });
+    // imageBox.appendChild(canvas);
+
+    try {
+      setUpImg(canvas.toDataURL('image/png'));
+      console.log({ img: canvas.toDataURL('image/png') });
+    } catch (err) {
+      console.error(`Error: ${err}`);
+    }
+  }
+
+  function startDownload() {
+    const imageURL = src;
+    const imageDescription = 'The Mozilla logo';
+    downloadedImg = new Image();
+    downloadedImg.crossOrigin = 'Anonymous';
+    downloadedImg.addEventListener('load', imageReceived, false);
+    downloadedImg.alt = imageDescription;
+    downloadedImg.src = imageURL;
+  }
+
+  useEffect(() => {
+    startDownload();
+  }, []);
+
   useEffect(() => {
     setCanvasImage(
       imgRef.current,
@@ -95,12 +130,22 @@ export default function CropImage({ setCropedImage, upImg, setUpImg, src }) {
   return (
     <>
       {src && src.length ? (
-        <img src={src} style={{ height: 113, width: 113 }} />
+        // <img src={src} style={{ height: 113, width: 113 }} />
+        <ReactCrop
+          src={upImg}
+          onImageLoaded={onLoad}
+          crop={crop}
+          onChange={(c) => setCrop(c)}
+          onComplete={(c) => setCompletedCrop(c)}
+          maxHeight={113}
+          maxWidth={113}
+          style={{ height: 113, width: 238 }}
+        />
       ) : (
         <>
           {upImg ? (
             <ReactCrop
-              src={src ?? upImg}
+              src={upImg}
               onImageLoaded={onLoad}
               crop={crop}
               onChange={(c) => setCrop(c)}
