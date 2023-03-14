@@ -504,7 +504,7 @@ function AddProduct({ history }) {
                         options={brand}
                         // validate={() => product.brand === '' && 'Required'}
                         name="brand"
-                        onChange={({ label }) => handleChange(label, 'brand')}
+                        onChange={(label) => handleChange(label, 'brand')}
                       />
                       {errors.brand && touched.brand && (
                         <div className="invalid-feedback d-block">
@@ -524,9 +524,7 @@ function AddProduct({ history }) {
                         //   product.category.length === 0 && 'Required'
                         // }
                         name="category"
-                        onChange={({ label }) =>
-                          handleChange(label, 'category')
-                        }
+                        onChange={(label) => handleChange(label, 'category')}
                       />
                       {errors.category && touched.category && (
                         <div className="invalid-feedback d-block">
@@ -547,7 +545,7 @@ function AddProduct({ history }) {
                         options={unit}
                         // validate={() => product.unit.length === 0 && 'Required'}
                         name="unit"
-                        onChange={({ value }) => handleChange(value, 'unit')}
+                        onChange={(label) => handleChange(label, 'unit')}
                         // value={product.unit}
                         //  onChange={handleChange}
                       />
