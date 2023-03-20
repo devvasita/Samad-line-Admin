@@ -38,6 +38,7 @@ function dataURItoBlob(dataURI) {
 }
 
 function setCanvasImage(image, canvas, crop, setCropedImage) {
+  console.log('crop started');
   if (!crop || !canvas || !image) {
     return;
   }
@@ -48,8 +49,8 @@ function setCanvasImage(image, canvas, crop, setCropedImage) {
   // refer https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio
   const pixelRatio = window.devicePixelRatio;
 
-  canvas.width = crop.width * pixelRatio * scaleX;
-  canvas.height = crop.height * pixelRatio * scaleY;
+  canvas.width = 240;
+  canvas.height = 240;
 
   // refer https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setTransform
   // ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
@@ -64,8 +65,8 @@ function setCanvasImage(image, canvas, crop, setCropedImage) {
     crop.height * scaleY,
     0,
     0,
-    crop.width * scaleX,
-    crop.height * scaleY
+    240,
+    240
   );
   if (canvas) {
     const dataURl = canvas.toDataURL('image/png', 'image/webp');
@@ -80,7 +81,12 @@ export default function CropImage({ setCropedImage, upImg, setUpImg, src }) {
   const previewCanvasRef = useRef(null);
   const classes = useStyles();
 
-  const [crop, setCrop] = useState({ unit: 'px', width: 30, aspect: 1 });
+  const [crop, setCrop] = useState({
+    unit: 'px',
+    width: 240,
+    height: 240,
+    aspect: 1,
+  });
   const [completedCrop, setCompletedCrop] = useState(null);
 
   // on selecting file we set load the image on to cropper
@@ -141,6 +147,15 @@ export default function CropImage({ setCropedImage, upImg, setUpImg, src }) {
           onImageLoaded={onLoad}
           crop={crop}
           onChange={(c) => setCrop(c)}
+          style={{
+            maxHeight: 240,
+            maxWidth: 240,
+            width: '100%',
+            height: '100%',
+            margin: '0 auto',
+          }}
+          maxHeight={240}
+          maxWidth={240}
           onComplete={(c) =>
             setCanvasImage(
               imgRef.current,
@@ -149,12 +164,6 @@ export default function CropImage({ setCropedImage, upImg, setUpImg, src }) {
               setCropedImage
             )
           }
-          style={{
-            maxHeight: 113,
-            minHeight: 113,
-            width: 'fit-content',
-            margin: '0 auto',
-          }}
           className={classes.react__crop}
         />
       ) : (
@@ -174,11 +183,14 @@ export default function CropImage({ setCropedImage, upImg, setUpImg, src }) {
                 )
               }
               style={{
-                maxHeight: 113,
-                minHeight: 113,
-                width: 'fit-content',
+                maxHeight: 240,
+                maxWidth: 240,
+                width: '100%',
+                height: '100%',
                 margin: '0 auto',
               }}
+              maxHeight={240}
+              maxWidth={240}
               className={classes.react__crop}
             />
           ) : (

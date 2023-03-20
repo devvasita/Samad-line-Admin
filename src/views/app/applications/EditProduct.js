@@ -52,7 +52,7 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     // width: '30%',
     margin: ' 0 auto',
-    height: '115px',
+    height: '240px',
     cursor: 'pointer',
     marginTop: '15px',
     // [theme.breakpoints.up('sm')]: {
@@ -72,7 +72,7 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'center',
     // margin: 'auto',
     // width: '30%',
-    height: '115px',
+    height: '240px',
     alignItems: 'center',
     // marginTop: '15px',
 
@@ -165,8 +165,8 @@ function NewComp({ setimgArr, i, imgArr, setImgIndex }) {
             onClick={handleCancelImage}
             style={{
               position: 'absolute',
-              top: 0,
-              right: '-5px',
+              top: '-10px',
+              right: '-10px',
               cursor: 'pointer',
             }}
           />
@@ -180,6 +180,7 @@ function NewComp({ setimgArr, i, imgArr, setImgIndex }) {
             borderRadius: 0,
             width: '100%',
             height: '100%',
+            padding: 0,
             // background: 'red',
           }}
         >
@@ -260,7 +261,7 @@ function EditProduct({ history }) {
     dispatch(getProducts({}));
     dispatch(getProducts({ filterBy: 'flavour', key: 'otherFlavour' }));
     dispatch(getProducts({ filterBy: 'color', key: 'otherColor' }));
-  }, [dispatch]);
+  }, [dispatch, id]);
 
   useEffect(() => {
     if (selectedProduct) {
@@ -282,7 +283,7 @@ function EditProduct({ history }) {
         },
       });
     }
-  }, [selectedProduct]);
+  }, [selectedProduct, id]);
 
   useEffect(() => {
     if (brandData && brandData.length)
@@ -305,6 +306,43 @@ function EditProduct({ history }) {
       );
   }, [categoryData, brandData, products]);
 
+  useEffect(
+    () => () =>
+      setProduct({
+        name: '',
+        price: '',
+        image: [
+          { id: 0 },
+          { id: 1 },
+          { id: 2 },
+          { id: 3 },
+          { id: 4 },
+          { id: 5 },
+          { id: 6 },
+          { id: 7 },
+          { id: 8 },
+          { id: 9 },
+        ],
+        updatedImageIds: [],
+        brand: '',
+        category: '',
+        countInStock: '',
+        numReviews: '',
+        description: '',
+        sellerInformation: '',
+        mrp: '',
+        flavour: null,
+        value: '',
+        unit: '',
+        color: null,
+        nonVeg: false,
+        otherUnit: [],
+        otherColor: [],
+        otherFlavour: [],
+        suggestedProduct: [],
+      }),
+    []
+  );
   const handleChange = (value, key) => {
     setProduct((oldVal) => {
       return { ...oldVal, [key]: value };

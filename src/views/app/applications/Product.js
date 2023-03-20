@@ -88,7 +88,8 @@ function Product() {
                           alt="Thumbnail"
                           src={
                             data.image
-                              ? data.image.find((elem) => elem.url !== '').url
+                              ? data.image.find((elem) => elem.url !== '') &&
+                                data.image.find((elem) => elem.url !== '').url
                               : null
                           }
                           className="list-thumbnail responsive border-0 card-img-left"
