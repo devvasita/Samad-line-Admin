@@ -261,6 +261,7 @@ function EditProduct({ history }) {
     dispatch(getProducts({}));
     dispatch(getProducts({ filterBy: 'flavour', key: 'otherFlavour' }));
     dispatch(getProducts({ filterBy: 'color', key: 'otherColor' }));
+    dispatch(getProducts({ filterBy: 'unit', key: 'otherUnit' }));
   }, [dispatch, id]);
 
   useEffect(() => {
@@ -347,8 +348,8 @@ function EditProduct({ history }) {
     setProduct((oldVal) => {
       return { ...oldVal, [key]: value };
     });
-    if (key === 'unit')
-      dispatch(getProducts({ unit: value, key: 'otherUnit' }));
+    // if (key === 'unit')
+    //   dispatch(getProducts({ unit: value, key: 'otherUnit' }));
   };
   const initialValues = {
     name: '',
