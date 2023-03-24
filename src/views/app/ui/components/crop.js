@@ -38,11 +38,9 @@ function dataURItoBlob(dataURI) {
 }
 
 function setCanvasImage(image, canvas, crop, setCropedImage) {
-  console.log('crop started');
   if (!crop || !canvas || !image) {
     return;
   }
-  console.log({ image });
   const scaleX = image.naturalWidth / image.width;
   const scaleY = image.naturalHeight / image.height;
   const ctx = canvas.getContext('2d');
@@ -71,7 +69,6 @@ function setCanvasImage(image, canvas, crop, setCropedImage) {
   if (canvas) {
     const dataURl = canvas.toDataURL('image/png', 'image/webp');
     const blobData = dataURItoBlob(dataURl);
-    console.log({ blobData });
     setCropedImage(blobData);
   }
 }
@@ -91,10 +88,8 @@ export default function CropImage({ setCropedImage, upImg, setUpImg, src }) {
 
   // on selecting file we set load the image on to cropper
   const onSelectFile = (e) => {
-    console.log({ e });
     if (e.target.files && e.target.files.length > 0) {
       const reader = new FileReader();
-      console.log({ reader: reader.result });
       reader.addEventListener('load', () => setUpImg(reader.result));
       reader.readAsDataURL(e.target.files[0]);
     }
@@ -114,12 +109,9 @@ export default function CropImage({ setCropedImage, upImg, setUpImg, src }) {
     canvas.height = downloadedImg.height;
     canvas.innerText = downloadedImg.alt;
     context.drawImage(downloadedImg, 0, 0);
-    console.log({ canvas });
-    // imageBox.appendChild(canvas);
 
     try {
       setUpImg(canvas.toDataURL('image/png'));
-      console.log({ img: canvas.toDataURL('image/png') });
     } catch (err) {
       console.error(`Error: ${err}`);
     }
@@ -137,6 +129,10 @@ export default function CropImage({ setCropedImage, upImg, setUpImg, src }) {
 
   useEffect(() => {
     startDownload();
+    return () => {
+      imgRef.current = null;
+      previewCanvasRef.current = null;
+    };
   }, []);
 
   return (

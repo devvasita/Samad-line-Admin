@@ -143,7 +143,6 @@ function NewComp({ setimgArr, i, imgArr, setImgIndex }) {
   const classes = useStyles();
 
   const handleCancelImage = () => {
-    console.log('cancle???????????');
     imgArr.splice(i, 1, {
       file: null,
       url: '',
@@ -282,9 +281,10 @@ function EditProduct({ history }) {
           label: selectedProduct.unit,
           value: selectedProduct.unit,
         },
+        image: selectedProduct.image,
       });
     }
-  }, [selectedProduct, id]);
+  }, [selectedProduct]);
 
   useEffect(() => {
     if (brandData && brandData.length)
@@ -307,11 +307,10 @@ function EditProduct({ history }) {
       );
   }, [categoryData, brandData, products]);
 
-  useEffect(
-    () => () =>
-      setProduct({
-        name: '',
-        price: '',
+  useEffect(() => {
+    setProduct((old) => {
+      return {
+        ...old,
         image: [
           { id: 0 },
           { id: 1 },
@@ -324,26 +323,10 @@ function EditProduct({ history }) {
           { id: 8 },
           { id: 9 },
         ],
-        updatedImageIds: [],
-        brand: '',
-        category: '',
-        countInStock: '',
-        numReviews: '',
-        description: '',
-        sellerInformation: '',
-        mrp: '',
-        flavour: null,
-        value: '',
-        unit: '',
-        color: null,
-        nonVeg: false,
-        otherUnit: [],
-        otherColor: [],
-        otherFlavour: [],
-        suggestedProduct: [],
-      }),
-    []
-  );
+      };
+    });
+  }, []);
+
   const handleChange = (value, key) => {
     setProduct((oldVal) => {
       return { ...oldVal, [key]: value };
