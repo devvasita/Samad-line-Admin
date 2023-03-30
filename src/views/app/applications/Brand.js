@@ -181,25 +181,34 @@ function Brand() {
                       }}
                     />
                   )}
-
-                  <IconButton
-                    color="primary"
-                    aria-label="upload picture"
-                    component="label"
-                    style={{
-                      margin: 'auto',
-                      borderRadius: 0,
-                      width: '100%',
-                      height: '100%',
-                    }}
-                  >
+                  {upImg ? (
                     <CropImage
                       upImg={upImg}
                       setUpImg={(val) => setUpImg(val)}
                       setCropedImage={(e) => handleChange(e)}
                       src={state.image || null}
                     />
-                  </IconButton>
+                  ) : (
+                    <IconButton
+                      color="primary"
+                      aria-label="upload picture"
+                      component="label"
+                      style={{
+                        margin: 'auto',
+                        borderRadius: 0,
+                        width: '100%',
+                        height: '100%',
+                        padding: 0,
+                      }}
+                    >
+                      <CropImage
+                        upImg={upImg}
+                        setUpImg={(val) => setUpImg(val)}
+                        setCropedImage={(e) => handleChange(e)}
+                        src={state.image || null}
+                      />
+                    </IconButton>
+                  )}
                 </div>
               </div>
 
@@ -211,7 +220,6 @@ function Brand() {
                 type="text"
                 defaultValue={state.name}
                 onChange={(event) => {
-                  // formData.append('name', event.target.value);
                   setState((oldVal) => {
                     return { ...oldVal, name: event.target.value };
                   });

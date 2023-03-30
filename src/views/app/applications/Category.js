@@ -32,6 +32,7 @@ import { useDispatch, useSelector } from 'react-redux';
 // import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import { NotificationManager } from 'components/common/react-notifications';
+import CropImage from '../ui/components/crop';
 
 function Category() {
   const CategoryData = useSelector(
@@ -39,10 +40,9 @@ function Category() {
   );
   const dispatch = useDispatch();
 
-  const [image, setimage] = useState('');
+  const [upImg, setUpImg] = useState();
   const [modalLong, setModalLong] = useState(false);
   const [modelEdit, setModelEdit] = useState(false);
-
   const [state, setState] = useState({
     name: '',
     image: '',
@@ -69,32 +69,29 @@ function Category() {
   }, [error]);
 
   const handleChange = (e) => {
-    e.preventDefault();
-
     setState({
       name: state.name,
-      image: e.target.files[0],
+      image: e,
       _id: state._id,
     });
-    setimage(URL.createObjectURL(e.target.files[0]));
   };
   const handleCancelImage = () => {
+    setUpImg(null);
     setState({
       name: state.name,
       image: '',
       _id: state._id,
     });
-    setimage('');
   };
 
   const handleSubmit = (e) => {
+    console.log('dsaf');
     e.preventDefault();
-
     const formData = new FormData();
     Object.keys(state).map(
       (elem) => state[elem] && formData.append(elem, state[elem])
     );
-    console.log({ state });
+
     if (modelEdit) {
       dispatch(updateBrandAndCategory(formData, 'category'));
       setModalLong(false);
@@ -148,129 +145,106 @@ function Category() {
         <Separator className="mb-4" />
       </Colxx>
       <Card className="mb-4">
-        <Modal
-          centered
-          backdrop="static"
-          isOpen={modalLong}
-          toggle={() => setModalLong(!modalLong)}
-          style={{
-            boxShadow: 'none',
-          }}
-        >
-          <ModalBody>
-            <ModalHeader style={{ padding: '5px 0px 5px 0px' }}>
-              {modelEdit ? 'Edit Category' : 'Add Category'}
-            </ModalHeader>
+        <form onSubmit={handleSubmit}>
+          <Modal
+            centered
+            backdrop="static"
+            isOpen={modalLong}
+            toggle={() => setModalLong(!modalLong)}
+            style={{
+              boxShadow: 'none',
+            }}
+          >
+            <ModalBody>
+              <ModalHeader style={{ padding: '5px 0px 5px 0px' }}>
+                {modelEdit ? 'Edit Brand' : 'Add Brand'}
+              </ModalHeader>
 
-            <Label className="mt-4">
-              <IntlMessages id="Upload Image : " />
-            </Label>
-            <div>
-              {!state.image ? (
+              <Label className="mt-4">
+                <IntlMessages id="Upload Image : " />
+              </Label>
+              <div>
                 <div className="model">
-                  <IconButton
-                    color="primary"
-                    aria-label="upload picture"
-                    component="label"
-                    style={{
-                      margin: 'auto',
-                      borderRadius: 0,
-                      width: '100%',
-                      height: '100%',
-                    }}
-                  >
-                    <input
-                      hidden
-                      accept="image/*"
-                      type="file"
-                      onChange={handleChange}
-                    />
-
-                    <img
-                      src="/assets/uploadicon.svg"
-                      alt=""
-                      style={{ height: '35px' }}
-                    />
-                  </IconButton>
-                </div>
-              ) : (
-                <div>
-                  {state.image ? (
-                    <div
+                  {state.image && (
+                    <CancelIcon
+                      onClick={handleCancelImage}
                       style={{
-                        position: 'relative',
-                        // display: 'flex',
-                        justifyContent: 'center',
+                        position: 'absolute',
+                        top: '-25px',
+                        right: '-30px',
+                        cursor: 'pointer',
+                      }}
+                    />
+                  )}
+                  {upImg ? (
+                    <CropImage
+                      upImg={upImg}
+                      setUpImg={(val) => setUpImg(val)}
+                      setCropedImage={(e) => handleChange(e)}
+                      src={state.image || null}
+                    />
+                  ) : (
+                    <IconButton
+                      color="primary"
+                      aria-label="upload picture"
+                      component="label"
+                      style={{
                         margin: 'auto',
-                        width: '50%',
-                        height: 'auto',
-                        textAlign: 'center',
+                        borderRadius: 0,
+                        width: '100%',
+                        height: '100%',
+                        padding: 0,
                       }}
                     >
-                      <CancelIcon
-                        onClick={handleCancelImage}
-                        style={{
-                          position: 'absolute',
-                          top: 0,
-                          right: '-25px',
-                          cursor: 'pointer',
-                        }}
+                      <CropImage
+                        upImg={upImg}
+                        setUpImg={(val) => setUpImg(val)}
+                        setCropedImage={(e) => handleChange(e)}
+                        src={state.image || null}
                       />
-
-                      <img
-                        src={state.image.length ? state.image : image}
-                        alt=""
-                        style={{
-                          objectFit: 'contain',
-                          borderRadius: '10px',
-                          height: '100%',
-                          width: '100%',
-                          border: '1px solid',
-                          boxShadow:
-                            '0px 16px 16px rgb(50 50 71 / 8%), 0px 24px 32px rgb(50 50 71 / 8%)',
-                        }}
-                      />
-
-                      {/* {result && (
-                        <div>
-                          <img src={result} alt="result" />
-                        </div>
-                      )} */}
-                    </div>
-                  ) : null}
+                    </IconButton>
+                  )}
                 </div>
-              )}
-            </div>
+              </div>
 
-            <Label className="mt-4">
-              <IntlMessages id="Title :" />
-            </Label>
+              <Label className="mt-4">
+                <IntlMessages id="Title :" />
+              </Label>
 
-            <Input
-              type="text"
-              defaultValue={state.name}
-              onChange={(event) => {
-                // formData.append('name', event.target.value);
-                setState((oldVal) => {
-                  return { ...oldVal, name: event.target.value };
-                });
-              }}
-            />
-          </ModalBody>
-          <ModalFooter style={{ borderTop: 'none' }}>
-            <Button outline className="primary-new" onClick={handleSubmit}>
-              Submit
-            </Button>{' '}
-            <Button
-              outline
-              className="secondary-new"
-              // style={{ background: '#6c757d', border: 'none' }}
-              onClick={() => setModalLong(false)}
-            >
-              Cancel
-            </Button>
-          </ModalFooter>
-        </Modal>
+              <Input
+                type="text"
+                defaultValue={state.name}
+                onChange={(event) => {
+                  setState((oldVal) => {
+                    return { ...oldVal, name: event.target.value };
+                  });
+                }}
+              />
+            </ModalBody>
+            <ModalFooter style={{ borderTop: 'none' }}>
+              <Button
+                outline
+                className="primary-new"
+                type="submit"
+                onClick={handleSubmit}
+                press
+              >
+                Submit
+              </Button>{' '}
+              <Button
+                outline
+                className="secondary-new"
+                // style={{ background: '#6c757d', border: 'none' }}
+                onClick={() => {
+                  setUpImg(null);
+                  setModalLong(false);
+                }}
+              >
+                Cancel
+              </Button>
+            </ModalFooter>
+          </Modal>
+        </form>
       </Card>
       <Colxx xxs="12">
         <CardTitle className="mb-4">
