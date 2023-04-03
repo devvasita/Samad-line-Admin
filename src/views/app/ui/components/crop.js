@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable no-plusplus */
 /* eslint-disable jsx-a11y/label-has-for */
@@ -37,42 +38,6 @@ function dataURItoBlob(dataURI) {
   });
 }
 
-function setCanvasImage(image, canvas, crop, setCropedImage) {
-  if (!crop || !canvas || !image) {
-    return;
-  }
-  const scaleX = image.naturalWidth / image.width;
-  const scaleY = image.naturalHeight / image.height;
-  const ctx = canvas.getContext('2d');
-  // refer https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio
-  const pixelRatio = window.devicePixelRatio;
-
-  canvas.width = 240;
-  canvas.height = 240;
-
-  // refer https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setTransform
-  // ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-  // ctx.imageSmoothingQuality = 'high';
-
-  // refer https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
-  ctx.drawImage(
-    image,
-    crop.x * scaleX,
-    crop.y * scaleY,
-    crop.width * scaleX,
-    crop.height * scaleY,
-    0,
-    0,
-    240,
-    240
-  );
-  if (canvas) {
-    const dataURl = canvas.toDataURL('image/png', 'image/webp');
-    const blobData = dataURItoBlob(dataURl);
-    setCropedImage(blobData);
-  }
-}
-
 export default function CropImage({ setCropedImage, upImg, setUpImg, src }) {
   const imgRef = useRef(null);
   const previewCanvasRef = useRef(null);
@@ -87,9 +52,52 @@ export default function CropImage({ setCropedImage, upImg, setUpImg, src }) {
   const [completedCrop, setCompletedCrop] = useState(null);
 
   // on selecting file we set load the image on to cropper
+  function setCanvasImage(image, canvas, crop, setCropedImage) {
+    if (!crop || !canvas || !image) {
+      return;
+    }
+    setCrop((oldVal) => {
+      return {
+        ...oldVal,
+        height: image.height,
+        width: image.width,
+      };
+    });
+    const scaleX = image.naturalWidth / image.width;
+    const scaleY = image.naturalHeight / image.height;
+    const ctx = canvas.getContext('2d');
+    // refer https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio
+    const pixelRatio = window.devicePixelRatio;
+
+    canvas.width = 240;
+    canvas.height = 240;
+
+    // refer https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setTransform
+    // ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+    // ctx.imageSmoothingQuality = 'high';
+
+    // refer https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
+    ctx.drawImage(
+      image,
+      crop.x * scaleX,
+      crop.y * scaleY,
+      crop.width * scaleX,
+      crop.height * scaleY,
+      0,
+      0,
+      240,
+      240
+    );
+    if (canvas) {
+      const dataURl = canvas.toDataURL('image/png', 'image/webp');
+      const blobData = dataURItoBlob(dataURl);
+      setCropedImage(blobData);
+    }
+  }
   const onSelectFile = (e) => {
     if (e.target.files && e.target.files.length > 0) {
       const reader = new FileReader();
+      console.log({ reader });
       reader.addEventListener('load', () => setUpImg(reader.result));
       reader.readAsDataURL(e.target.files[0]);
     }
