@@ -26,9 +26,13 @@ import CropImage from '../ui/components/crop';
 // import * as Yup from 'yup';
 
 const fetchOtherDetails = (list) => {
+  console.log({ list });
   return list.map((element) => {
+    const {
+      value: { name },
+    } = element;
     return {
-      label: element?.label,
+      label: name,
       value: element?.value?._id,
     };
   });
