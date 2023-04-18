@@ -18,6 +18,7 @@ import {
   GET_USER_DETAILS,
   OTP_VERIFY,
   CHANGE_PASSWORD,
+  GET_ADMIN_ORDERS,
 } from '../contants';
 
 import {
@@ -35,6 +36,8 @@ import {
   changePasswordError,
   changePasswordSuccess,
   authSuccess,
+  getAdminOrdersSuccess,
+  getAdminOrdersError,
 } from './actions';
 
 const getUSerDetailsAsync = async () => {
@@ -295,6 +298,29 @@ export function* watchChangePassword() {
   yield takeEvery(CHANGE_PASSWORD, changePassword);
 }
 
+const getAdminOrdersAsync = async () => {
+  const res = await API.get('/order');
+  return res;
+};
+
+function* getAdminOrders() {
+  try {
+    const { data, status } = yield call(getAdminOrdersAsync);
+    console.log({ data, status });
+    if (status === 200) {
+      yield put(getAdminOrdersSuccess(data));
+    } else {
+      yield put(getAdminOrdersError('someting went wrong'));
+    }
+  } catch (err) {
+    yield put(getAdminOrdersError(err));
+  }
+}
+
+export function* watchAgetAdminOrder() {
+  yield takeEvery(GET_ADMIN_ORDERS, getAdminOrders);
+}
+
 export default function* rootSaga() {
   yield all([
     fork(watchLoginUser),
@@ -305,5 +331,6 @@ export default function* rootSaga() {
     fork(watchGetUser),
     fork(watchVerifyOtp),
     fork(watchChangePassword),
+    fork(watchAgetAdminOrder),
   ]);
 }

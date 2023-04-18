@@ -22,6 +22,9 @@ import {
   CHANGE_PASSWORD_SUCCESS,
   CHANGE_PASSWORD,
   USER_AUTH_SUCCESS,
+  GET_ADMIN_ORDERS,
+  GET_ADMIN_ORDERS_ERROR,
+  GET_ADMIN_ORDERS_SUCCESS,
 } from '../contants';
 
 export const getUserDetails = (history) => ({
@@ -119,4 +122,18 @@ export const authSuccess = () => ({
 export const logoutUser = (history) => ({
   type: LOGOUT_USER,
   payload: { history },
+});
+
+export const getAdminOrders = () => ({
+  type: GET_ADMIN_ORDERS,
+});
+
+export const getAdminOrdersSuccess = (orders) => ({
+  type: GET_ADMIN_ORDERS_SUCCESS,
+  payload: orders,
+});
+
+export const getAdminOrdersError = (message) => ({
+  type: GET_ADMIN_ORDERS_ERROR,
+  payload: { message },
 });

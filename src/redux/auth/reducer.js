@@ -23,10 +23,14 @@ import {
   CHANGE_PASSWORD_ERROR,
   CHANGE_PASSWORD_SUCCESS,
   USER_AUTH_SUCCESS,
+  GET_ADMIN_ORDERS,
+  GET_ADMIN_ORDERS_ERROR,
+  GET_ADMIN_ORDERS_SUCCESS,
 } from '../contants';
 
 const INIT_STATE = {
   currentUser: isAuthGuardActive ? currentUser : null,
+  orders: { orders: [], razorpayOrders: [] },
   forgotUserMail: '',
   newPassword: '',
   resetPasswordCode: '',
@@ -161,6 +165,12 @@ export default (state = INIT_STATE, action) => {
       };
     case LOGOUT_USER:
       return { ...state, currentUser: null, error: '' };
+    case GET_ADMIN_ORDERS:
+      return { ...state, loading: true };
+    case GET_ADMIN_ORDERS_SUCCESS:
+      return { ...state, loading: false, orders: action.payload };
+    case GET_ADMIN_ORDERS_ERROR:
+      return { ...state, loading: false, error: action.payload.message };
     default:
       return { ...state };
   }

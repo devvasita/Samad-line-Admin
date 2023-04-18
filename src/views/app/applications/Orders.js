@@ -1,18 +1,32 @@
-import { Colxx, Separator } from 'components/common/CustomBootstrap';
-import React from 'react';
+import { Colxx } from 'components/common/CustomBootstrap';
+import { connect } from 'react-redux';
+import React, { useEffect } from 'react';
 import { Row } from 'reactstrap';
+import { getAdminOrders } from 'redux/auth/actions';
+import OrderList from './OrderList';
 
-function Orders() {
+function Orders({ getOrders, orders }) {
+  useEffect(() => {
+    getOrders();
+  }, []);
+
   return (
     <>
       <Row>
         <Colxx xxs="12">
-          <h1>Orders</h1>
-          <Separator className="mb-5" />
+          <OrderList orders={orders} />
         </Colxx>
       </Row>
     </>
   );
 }
 
-export default Orders;
+const mapStateToProps = ({ authUser }) => {
+  const { orders } = authUser;
+  return { orders };
+};
+const mapDispatchToProps = (dispatch) => ({
+  getOrders: () => dispatch(getAdminOrders()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Orders);
