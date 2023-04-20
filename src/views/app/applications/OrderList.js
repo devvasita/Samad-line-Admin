@@ -69,7 +69,7 @@ function OrderList({ orders }) {
               </TableCell>
               <TableCell align="center">Mobile</TableCell>
               <TableCell align="center">Total </TableCell>
-              <TableCell align="center">Paid </TableCell>
+              <TableCell align="center">Payment status </TableCell>
               <TableCell align="center">Order Status </TableCell>
               <TableCell align="center">View</TableCell>
             </TableRow>
@@ -79,7 +79,7 @@ function OrderList({ orders }) {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((order) => (
                 <TableRow key={order.id}>
-                  <TableCell align="center">{order._id}</TableCell>
+                  <TableCell align="center">#{order._id}</TableCell>
                   <TableCell align="center">{order.user.firstName}</TableCell>
                   <TableCell align="center">{order.user.mobileNo}</TableCell>
                   <TableCell align="center">{order.total}</TableCell>

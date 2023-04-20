@@ -26,7 +26,6 @@ import CropImage from '../ui/components/crop';
 // import * as Yup from 'yup';
 
 const fetchOtherDetails = (list) => {
-  console.log({ list });
   return list.map((element) => {
     const {
       value: { name },
@@ -587,9 +586,10 @@ function EditProduct({ history }) {
                       )}
                     </FormGroup>
                   </Colxx>
+
                   <Colxx lg="3" xs="12" sm="6">
                     <FormGroup>
-                      <Label> :</Label>
+                      <Label> : Brand</Label>
                       <Select
                         className="react-select react-select__single-value"
                         classNamePrefix="react-select"

@@ -1,0 +1,286 @@
+.Order-Details-traking-section {
+  margin: 50px 0px;
+}
+.Order-Details-traking-section .traking-progress-section-mobile {
+  display: none;
+}
+.Order-Details-traking-section .traking-progress-section {
+  /* Progress Tracker v2 */
+  position: relative;
+  z-index: 0;
+}
+.Order-Details-traking-section .traking-progress-section .stepper-wrapper {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  position: relative;
+  left: -40px;
+}
+.Order-Details-traking-section .traking-progress-section .stepper-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  font-size: 15px;
+  text-align: center;
+}
+.Order-Details-traking-section
+  .traking-progress-section
+  .stepper-item
+  .step-head-name {
+  color: rgba(0, 0, 0, 0.49);
+}
+.Order-Details-traking-section
+  .traking-progress-section
+  .stepper-item
+  .step-name {
+  color: rgba(0, 0, 0, 0.49);
+}
+.Order-Details-traking-section
+  .traking-progress-section
+  .stepper-item
+  .disactive {
+  color: #acabab;
+}
+.Order-Details-traking-section .traking-progress-section .stepper-item::before {
+  position: absolute;
+  content: '';
+  border-bottom: 1px solid #ccc;
+  width: 100%;
+  top: 36px;
+  left: -50%;
+  z-index: 2;
+}
+.Order-Details-traking-section .traking-progress-section .stepper-item::after {
+  position: absolute;
+  content: '';
+  border-bottom: 1px solid #ccc;
+  width: 100%;
+  top: 36px;
+  left: 50%;
+  z-index: 2;
+}
+.Order-Details-traking-section
+  .traking-progress-section
+  .stepper-item
+  .step-counter {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #ccc;
+  margin-bottom: 6px;
+}
+.Order-Details-traking-section
+  .traking-progress-section
+  .stepper-item
+  .step-counter
+  iconify-icon {
+  color: white;
+}
+.Order-Details-traking-section
+  .traking-progress-section
+  .stepper-item.completed
+  .step-counter {
+  background-color: var(--them-colour);
+}
+.Order-Details-traking-section
+  .traking-progress-section
+  .stepper-item.completed::after {
+  position: absolute;
+  content: '';
+  border-bottom: 1px solid rgba(0, 0, 0, 0.49);
+  width: 100%;
+  top: 36px;
+  left: 50%;
+  z-index: 3;
+}
+.Order-Details-traking-section
+  .traking-progress-section
+  .stepper-item:first-child::before {
+  content: none;
+}
+.Order-Details-traking-section
+  .traking-progress-section
+  .stepper-item:last-child::after {
+  content: none;
+}
+.Order-Details-traking-section .Order-ID-body {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 35px;
+}
+.Order-Details-traking-section .Order-ID-body .Order-ID-box {
+  background-color: #ffeecc;
+  border-radius: 5px;
+  width: 50px !important;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+.Order-Details-traking-section .Order-ID-body .Order-ID-box img {
+  width: 100%;
+}
+.Order-Details-traking-section .Order-ID-body .order-id-list h5 {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.49);
+}
+.Order-Details-traking-section .Order-ID-body .order-id-list p {
+  color: #949494;
+  font-size: 17px;
+  margin: 0;
+}
+.Order-Details-traking-section .order-details-traking-section {
+  padding-top: 80px;
+}
+.Order-Details-traking-section .order-details-traking-contain {
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 14px 20px;
+  margin-bottom: 15px;
+}
+.Order-Details-traking-section
+  .order-details-traking-contain
+  .order-details-traking-img-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  background-color: FFFFFF;
+  height: 100px;
+  width: 100px;
+  margin: 0px 10px;
+  border-radius: 5px;
+}
+.Order-Details-traking-section
+  .order-details-traking-contain
+  .order-details-traking-img-box
+  img {
+  width: 100%;
+  height: 100%;
+}
+.Order-Details-traking-section
+  .order-details-traking-contain
+  .order-details-traking-list
+  a {
+  color: rgba(0, 0, 0, 0.49);
+}
+.Order-Details-traking-section
+  .order-details-traking-contain
+  .order-details-traking-list
+  a
+  h5 {
+  margin-bottom: 0px !important;
+  color: rgba(0, 0, 0, 0.49);
+  font-size: 15px;
+}
+.Order-Details-traking-section
+  .order-details-traking-contain
+  .order-details-traking-list
+  .Price-tag {
+  margin-top: 15px;
+  display: flex;
+  gap: 30px;
+}
+.Order-Details-traking-section
+  .order-details-traking-contain
+  .order-details-traking-list
+  .Price-tag
+  p {
+  font-weight: 500;
+}
+.Order-Details-traking-section .order-details-traking-contain .rating-a a {
+  font-size: 12px;
+}
+.Order-Details-traking-section .order-details-traking-contain .star-rating a i {
+  color: #acabab;
+  margin-inline: 2px;
+}
+.Order-Details-traking-section
+  .order-details-traking-contain
+  .star-rating
+  a
+  i:hover {
+  color: #6fb327;
+}
+.Order-Details-traking-section
+  .order-details-traking-contain
+  .star-rating
+  .active {
+  color: #6fb327;
+}
+.Order-Details-traking-section
+  .order-details-traking-contain
+  .star-rating
+  .rate-reveiws-link
+  a {
+  font-size: 13px;
+}
+.Order-Details-traking-section .delivery-address-details {
+  /* margin-top: 90px; */
+}
+.Order-Details-traking-section .delivery-address-details .Shipping-details {
+  background-color: #6fb327;
+  padding: 10px 12px;
+  font-weight: 600;
+  border-bottom: 1px solid gray;
+}
+.Order-Details-traking-section .delivery-address-details .name-addres-details {
+  padding: 5px 20px;
+  background-color: #ffffff;
+}
+.Order-Details-traking-section
+  .delivery-address-details
+  .name-addres-details
+  p {
+  color: rgba(0, 0, 0, 0.59);
+}
+.Order-Details-traking-section .total-box {
+  margin-top: 90px;
+}
+.Order-Details-traking-section .total-box .table thead {
+  border-bottom: 1px solid gray;
+}
+.Order-Details-traking-section .total-box .table thead tr {
+  background-color: #6fb327 !important;
+}
+.Order-Details-traking-section .total-box thead {
+  border-bottom: 1px solid gray;
+}
+.Order-Details-traking-section .total-box thead tr {
+  background-color: #6fb327 !important;
+}
+.Order-Details-traking-section .total-box thead .Price-detal {
+  padding: 10px 12px;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.49);
+}
+.Order-Details-traking-section .total-box tbody tr td,
+.Order-Details-traking-section .total-box tbody tr th {
+  border: none !important;
+}
+.Order-Details-traking-section .total-box tbody .total-border {
+  border-top: 1px solid gray;
+}
+.Order-Details-traking-section .total-box tbody .subtotal {
+  color: rgba(81, 80, 79, 0.81);
+}
+.Order-Details-traking-section .total-box tbody .discount {
+  color: #079504;
+}
+.Order-Details-traking-section .total-box tbody .info-btn {
+  color: #ff2c2c;
+}
+.Order-Details-traking-section .total-box tbody .info-btn i {
+  font-size: 10px;
+  position: absolute;
+  color: #868583;
+}

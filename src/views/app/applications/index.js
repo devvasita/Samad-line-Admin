@@ -64,6 +64,9 @@ const ViewProduct = React.lazy(() =>
 const Orders = React.lazy(() =>
   import(/* webpackChunkName: "application-todo" */ './Orders')
 );
+
+const OrderDetails = React.lazy(() => import('./OrderDetails'));
+
 const Applications = ({ match }) => (
   <Suspense fallback={<div className="loading" />}>
     <Switch>
@@ -147,8 +150,14 @@ const Applications = ({ match }) => (
         render={(props) => <ViewProduct {...props} />}
       />
       <Route
+        exact
         path={`${match.url}/orders`}
         render={(props) => <Orders {...props} />}
+      />
+      <Route
+        exact
+        path={`${match.url}/orders/details`}
+        render={(props) => <OrderDetails {...props} />}
       />
       <Redirect to="/error" />
     </Switch>

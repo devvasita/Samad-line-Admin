@@ -271,7 +271,7 @@ function ViewProduct() {
           {data?.unit}):-
         </h2>
       </CardTitle>
-      {console.log({ data })}
+      {console.log({ imgArr, data: imgArr.map((elem) => elem.img) })}
       <Row>
         <Colxx xxs="12" md="12" xl="6" className="col-right">
           <Row>
@@ -279,7 +279,7 @@ function ViewProduct() {
               <GlideComponentThumbs
                 settingsImages={{
                   bound: true,
-                  rewind: false,
+                  rewind: true,
                   focusAt: 0,
                   startAt: 0,
                   gap: 5,
@@ -288,7 +288,7 @@ function ViewProduct() {
                 }}
                 settingsThumbs={{
                   bound: true,
-                  rewind: false,
+                  rewind: true,
                   focusAt: 0,
                   startAt: 0,
                   gap: 10,

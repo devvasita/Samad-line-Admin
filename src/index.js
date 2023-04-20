@@ -6,6 +6,8 @@ import 'react-perfect-scrollbar/dist/css/styles.css';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-image-lightbox/style.css';
 import 'video.js/dist/video-js.css';
+import 'index.css';
+
 import {
   isMultiColorActive,
   defaultColor,
