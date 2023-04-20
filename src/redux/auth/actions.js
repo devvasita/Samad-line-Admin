@@ -28,6 +28,9 @@ import {
   GET_ADMIN_ORDER_BY_ID,
   GET_ADMIN_ORDER_BY_ID_SUCCESS,
   GET_ADMIN_ORDER_BY_ID_ERROR,
+  UPDATE_ADMIN_ORDER_BY_ID,
+  UPDATE_ADMIN_ORDER_BY_ID_SUCCESS,
+  UPDATE_ADMIN_ORDER_BY_ID_ERROR,
 } from '../contants';
 
 export const getUserDetails = (history) => ({
@@ -153,5 +156,20 @@ export const getOrderByIdSuccess = (order) => ({
 
 export const getOrderByIdError = (message) => ({
   type: GET_ADMIN_ORDER_BY_ID_ERROR,
+  payload: { message },
+});
+
+export const updateOrderById = (_id, status) => ({
+  type: UPDATE_ADMIN_ORDER_BY_ID,
+  payload: { _id, status },
+});
+
+export const updateOrderByIdSuccess = (order) => ({
+  type: UPDATE_ADMIN_ORDER_BY_ID_SUCCESS,
+  payload: order,
+});
+
+export const updateOrderByIdError = (message) => ({
+  type: UPDATE_ADMIN_ORDER_BY_ID_ERROR,
   payload: { message },
 });

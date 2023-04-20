@@ -20,6 +20,7 @@ import {
   CHANGE_PASSWORD,
   GET_ADMIN_ORDERS,
   GET_ADMIN_ORDER_BY_ID,
+  UPDATE_ADMIN_ORDER_BY_ID,
 } from '../contants';
 
 import {
@@ -41,6 +42,8 @@ import {
   getAdminOrdersError,
   getOrderByIdSuccess,
   getOrderByIdError,
+  updateOrderByIdSuccess,
+  updateOrderByIdError,
 } from './actions';
 
 const getUSerDetailsAsync = async () => {
@@ -347,6 +350,33 @@ export function* watchGetOrderBYID() {
   yield takeEvery(GET_ADMIN_ORDER_BY_ID, getOrderByID);
 }
 
+const updateOrderStatusAsync = async (_id, status) => {
+  const res = await API.put(`/order/${_id}/status`, { status });
+  return res;
+};
+
+function* updateOrderById({ payload }) {
+  try {
+    const { _id, status: orderDtatus } = payload;
+    const { data, status } = yield call(
+      updateOrderStatusAsync,
+      _id,
+      orderDtatus
+    );
+
+    if (status === 200) {
+      yield put(updateOrderByIdSuccess(data));
+    } else {
+      yield put(updateOrderByIdError('something went wrong'));
+    }
+  } catch (error) {
+    yield put(updateOrderByIdError(error));
+  }
+}
+
+export function* watchUpdateOrderStatus() {
+  yield takeEvery(UPDATE_ADMIN_ORDER_BY_ID, updateOrderById);
+}
 export default function* rootSaga() {
   yield all([
     fork(watchLoginUser),
@@ -359,5 +389,6 @@ export default function* rootSaga() {
     fork(watchChangePassword),
     fork(watchAgetAdminOrder),
     fork(watchGetOrderBYID),
+    fork(watchUpdateOrderStatus),
   ]);
 }

@@ -9,9 +9,9 @@ import { MenuItem } from 'react-contextmenu';
 import { connect } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { Row } from 'reactstrap';
-import { getOrderById } from 'redux/auth/actions';
+import { getOrderById, updateOrderById } from 'redux/auth/actions';
 
-const OrderDetails = ({ getOrderDetails, selectedOrder }) => {
+const OrderDetails = ({ getOrderDetails, selectedOrder, updateOrder }) => {
   const { id } = useParams();
   const {
     currentOrderStatus,
@@ -22,9 +22,6 @@ const OrderDetails = ({ getOrderDetails, selectedOrder }) => {
     tax,
     _id,
   } = selectedOrder;
-  useEffect(() => {
-    getOrderDetails(id);
-  }, [id]);
 
   const initStatus = [
     { label: 'Order Placed', value: 'Order Placed' },
@@ -37,11 +34,25 @@ const OrderDetails = ({ getOrderDetails, selectedOrder }) => {
   const [statusOption, setStatusOption] = useState([...initStatus]);
 
   useEffect(() => {
+    getOrderDetails(id);
+    setStatusOption(initStatus);
+  }, [id]);
+
+  useEffect(() => {
     setStatus(currentOrderStatus.status);
+    if (currentOrderStatus.status) {
+      const index = initStatus.findIndex(
+        (elem) => elem.value === currentOrderStatus.status
+      );
+      setStatusOption((oldState) => [...initStatus.splice(index)]);
+    }
   }, [selectedOrder, currentOrderStatus]);
 
   const handleChange = (event) => {
-    setStatus(event.target.value);
+    if (status !== event.target.value) {
+      setStatus(event.target.value);
+      updateOrder(id, event.target.value);
+    }
   };
 
   return (
@@ -253,6 +264,7 @@ const mapStateToProps = ({ authUser }) => {
 };
 const mapDispatchToProps = (dispatch) => ({
   getOrderDetails: (_id) => dispatch(getOrderById(_id)),
+  updateOrder: (_id, status) => dispatch(updateOrderById(_id, status)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderDetails);
