@@ -93,7 +93,10 @@ function AddBlog() {
   };
 
   const onSubmit = (values) => {
-    console.log(values);
+    const data = { ...values, file, textQuillStandart };
+    const formData = new FormData();
+    Object.keys(data).map((key) => formData.append(key, data[key]));
+    // call API here
   };
 
   const validate = (values) => {

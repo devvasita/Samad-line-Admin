@@ -29,6 +29,12 @@ import {
   GET_ADMIN_ORDER_BY_ID,
   GET_ADMIN_ORDER_BY_ID_SUCCESS,
   GET_ADMIN_ORDER_BY_ID_ERROR,
+  ADD_BLOG,
+  ADD_BLOG_SUCCESS,
+  ADD_BLOG_ERROR,
+  GET_BLOGS,
+  GET_BLOGS_SUCCESS,
+  GET_BLOG_BY_ID_SUCCESS,
 } from '../contants';
 
 const INIT_STATE = {
@@ -47,6 +53,7 @@ const INIT_STATE = {
     total: 0,
     tax: 0,
   },
+  blogs: [],
   success: '',
 };
 
@@ -187,6 +194,22 @@ export default (state = INIT_STATE, action) => {
     case GET_ADMIN_ORDER_BY_ID_SUCCESS:
       return { ...state, loading: false, selectedOrder: action.payload };
     case GET_ADMIN_ORDER_BY_ID_ERROR:
+      return { ...state, loading: false, error: action.payload.message };
+    case ADD_BLOG:
+      return { ...state, loading: true };
+    case ADD_BLOG_SUCCESS:
+      return {
+        ...state,
+        loading: true,
+        blogs: [action.payload, ...state.blogs],
+      };
+    case ADD_BLOG_ERROR:
+      return { ...state, loading: false, error: action.payload.message };
+    case GET_BLOGS:
+      return { ...state, loading: true };
+    case GET_BLOGS_SUCCESS:
+      return { ...state, loading: true, blogs: action.payload };
+    case GET_BLOG_BY_ID_SUCCESS:
       return { ...state, loading: false, error: action.payload.message };
     default:
       return { ...state };

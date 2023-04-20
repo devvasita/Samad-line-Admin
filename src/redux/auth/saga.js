@@ -21,6 +21,7 @@ import {
   GET_ADMIN_ORDERS,
   GET_ADMIN_ORDER_BY_ID,
   UPDATE_ADMIN_ORDER_BY_ID,
+  ADD_BLOG,
 } from '../contants';
 
 import {
@@ -44,6 +45,8 @@ import {
   getOrderByIdError,
   updateOrderByIdSuccess,
   updateOrderByIdError,
+  addBlogSuccess,
+  addBlogError,
 } from './actions';
 
 const getUSerDetailsAsync = async () => {
@@ -377,6 +380,30 @@ function* updateOrderById({ payload }) {
 export function* watchUpdateOrderStatus() {
   yield takeEvery(UPDATE_ADMIN_ORDER_BY_ID, updateOrderById);
 }
+
+const addBlogAsync = async () => {
+  const res = await API.post('/blogs');
+  return res;
+};
+
+function* addBlod({ payload }) {
+  try {
+    const { data: blogData } = payload;
+    const { data, status } = yield call(addBlogAsync, blogData);
+
+    if (status === 200) {
+      yield put(addBlogSuccess(data));
+    } else {
+      yield put(addBlogError('something went wrong'));
+    }
+  } catch (error) {
+    yield put(addBlogError('something went wrong'));
+  }
+}
+
+export function* watchAddBlog() {
+  yield takeEvery(ADD_BLOG, addBlod);
+}
 export default function* rootSaga() {
   yield all([
     fork(watchLoginUser),
@@ -390,5 +417,6 @@ export default function* rootSaga() {
     fork(watchAgetAdminOrder),
     fork(watchGetOrderBYID),
     fork(watchUpdateOrderStatus),
+    fork(watchAddBlog),
   ]);
 }

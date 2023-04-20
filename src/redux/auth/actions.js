@@ -31,6 +31,9 @@ import {
   UPDATE_ADMIN_ORDER_BY_ID,
   UPDATE_ADMIN_ORDER_BY_ID_SUCCESS,
   UPDATE_ADMIN_ORDER_BY_ID_ERROR,
+  ADD_BLOG,
+  ADD_BLOG_SUCCESS,
+  ADD_BLOG_ERROR,
 } from '../contants';
 
 export const getUserDetails = (history) => ({
@@ -171,5 +174,18 @@ export const updateOrderByIdSuccess = (order) => ({
 
 export const updateOrderByIdError = (message) => ({
   type: UPDATE_ADMIN_ORDER_BY_ID_ERROR,
+  payload: { message },
+});
+
+export const addBlog = (data, history) => ({
+  type: ADD_BLOG,
+  payload: { data, history },
+});
+export const addBlogSuccess = (data) => ({
+  type: ADD_BLOG_SUCCESS,
+  payload: data,
+});
+export const addBlogError = (message) => ({
+  type: ADD_BLOG_ERROR,
   payload: { message },
 });
