@@ -156,7 +156,7 @@ const Applications = ({ match }) => (
       />
       <Route
         exact
-        path={`${match.url}/orders/details`}
+        path={`${match.url}/orders/:id`}
         render={(props) => <OrderDetails {...props} />}
       />
       <Redirect to="/error" />

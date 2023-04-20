@@ -26,6 +26,9 @@ import {
   GET_ADMIN_ORDERS,
   GET_ADMIN_ORDERS_ERROR,
   GET_ADMIN_ORDERS_SUCCESS,
+  GET_ADMIN_ORDER_BY_ID,
+  GET_ADMIN_ORDER_BY_ID_SUCCESS,
+  GET_ADMIN_ORDER_BY_ID_ERROR,
 } from '../contants';
 
 const INIT_STATE = {
@@ -36,6 +39,14 @@ const INIT_STATE = {
   resetPasswordCode: '',
   loading: false,
   error: '',
+  selectedOrder: {
+    currentOrderStatus: {},
+    orderItems: [],
+    shippingAddress: {},
+    subTotal: 0,
+    total: 0,
+    tax: 0,
+  },
   success: '',
 };
 
@@ -170,6 +181,12 @@ export default (state = INIT_STATE, action) => {
     case GET_ADMIN_ORDERS_SUCCESS:
       return { ...state, loading: false, orders: action.payload };
     case GET_ADMIN_ORDERS_ERROR:
+      return { ...state, loading: false, error: action.payload.message };
+    case GET_ADMIN_ORDER_BY_ID:
+      return { ...state, loading: true };
+    case GET_ADMIN_ORDER_BY_ID_SUCCESS:
+      return { ...state, loading: false, selectedOrder: action.payload };
+    case GET_ADMIN_ORDER_BY_ID_ERROR:
       return { ...state, loading: false, error: action.payload.message };
     default:
       return { ...state };

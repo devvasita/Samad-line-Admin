@@ -1,17 +1,49 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { FormControl, InputLabel, Select } from '@mui/material';
 import { Box } from '@mui/system';
 import { Colxx } from 'components/common/CustomBootstrap';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { MenuItem } from 'react-contextmenu';
+import { connect } from 'react-redux';
+import { Link, useParams } from 'react-router-dom';
 import { Row } from 'reactstrap';
+import { getOrderById } from 'redux/auth/actions';
 
-const OrderDetails = () => {
-  const [status, setStatus] = React.useState('');
+const OrderDetails = ({ getOrderDetails, selectedOrder }) => {
+  const { id } = useParams();
+  const {
+    currentOrderStatus,
+    orderItems,
+    shippingAddress,
+    subTotal,
+    total,
+    tax,
+    _id,
+  } = selectedOrder;
+  useEffect(() => {
+    getOrderDetails(id);
+  }, [id]);
+
+  const initStatus = [
+    { label: 'Order Placed', value: 'Order Placed' },
+    { label: 'Order Confirmed', value: 'Order Confirmed' },
+    { label: 'Out For Delivery', value: 'Out For Delivery' },
+    { label: 'Order Delivered', value: 'Order Delivered' },
+    { label: 'Cancelled', value: 'Cancelled' },
+  ];
+  const [status, setStatus] = useState('');
+  const [statusOption, setStatusOption] = useState([...initStatus]);
+
+  useEffect(() => {
+    setStatus(currentOrderStatus.status);
+  }, [selectedOrder, currentOrderStatus]);
 
   const handleChange = (event) => {
     setStatus(event.target.value);
   };
+
   return (
     <div className="Order-Details-traking-section">
       <div className="container">
@@ -22,8 +54,11 @@ const OrderDetails = () => {
                 <img src="asstes/img/order-logo/packStatus.png" alt="" />
               </div>
               <div className="order-id-list">
-                <h5>Order ID: 3354654654526</h5>
-                <p>2 Items . On Delivery</p>
+                <h5>Order ID: #{_id}</h5>
+                <p>
+                  {orderItems && orderItems.length} Items .{' '}
+                  {currentOrderStatus && currentOrderStatus.status}
+                </p>
               </div>
             </div>
 
@@ -41,8 +76,11 @@ const OrderDetails = () => {
                       label="Status"
                       onChange={handleChange}
                     >
-                      <MenuItem value={10}>Cancelled</MenuItem>
-                      <MenuItem value={20}>Out for Delivery</MenuItem>
+                      {statusOption.map(({ value, label }) => (
+                        <MenuItem value={value} key={value}>
+                          {label}
+                        </MenuItem>
+                      ))}
                     </Select>
                   </FormControl>
                 </Box>
@@ -50,34 +88,67 @@ const OrderDetails = () => {
             </Row>
 
             <div className=" order-details-traking-section  ">
-              <div className="order-details-traking-contain col-lg-11 col-md-12">
-                <div className="row">
-                  <div className="col-lg-2 col-md-3  d-flex align-items-center justify-content-center m-0 p-0">
-                    <div className="order-details-traking-img-box">
-                      <a href="productsviewdetailes.html">
-                        {' '}
-                        <img
-                          src="asstes/img/Wishlist pStatus img/2.png"
-                          alt=""
-                        />
-                      </a>
-                    </div>
-                  </div>
-                  <div className="col-lg-7 col-md-6 ">
-                    <div className="order-details-traking-list">
-                      <a href="productsviewdetailes.html">
-                        <h5>
-                          MuscleBlaze Test Pro & Ashwagandha 60 Tab Combo{' '}
-                        </h5>
-                      </a>
-                      <div className="Price-tag">
-                        <p>Qty: 2</p>
-                        <p>Price : &#8377 8256</p>
+              {orderItems.map(
+                ({
+                  name,
+                  image,
+                  price,
+                  qty,
+                  _id: ProductId,
+                  flavour,
+                  nonVeg,
+                }) => (
+                  <div
+                    className="order-details-traking-contain col-lg-11 col-md-12 "
+                    key={ProductId}
+                    style={{
+                      boxShadow:
+                        '0 1px 15px rgba(0, 0, 0, 0.04), 0 1px 6px rgba(0, 0, 0, 0.04)',
+                    }}
+                  >
+                    <div className="row ">
+                      <div className="col-lg-2 col-md-3  d-flex align-items-center justify-content-center m-0 p-0">
+                        <div className="order-details-traking-img-box">
+                          <Link to={`/product/${_id}`}>
+                            <a>
+                              {' '}
+                              <img src={image} alt="" />
+                            </a>
+                          </Link>
+                        </div>
+                      </div>
+                      <div className="col-lg-7 col-md-6 ">
+                        <div className="order-details-traking-list">
+                          <Link to={`/product/${_id}`}>
+                            <a>
+                              <h5>{name}</h5>
+                              {flavour !== '' && (
+                                <iconify-icon
+                                  icon="mdi:lacto-vegetarian"
+                                  className="veg-icon"
+                                  style={
+                                    nonVeg
+                                      ? {
+                                          color: 'red',
+                                        }
+                                      : {
+                                          color: 'green',
+                                        }
+                                  }
+                                />
+                              )}
+                            </a>
+                          </Link>
+                          <div className="Price-tag">
+                            <p>Qty: {qty}</p>
+                            <p>Price : ₹{qty * price}</p>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
+                )
+              )}
             </div>
           </div>
 
@@ -85,23 +156,43 @@ const OrderDetails = () => {
             <div className="col-lg-10 col-md-12 ">
               <div className="row">
                 <div className="col-lg-12 col-md-6 col-sm-12">
-                  <div className="delivery-address-details ">
-                    <p className="Shipping-details">Shipping Details</p>
+                  <div
+                    className="delivery-address-details "
+                    style={{
+                      boxShadow:
+                        '0 1px 15px rgba(0, 0, 0, 0.04), 0 1px 6px rgba(0, 0, 0, 0.04)',
+                    }}
+                  >
+                    <p className="Shipping-details" style={{ marginBottom: 0 }}>
+                      Shipping Details
+                    </p>
                     <div className=" name-addres-details">
-                      <h6>Florence Lockman</h6>
+                      <h6>
+                        {shippingAddress && shippingAddress.firstName}{' '}
+                        {shippingAddress && shippingAddress.lastName}
+                      </h6>
                       <p>
-                        {' '}
-                        Ramkrishna Apartment, <br />
-                        Near Sardar Bhavan Society,
+                        {shippingAddress && shippingAddress.addressLine1},
                         <br />
-                        mg Road 78,Udaipur-313001, India <br />
-                        +91 8756957656, +91 9453698424
+                        {shippingAddress && shippingAddress.addressLine2},
+                        <br />
+                        {shippingAddress && shippingAddress.city}-
+                        {shippingAddress && shippingAddress.pinCode},
+                        {shippingAddress && shippingAddress.country}
+                        <br />
+                        +91 {shippingAddress && shippingAddress.phoneNo}
                       </p>
                     </div>
                   </div>
                 </div>
                 <div className="col-lg-12 col-md-6 col-sm-12">
-                  <div className="total-box ">
+                  <div
+                    className="total-box "
+                    style={{
+                      boxShadow:
+                        '0 1px 15px rgba(0, 0, 0, 0.04), 0 1px 6px rgba(0, 0, 0, 0.04)',
+                    }}
+                  >
                     <table className="table">
                       <thead>
                         <tr>
@@ -122,7 +213,7 @@ const OrderDetails = () => {
                           <td className="discount">Discount :</td>
                           <td className="text-end" />
                           <td className="text-end">
-                            <span className="me-2">-</span> ₹500
+                            <span className="me-2">-</span> ₹{subTotal}
                           </td>
                         </tr>
                         <tr>
@@ -134,14 +225,14 @@ const OrderDetails = () => {
                           </td>
                           <td className="text-end" />
                           <td className="text-end">
-                            <span className="me-2">+</span> ₹689
+                            <span className="me-2">+</span> ₹{tax}
                           </td>
                         </tr>
                         <tr className="total-border">
                           <th scope="row" />
                           <th className="fw-semibold">Total :</th>
                           <td className="" />
-                          <th className="text-end fw-semibold">₹ 12878</th>
+                          <th className="text-end fw-semibold">₹ {total}</th>
                         </tr>
                       </tbody>
                     </table>
@@ -156,4 +247,12 @@ const OrderDetails = () => {
   );
 };
 
-export default OrderDetails;
+const mapStateToProps = ({ authUser }) => {
+  const { selectedOrder } = authUser;
+  return { selectedOrder };
+};
+const mapDispatchToProps = (dispatch) => ({
+  getOrderDetails: (_id) => dispatch(getOrderById(_id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(OrderDetails);

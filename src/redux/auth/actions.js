@@ -25,6 +25,9 @@ import {
   GET_ADMIN_ORDERS,
   GET_ADMIN_ORDERS_ERROR,
   GET_ADMIN_ORDERS_SUCCESS,
+  GET_ADMIN_ORDER_BY_ID,
+  GET_ADMIN_ORDER_BY_ID_SUCCESS,
+  GET_ADMIN_ORDER_BY_ID_ERROR,
 } from '../contants';
 
 export const getUserDetails = (history) => ({
@@ -135,5 +138,20 @@ export const getAdminOrdersSuccess = (orders) => ({
 
 export const getAdminOrdersError = (message) => ({
   type: GET_ADMIN_ORDERS_ERROR,
+  payload: { message },
+});
+
+export const getOrderById = (_id) => ({
+  type: GET_ADMIN_ORDER_BY_ID,
+  payload: { _id },
+});
+
+export const getOrderByIdSuccess = (order) => ({
+  type: GET_ADMIN_ORDER_BY_ID_SUCCESS,
+  payload: order,
+});
+
+export const getOrderByIdError = (message) => ({
+  type: GET_ADMIN_ORDER_BY_ID_ERROR,
   payload: { message },
 });

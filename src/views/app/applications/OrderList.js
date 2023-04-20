@@ -31,8 +31,6 @@ const StyledTable = styled(Table)(() => ({
 
 function OrderList({ orders }) {
   const { orders: userOrders } = orders;
-
-  console.log({ userOrders });
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -40,8 +38,8 @@ function OrderList({ orders }) {
     setPage(newPage);
   };
   const history = useHistory();
-  const handleView = () => {
-    history.push('/app/pages/product/data-view');
+  const handleView = (_id) => {
+    history.push(`/app/applications/orders/${_id}`);
   };
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
@@ -91,8 +89,8 @@ function OrderList({ orders }) {
                   <TableCell align="center">
                     <i
                       className="simple-icon-eye"
-                      onClick={handleView}
-                      onKeyDown={handleView}
+                      onClick={() => handleView(order._id)}
+                      onKeyDown={() => handleView(order._id)}
                       aria-hidden="true"
                       style={{
                         cursor: 'pointer',
