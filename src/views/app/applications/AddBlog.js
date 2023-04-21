@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { Colxx, Separator } from 'components/common/CustomBootstrap';
 import { Formik, Form, Field } from 'formik';
@@ -8,7 +9,9 @@ import 'react-quill/dist/quill.snow.css';
 import CancelIcon from '@mui/icons-material/Cancel';
 import IconButton from '@mui/material/IconButton';
 import { makeStyles } from '@mui/styles';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { addBlog } from 'redux/auth/actions';
 
 const useStyles = makeStyles({
   cancel: {
@@ -80,12 +83,15 @@ const quillFormats = [
   'image',
 ];
 
-function AddBlog() {
-  const [textQuillStandart, setTextQuillStandart] = useState('');
+function AddBlog({ createBlog }) {
+  const history = useHistory();
+  const [description, setDescription] = useState('');
   const classes = useStyles();
   const [file, setFile] = useState();
+  const [image, setImage] = useState(null);
 
   function handleChange(e) {
+    setImage(e.target.files[0]);
     setFile(URL.createObjectURL(e.target.files[0]));
   }
   const handleCancelImage = () => {
@@ -93,19 +99,20 @@ function AddBlog() {
   };
 
   const onSubmit = (values) => {
-    const data = { ...values, file, textQuillStandart };
+    const data = { ...values, image, description };
     const formData = new FormData();
+    console.log({ data });
     Object.keys(data).map((key) => formData.append(key, data[key]));
-    // call API here
+    createBlog(formData, history);
   };
 
   const validate = (values) => {
     const errors = {};
 
-    if (!values.name) {
-      errors.name = 'Please enter Blog Title';
-    } else if (values.name === 'admin') {
-      errors.name = 'Value must be longer than 2 characters';
+    if (!values.title) {
+      errors.title = 'Please enter Blog Title';
+    } else if (values.title === 'admin') {
+      errors.title = 'Value must be longer than 2 characters';
     }
     return errors;
   };
@@ -117,7 +124,7 @@ function AddBlog() {
         <Formik
           validate={validate}
           initialValues={{
-            name: '',
+            title: '',
           }}
           onSubmit={onSubmit}
         >
@@ -191,10 +198,10 @@ function AddBlog() {
                 <Colxx sm="12" md="12" lg="12">
                   <FormGroup>
                     <Label>Title</Label>
-                    <Field className="form-control" name="name" />
-                    {errors.name && touched.name && (
+                    <Field className="form-control" name="title" />
+                    {errors.title && touched.title && (
                       <div className="invalid-feedback d-block">
-                        {errors.name}
+                        {errors.title}
                       </div>
                     )}
                   </FormGroup>
@@ -204,8 +211,8 @@ function AddBlog() {
               <Label>Description</Label>
               <ReactQuill
                 theme="snow"
-                value={textQuillStandart}
-                onChange={(val) => setTextQuillStandart(val)}
+                value={description}
+                onChange={(val) => setDescription(val)}
                 modules={quillModules}
                 formats={quillFormats}
                 style={{ marginBottom: '10px' }}
@@ -232,4 +239,12 @@ function AddBlog() {
   );
 }
 
-export default AddBlog;
+const mapStateToProps = ({ authUser }) => {
+  const { orders } = authUser;
+  return { orders };
+};
+const mapDispatchToProps = (dispatch) => ({
+  createBlog: (data, history) => dispatch(addBlog(data, history)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddBlog);

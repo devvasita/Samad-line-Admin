@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable no-underscore-dangle */
+import React, { useEffect } from 'react';
 import {
   Row,
   Card,
@@ -13,13 +14,18 @@ import LinesEllipsis from 'react-lines-ellipsis';
 import responsiveHOC from 'react-lines-ellipsis/lib/responsiveHOC';
 import { useHistory } from 'react-router-dom';
 import { Separator, Colxx } from 'components/common/CustomBootstrap';
-import { blogData } from 'data/blog';
+// import { blogData } from 'data/blog';
 import IntlMessages from 'helpers/IntlMessages';
+import { connect } from 'react-redux';
+import { getBlog } from 'redux/auth/actions';
 
 const ResponsiveEllipsis = responsiveHOC()(LinesEllipsis);
-
-function Blog() {
+function Blog({ getBlogList, blogs }) {
   const history = useHistory();
+  console.log({ blogs });
+  useEffect(() => {
+    getBlogList();
+  }, [getBlogList]);
 
   const handleView = () => {
     history.push(`/app/applications/blogdetails`);
@@ -32,6 +38,7 @@ function Blog() {
   const handleEdit = () => {
     history.push(`/app/applications/editBlog`);
   };
+
   return (
     <>
       <Row>
@@ -44,13 +51,13 @@ function Blog() {
           </div>
           <Separator className="mb-4" />
         </Colxx>
-        {blogData.map((blogItem) => {
+        {blogs.map((blogItem) => {
           return (
             <Colxx
               xxs="12"
               lg="6"
               className="mb-5"
-              key={`blogItem_${blogItem.id}`}
+              key={`blogItem_${blogItem._id}`}
             >
               <Card
                 className="flex-row listing-card-container"
@@ -60,7 +67,7 @@ function Blog() {
                   <img
                     style={{ borderRadius: '0.75rem 0 0 0.75rem' }}
                     className="card-img-left"
-                    src={blogItem.thumb}
+                    src={blogItem.image.url}
                     alt="Card cap"
                   />
                 </div>
@@ -142,4 +149,12 @@ function Blog() {
   );
 }
 
-export default Blog;
+const mapStateToProps = ({ authUser }) => {
+  const { blogs } = authUser;
+  return { blogs };
+};
+const mapDispatchToProps = (dispatch) => ({
+  getBlogList: () => dispatch(getBlog()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Blog);
