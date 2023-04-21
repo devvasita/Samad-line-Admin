@@ -27,8 +27,8 @@ function Blog({ getBlogList, blogs }) {
     getBlogList();
   }, [getBlogList]);
 
-  const handleView = () => {
-    history.push(`/app/applications/blogdetails`);
+  const handleView = (_id) => {
+    history.push(`/app/applications/blog/${_id}`);
   };
 
   const handleAddBlog = () => {
@@ -82,13 +82,10 @@ function Blog({ getBlogList, blogs }) {
                       component="h5"
                     />
 
-                    <ResponsiveEllipsis
-                      className="listing-desc text-muted"
-                      text={blogItem.description}
-                      maxLine="3"
-                      trimRight
-                      basedOn="words"
-                      component="p"
+                    <p
+                      dangerouslySetInnerHTML={{
+                        __html: blogItem.description,
+                      }}
                     />
                     <div>
                       <div className="mb-2 d-flex justify-content-center align-items-center flex-wrap">
@@ -104,7 +101,7 @@ function Blog({ getBlogList, blogs }) {
                           color="primary"
                           outline
                           className="m-1"
-                          onClick={() => handleView(blogItem.id)}
+                          onClick={() => handleView(blogItem._id)}
                         >
                           <IntlMessages id="View" />
                         </Button>

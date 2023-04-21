@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Colxx, Separator } from 'components/common/CustomBootstrap';
 import { Row, Card, CardBody, CardTitle, Button } from 'reactstrap';
 // import { NavLink } from 'react-router-dom';
@@ -12,8 +12,10 @@ import SingleLightbox from 'components/pages/SingleLightbox';
 
 // const recentPosts = blogData.slice(0, 4);
 // const ResponsiveEllipsis = responsiveHOC()(LinesEllipsis);
-import { NavLink } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
+import { getBlogById } from 'redux/auth/actions';
+import { connect } from 'react-redux';
 
 const useStyles = makeStyles({
   cancel: {
@@ -30,9 +32,15 @@ const useStyles = makeStyles({
   },
 });
 
-function BlogDetails() {
+function BlogDetails({ selectedBlog, getBlogDetails }) {
   const classes = useStyles();
+  const { id } = useParams();
 
+  useEffect(() => {
+    getBlogDetails(id);
+  }, [getBlogDetails]);
+
+  console.log({ selectedBlog });
   return (
     <>
       <Row>
@@ -46,95 +54,22 @@ function BlogDetails() {
         <Colxx xxs="12" md="12" xl="8" className="col-right">
           {' '}
           <CardTitle>
-            <h2>Game Changing Features :-</h2>
             {/* <IntlMessages id="Game Changing Features :-" /> */}
           </CardTitle>
           <Card className="mb-4">
             <SingleLightbox
-              thumb="/assets/img/details/5.jpg"
-              large="/assets/img/details/5.jpg"
+              thumb={selectedBlog.image.url}
+              large={selectedBlog.image.url}
               className="responsive border-0 card-img-top mb-3"
             />
             <CardBody>
               <div className="mb-5">
-                <h5 className="card-title">Game Changing Features</h5>
-                <p>
-                  Blended value human-centered social innovation resist scale
-                  and impact issueoutcomesbandwidth efficient. A; social return
-                  on investment, change-makers, support a,co-createcommitment
-                  because sustainable. Rubric when vibrant black lives matter
-                  benefitcorporation human-centered. Save the world,
-                  problem-solvers support silo massincarceration. Accessibility
-                  empower communities changemaker, low-hanging
-                  fruitaccessibility, thought partnership impact investing
-                  program areas invest.Contextualizeoptimism unprecedented
-                  challenge, empower inclusive. Living a fully ethical life
-                  theresistance segmentation social intrapreneurship efficient
-                  inspire external partners.Systems thinking correlation, social
-                  impact; when revolutionary bandwidth. Engaging,revolutionary
-                  engaging; empower communities policymaker shared unit of
-                  analysistechnology inspiring social entrepreneurship.
-                </p>
-                <p>
-                  Mass incarceration, preliminary thinking systems thinking
-                  vibrant thought leadershipcorporate social responsibility.
-                  Green space global, policymaker; shared
-                  valuedisruptsegmentation social capital. Thought partnership,
-                  optimism citizen-centeredcommitment,relief scale and impact
-                  the empower communities circular. Contextualize boots on
-                  theground; uplift big data, co-creation co-create segmentation
-                  youth inspire. Innovateinnovate overcome injustice.
-                </p>
-              </div>
-              <div className="mb-5">
-                <h5 className="card-title">Unprecedented Challenge</h5>
-                <ul className="list-unstyled">
-                  <li>Preliminary thinking systems</li>
-                  <li>Bandwidth efficient</li>
-                  <li>Green space</li>
-                  <li>Social impact</li>
-                  <li>Thought partnership</li>
-                  <li>Fully ethical life</li>
-                </ul>
-              </div>
-              <div>
-                <h5 className="card-title">Revolutionary Bandwidth</h5>
-                <p>
-                  Blended value human-centered social innovation resist scale
-                  and impact issueoutcomes bandwidth efficient. A; social return
-                  on investment, change-makers, supporta, co-create commitment
-                  because sustainable. Rubric when vibrant black lives
-                  matterbenefit corporation human-centered. Save the world,
-                  problem-solvers support silomass incarceration. Accessibility
-                  empower communities changemaker, low-hanging
-                  fruitaccessibility, thought partnership impact investing
-                  program areas invest.Contextualize optimism unprecedented
-                  challenge, empower inclusive. Living a fullyethical life the
-                  resistance segmentation social intrapreneurship efficient
-                  inspireexternal partners. Systems thinking correlation, social
-                  impact; when revolutionarybandwidth. Engaging, revolutionary
-                  engaging; empower communities policymaker sharedunit of
-                  analysis technology inspiring social entrepreneurship.Mass
-                  incarceration,preliminary thinking systems thinking vibrant
-                  thought leadership corporate socialresponsibility. Green space
-                  global, policymaker; shared value disrupt segmentationsocial
-                  capital. Thought partnership, optimism citizen-centered
-                  commitment, reliefscale and impact the empower communities
-                  circular. Contextualize boots on theground; uplift big data,
-                  co-creation co-create segmentation youth inspire.
-                  Innovateinnovate overcome injustice.
-                </p>
-                <p>
-                  Systems thinking correlation, social impact; when
-                  revolutionary bandwidth. Engaging,revolutionary engaging;
-                  empower communities policymaker shared unit of
-                  analysistechnology inspiring social entrepreneurship. Thought
-                  partnership, optimismcitizen-centeredcommitment,relief scale
-                  and impact the empower communities circular. Contextualize
-                  boots on theground; uplift big data, co-creation co-create
-                  segmentation youth inspire. Innovateinnovate overcome
-                  injustice.
-                </p>
+                <h5 className="card-title">{selectedBlog.title}</h5>
+                <p
+                  dangerouslySetInnerHTML={{
+                    __html: selectedBlog.description,
+                  }}
+                />
               </div>
             </CardBody>
 
@@ -144,13 +79,13 @@ function BlogDetails() {
                 padding: '0 1.75rem 1.75rem 1.75rem',
               }}
             >
-              <NavLink to="./blog">
+              <NavLink to="/app/applications/blog">
                 <Button
                   outline
                   className={classes.cancel}
                   // style={{ background: '#6c757d', border: 'none' }}
                 >
-                  Cancel
+                  Go back
                 </Button>
               </NavLink>
             </div>
@@ -161,4 +96,12 @@ function BlogDetails() {
   );
 }
 
-export default BlogDetails;
+const mapStateToProps = ({ authUser }) => {
+  const { selectedBlog } = authUser;
+  return { selectedBlog };
+};
+const mapDispatchToProps = (dispatch) => ({
+  getBlogDetails: (_id) => dispatch(getBlogById(_id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(BlogDetails);

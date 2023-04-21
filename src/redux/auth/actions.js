@@ -37,6 +37,9 @@ import {
   GET_BLOGS,
   GET_BLOGS_SUCCESS,
   GET_BLOGS_ERROR,
+  GET_BLOG_BY_ID,
+  GET_BLOG_BY_ID_SUCCESS,
+  GET_BLOG_BY_ID_ERROR,
 } from '../contants';
 
 export const getUserDetails = (history) => ({
@@ -203,5 +206,17 @@ export const getBlogSuccess = (data) => ({
 });
 export const getBlogError = (message) => ({
   type: GET_BLOGS_ERROR,
+  payload: { message },
+});
+export const getBlogById = (_id) => ({
+  type: GET_BLOG_BY_ID,
+  payload: { _id },
+});
+export const getBlogByIdSuccess = (data) => ({
+  type: GET_BLOG_BY_ID_SUCCESS,
+  payload: data,
+});
+export const getBlogByIdError = (message) => ({
+  type: GET_BLOG_BY_ID_ERROR,
   payload: { message },
 });

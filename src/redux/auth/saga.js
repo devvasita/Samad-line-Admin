@@ -23,6 +23,7 @@ import {
   UPDATE_ADMIN_ORDER_BY_ID,
   ADD_BLOG,
   GET_BLOGS,
+  GET_BLOG_BY_ID,
 } from '../contants';
 
 import {
@@ -50,6 +51,8 @@ import {
   addBlogError,
   getBlogSuccess,
   getBlogError,
+  getBlogByIdSuccess,
+  getBlogByIdError,
 } from './actions';
 
 const getUSerDetailsAsync = async () => {
@@ -430,6 +433,29 @@ function* getBlogs() {
 export function* watchGetBlogs() {
   yield takeEvery(GET_BLOGS, getBlogs);
 }
+
+const getBlogByIdAsync = async (_id) => {
+  const res = await API.get(`blog/${_id}`);
+  return res;
+};
+
+function* getBlogById({ payload }) {
+  try {
+    const { _id } = payload;
+    const { data, status } = yield call(getBlogByIdAsync, _id);
+    if (status === 200) {
+      yield put(getBlogByIdSuccess(data));
+    } else {
+      yield put(getBlogByIdError(status));
+    }
+  } catch (err) {
+    yield put(getBlogByIdError(err));
+  }
+}
+
+export function* watchGetBlogById() {
+  yield takeEvery(GET_BLOG_BY_ID, getBlogById);
+}
 export default function* rootSaga() {
   yield all([
     fork(watchLoginUser),
@@ -445,5 +471,6 @@ export default function* rootSaga() {
     fork(watchUpdateOrderStatus),
     fork(watchAddBlog),
     fork(watchGetBlogs),
+    fork(watchGetBlogById),
   ]);
 }

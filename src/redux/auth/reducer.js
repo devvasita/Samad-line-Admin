@@ -35,6 +35,7 @@ import {
   GET_BLOGS,
   GET_BLOGS_SUCCESS,
   GET_BLOG_BY_ID_SUCCESS,
+  GET_BLOG_BY_ID_ERROR,
 } from '../contants';
 
 const INIT_STATE = {
@@ -55,6 +56,7 @@ const INIT_STATE = {
   },
   blogs: [],
   success: '',
+  selectedBlog: { image: {} },
 };
 
 export default (state = INIT_STATE, action) => {
@@ -210,6 +212,8 @@ export default (state = INIT_STATE, action) => {
     case GET_BLOGS_SUCCESS:
       return { ...state, loading: true, blogs: action.payload };
     case GET_BLOG_BY_ID_SUCCESS:
+      return { ...state, loading: false, selectedBlog: action.payload };
+    case GET_BLOG_BY_ID_ERROR:
       return { ...state, loading: false, error: action.payload.message };
     default:
       return { ...state };
