@@ -116,7 +116,6 @@ export function* watchUpdateProduct() {
 }
 
 const deleteProductAsync = async (_id) => {
-  console.log({ _id });
   const res = await API.delete(`/product/${_id}`);
   return res;
 };

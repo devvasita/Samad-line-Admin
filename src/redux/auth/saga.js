@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import {
   all,
   call,
@@ -24,6 +25,8 @@ import {
   ADD_BLOG,
   GET_BLOGS,
   GET_BLOG_BY_ID,
+  UPDATE_BLOG_BY_ID,
+  DELETE_BLOG_BY_ID,
 } from '../contants';
 
 import {
@@ -53,6 +56,10 @@ import {
   getBlogError,
   getBlogByIdSuccess,
   getBlogByIdError,
+  updateBlogSuccess,
+  updateBlogError,
+  deleteBlogByIdSuccess,
+  deleteBlogByIdError,
 } from './actions';
 
 const getUSerDetailsAsync = async () => {
@@ -456,6 +463,54 @@ function* getBlogById({ payload }) {
 export function* watchGetBlogById() {
   yield takeEvery(GET_BLOG_BY_ID, getBlogById);
 }
+
+const updateBlogAsync = async (blog, _id) => {
+  const res = await API.put(`blog/${_id}`, blog);
+  return res;
+};
+
+function* updateBlogById({ payload }) {
+  try {
+    const { data: blogData, _id, history } = payload;
+    const { data, status } = yield call(updateBlogAsync, blogData, _id);
+
+    if (status === 200) {
+      yield put(updateBlogSuccess(data));
+      history.push('/app/applications/blog');
+    } else {
+      yield put(updateBlogError('Something went wrong'));
+    }
+  } catch (err) {
+    yield put(updateBlogError(err));
+  }
+}
+export function* watchUpdateBlogById() {
+  yield takeEvery(UPDATE_BLOG_BY_ID, updateBlogById);
+}
+
+const deleteBlogAsync = async (_id) => {
+  const res = API.delete(`/blog/${_id}`);
+  return res;
+};
+
+function* deleteBlogById({ payload }) {
+  try {
+    const { _id } = payload;
+    const { data, status } = yield call(deleteBlogAsync, _id);
+
+    if (status === 200) {
+      yield put(deleteBlogByIdSuccess(data));
+    } else {
+      yield put(deleteBlogByIdError('something went wrong'));
+    }
+  } catch (err) {
+    yield put(deleteBlogByIdError(err));
+  }
+}
+
+export function* watchDeleteBlogById() {
+  yield takeEvery(DELETE_BLOG_BY_ID, deleteBlogById);
+}
 export default function* rootSaga() {
   yield all([
     fork(watchLoginUser),
@@ -472,5 +527,7 @@ export default function* rootSaga() {
     fork(watchAddBlog),
     fork(watchGetBlogs),
     fork(watchGetBlogById),
+    fork(watchUpdateBlogById),
+    fork(watchDeleteBlogById),
   ]);
 }

@@ -17,10 +17,10 @@ import { Separator, Colxx } from 'components/common/CustomBootstrap';
 // import { blogData } from 'data/blog';
 import IntlMessages from 'helpers/IntlMessages';
 import { connect } from 'react-redux';
-import { getBlog } from 'redux/auth/actions';
+import { deleteBlogById, getBlog } from 'redux/auth/actions';
 
 const ResponsiveEllipsis = responsiveHOC()(LinesEllipsis);
-function Blog({ getBlogList, blogs }) {
+function Blog({ getBlogList, blogs, deleteBlog }) {
   const history = useHistory();
   console.log({ blogs });
   useEffect(() => {
@@ -35,8 +35,8 @@ function Blog({ getBlogList, blogs }) {
     history.push(`/app/applications/addblog`);
   };
 
-  const handleEdit = () => {
-    history.push(`/app/applications/editBlog`);
+  const handleEdit = (_id) => {
+    history.push(`/app/applications/blog/edit/${_id}`);
   };
 
   return (
@@ -92,8 +92,8 @@ function Blog({ getBlogList, blogs }) {
                         <Button
                           color="primary"
                           outline
-                          className="m-1"
-                          onClick={handleEdit}
+                          className="m-1        "
+                          onClick={() => handleEdit(blogItem._id)}
                         >
                           <IntlMessages id="Edit" />
                         </Button>
@@ -105,7 +105,12 @@ function Blog({ getBlogList, blogs }) {
                         >
                           <IntlMessages id="View" />
                         </Button>
-                        <Button color="primary" className="m-1" outline>
+                        <Button
+                          color="primary"
+                          className="m-1"
+                          outline
+                          onClick={() => deleteBlog(blogItem._id)}
+                        >
                           <IntlMessages id="Delete" />
                         </Button>
                       </div>
@@ -152,6 +157,7 @@ const mapStateToProps = ({ authUser }) => {
 };
 const mapDispatchToProps = (dispatch) => ({
   getBlogList: () => dispatch(getBlog()),
+  deleteBlog: (_id) => dispatch(deleteBlogById(_id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Blog);

@@ -34,8 +34,11 @@ import {
   ADD_BLOG_ERROR,
   GET_BLOGS,
   GET_BLOGS_SUCCESS,
+  GET_BLOGS_ERROR,
   GET_BLOG_BY_ID_SUCCESS,
   GET_BLOG_BY_ID_ERROR,
+  DELETE_BLOG_BY_ID_SUCCESS,
+  DELETE_BLOG_BY_ID_ERROR,
 } from '../contants';
 
 const INIT_STATE = {
@@ -211,9 +214,15 @@ export default (state = INIT_STATE, action) => {
       return { ...state, loading: true };
     case GET_BLOGS_SUCCESS:
       return { ...state, loading: true, blogs: action.payload };
+    case GET_BLOGS_ERROR:
+      return { ...state, loading: false, error: action.payload.message };
     case GET_BLOG_BY_ID_SUCCESS:
       return { ...state, loading: false, selectedBlog: action.payload };
     case GET_BLOG_BY_ID_ERROR:
+      return { ...state, loading: false, error: action.payload.message };
+    case DELETE_BLOG_BY_ID_SUCCESS:
+      return { ...state, loading: true, blogs: action.payload };
+    case DELETE_BLOG_BY_ID_ERROR:
       return { ...state, loading: false, error: action.payload.message };
     default:
       return { ...state };

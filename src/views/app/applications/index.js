@@ -99,7 +99,8 @@ const Applications = ({ match }) => (
       />
 
       <Route
-        path={`${match.url}/editblog`}
+        exact
+        path={`${match.url}/blog/edit/:id`}
         render={(props) => <EditBlog {...props} />}
       />
 

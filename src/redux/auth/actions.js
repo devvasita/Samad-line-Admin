@@ -40,6 +40,12 @@ import {
   GET_BLOG_BY_ID,
   GET_BLOG_BY_ID_SUCCESS,
   GET_BLOG_BY_ID_ERROR,
+  UPDATE_BLOG_BY_ID,
+  UPDATE_BLOG_BY_ID_SUCCESS,
+  UPDATE_BLOG_BY_ID_ERROR,
+  DELETE_BLOG_BY_ID,
+  DELETE_BLOG_BY_ID_SUCCESS,
+  DELETE_BLOG_BY_ID_ERROR,
 } from '../contants';
 
 export const getUserDetails = (history) => ({
@@ -218,5 +224,31 @@ export const getBlogByIdSuccess = (data) => ({
 });
 export const getBlogByIdError = (message) => ({
   type: GET_BLOG_BY_ID_ERROR,
+  payload: { message },
+});
+
+export const updateBlog = (data, _id, history) => ({
+  type: UPDATE_BLOG_BY_ID,
+  payload: { data, _id, history },
+});
+export const updateBlogSuccess = (data) => ({
+  type: UPDATE_BLOG_BY_ID_SUCCESS,
+  payload: data,
+});
+export const updateBlogError = (message) => ({
+  type: UPDATE_BLOG_BY_ID_ERROR,
+  payload: { message },
+});
+
+export const deleteBlogById = (_id) => ({
+  type: DELETE_BLOG_BY_ID,
+  payload: { _id },
+});
+export const deleteBlogByIdSuccess = (data) => ({
+  type: DELETE_BLOG_BY_ID_SUCCESS,
+  payload: data,
+});
+export const deleteBlogByIdError = (message) => ({
+  type: DELETE_BLOG_BY_ID_ERROR,
   payload: { message },
 });

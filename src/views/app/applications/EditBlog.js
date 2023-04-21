@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Colxx, Separator } from 'components/common/CustomBootstrap';
 import { Formik, Form, Field } from 'formik';
 import ReactQuill from 'react-quill';
@@ -9,7 +9,9 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import IconButton from '@mui/material/IconButton';
 
 import { makeStyles } from '@mui/styles';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory, useParams } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { getBlogById, updateBlog } from 'redux/auth/actions';
 
 const useStyles = makeStyles({
   cancel: {
@@ -81,12 +83,27 @@ const quillFormats = [
   'image',
 ];
 
-function EditBlog() {
-  const [textQuillStandart, setTextQuillStandart] = useState('');
-  const [file, setFile] = useState();
+function EditBlog({ selectedBlog, getBlogDetails, updateBlogDetails }) {
+  const { id } = useParams();
+  const history = useHistory();
   const classes = useStyles();
 
+  const [description, setDescription] = useState('');
+  const [file, setFile] = useState();
+  const [image, setImage] = useState(null);
+
+  useEffect(() => {
+    getBlogDetails(id);
+  }, [getBlogDetails]);
+
+  useEffect(() => {
+    setFile(selectedBlog.image.url);
+    if (selectedBlog.description) setDescription(selectedBlog.description);
+  }, [selectedBlog]);
+
+  console.log({ selectedBlog });
   function handleChange(e) {
+    setImage(e.target.files[0]);
     setFile(URL.createObjectURL(e.target.files[0]));
   }
   const handleCancelImage = () => {
@@ -94,16 +111,19 @@ function EditBlog() {
   };
 
   const onSubmit = (values) => {
-    console.log(values);
+    const data = { ...values, image, description };
+    const formData = new FormData();
+    Object.keys(data).map((key) => formData.append(key, data[key]));
+    updateBlogDetails(formData, id, history);
   };
 
   const validate = (values) => {
     const errors = {};
 
-    if (!values.name) {
-      errors.name = 'Please enter Blog Title';
-    } else if (values.name === 'admin') {
-      errors.name = 'Value must be longer than 2 characters';
+    if (!values.title) {
+      errors.title = 'Please enter Blog Title';
+    } else if (values.title === 'admin') {
+      errors.title = 'Value must be longer than 2 characters';
     }
     return errors;
   };
@@ -115,7 +135,7 @@ function EditBlog() {
         <Formik
           validate={validate}
           initialValues={{
-            name: '',
+            title: selectedBlog.title,
           }}
           onSubmit={onSubmit}
         >
@@ -185,17 +205,17 @@ function EditBlog() {
               </div>
               <FormGroup>
                 <Label>Ttitle</Label>
-                <Field className="form-control" name="name" />
-                {errors.name && touched.name && (
-                  <div className="invalid-feedback d-block">{errors.name}</div>
+                <Field className="form-control" name="title" />
+                {errors.title && touched.title && (
+                  <div className="invalid-feedback d-block">{errors.title}</div>
                 )}
               </FormGroup>
 
               <Label>Description</Label>
               <ReactQuill
                 theme="snow"
-                value={textQuillStandart}
-                onChange={(val) => setTextQuillStandart(val)}
+                value={description}
+                onChange={(val) => setDescription(val)}
                 modules={quillModules}
                 formats={quillFormats}
                 style={{ marginBottom: '10px' }}
@@ -223,4 +243,14 @@ function EditBlog() {
   );
 }
 
-export default EditBlog;
+const mapStateToProps = ({ authUser }) => {
+  const { selectedBlog } = authUser;
+  return { selectedBlog };
+};
+const mapDispatchToProps = (dispatch) => ({
+  getBlogDetails: (_id) => dispatch(getBlogById(_id)),
+  updateBlogDetails: (data, id, history) =>
+    dispatch(updateBlog(data, id, history)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditBlog);
