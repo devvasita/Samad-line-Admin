@@ -91,6 +91,7 @@ function EditBlog({ selectedBlog, getBlogDetails, updateBlogDetails }) {
   const [description, setDescription] = useState('');
   const [file, setFile] = useState();
   const [image, setImage] = useState(null);
+  const [blogData, setBlogData] = useState({ title: '111' });
 
   useEffect(() => {
     getBlogDetails(id);
@@ -99,9 +100,9 @@ function EditBlog({ selectedBlog, getBlogDetails, updateBlogDetails }) {
   useEffect(() => {
     setFile(selectedBlog.image.url);
     if (selectedBlog.description) setDescription(selectedBlog.description);
+    setBlogData({ title: selectedBlog.title });
   }, [selectedBlog]);
 
-  console.log({ selectedBlog });
   function handleChange(e) {
     setImage(e.target.files[0]);
     setFile(URL.createObjectURL(e.target.files[0]));
@@ -127,6 +128,7 @@ function EditBlog({ selectedBlog, getBlogDetails, updateBlogDetails }) {
     }
     return errors;
   };
+
   return (
     <div>
       <Colxx xxs="12">
@@ -134,15 +136,13 @@ function EditBlog({ selectedBlog, getBlogDetails, updateBlogDetails }) {
         <Separator className="mb-5" />
         <Formik
           validate={validate}
-          initialValues={{
-            title: selectedBlog.title,
-          }}
+          initialValues={blogData}
+          enableReinitialize
           onSubmit={onSubmit}
         >
-          {({ errors, touched }) => (
+          {({ errors, touched, getFieldProps }) => (
             <Form className="av-tooltip tooltip-label-right">
               <Label>Image</Label>
-              {/* <DropzoneExample /> */}
               <div>
                 {!file ? (
                   <div aria-hidden="true" className={classes.image}>
@@ -205,7 +205,11 @@ function EditBlog({ selectedBlog, getBlogDetails, updateBlogDetails }) {
               </div>
               <FormGroup>
                 <Label>Ttitle</Label>
-                <Field className="form-control" name="title" />
+                <Field
+                  className="form-control"
+                  name="title"
+                  {...getFieldProps('title')}
+                />
                 {errors.title && touched.title && (
                   <div className="invalid-feedback d-block">{errors.title}</div>
                 )}
