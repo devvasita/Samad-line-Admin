@@ -284,3 +284,13 @@
   position: absolute;
   color: #868583;
 }
+.ellipseAfter3Line {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+.ellipseAfter3Line ul {
+  padding: 0 !important;
+}

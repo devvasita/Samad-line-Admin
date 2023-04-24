@@ -1,4 +1,6 @@
 /* eslint-disable no-underscore-dangle */
+/* eslint-disable no-unused-vars */
+
 import React, { useEffect } from 'react';
 import {
   Row,
@@ -86,6 +88,7 @@ function Blog({ getBlogList, blogs, deleteBlog }) {
                       dangerouslySetInnerHTML={{
                         __html: blogItem.description,
                       }}
+                      className="ellipseAfter3Line"
                     />
                     <div>
                       <div className="mb-2 d-flex justify-content-center align-items-center flex-wrap">
@@ -122,7 +125,7 @@ function Blog({ getBlogList, blogs, deleteBlog }) {
           );
         })}
       </Row>
-      <Row>
+      {/* <Row>
         <Colxx xxs="12">
           <Pagination listClassName="justify-content-center">
             <PaginationItem>
@@ -146,7 +149,7 @@ function Blog({ getBlogList, blogs, deleteBlog }) {
             </PaginationItem>
           </Pagination>
         </Colxx>
-      </Row>
+      </Row> */}
     </>
   );
 }
