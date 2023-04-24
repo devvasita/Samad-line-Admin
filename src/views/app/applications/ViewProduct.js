@@ -1,3 +1,6 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useHistory, useParams } from 'react-router-dom';
@@ -11,6 +14,8 @@ import {
   CardText,
   CardTitle,
 } from 'reactstrap';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Pagination, Navigation } from 'swiper';
 import GlideComponentThumbs from 'components/carousel/GlideComponentThumbs';
 import IntlMessages from 'helpers/IntlMessages';
 import GlideComponent from 'components/carousel/GlideComponent';
@@ -182,6 +187,7 @@ export const items = [
   },
 ];
 const BasicCarouselItem = ({ name, image, createdAt, _id }) => {
+  console.log({ name, image, createdAt, _id });
   const history = useHistory();
   const dispatch = useDispatch();
   const handleViewProduct = () => {
@@ -198,7 +204,7 @@ const BasicCarouselItem = ({ name, image, createdAt, _id }) => {
         <div className="w-100 position-relative h-50 p-2">
           <img
             className="card-img-left"
-            style={{ height: 200 }}
+            // style={{ height: 200 }}
             src={image ? image.find((elem) => elem.url !== '').url : null}
             alt={name}
           />
@@ -237,6 +243,7 @@ function ViewProduct() {
   const data = useSelector((state) => state?.product?.selectedProduct);
 
   const [imgArr, setimgArr] = useState([]);
+  const [activeImage, setActiveImage] = useState('');
 
   useEffect(() => {
     dispatch(getSingleProduct(id));
@@ -254,9 +261,9 @@ function ViewProduct() {
           })
       );
       setimgArr(filteredImg);
+      setActiveImage(filteredImg[0].img);
     }
   }, [data]);
-
   return (
     <>
       <Row>
@@ -271,39 +278,30 @@ function ViewProduct() {
           {data?.unit}):-
         </h2>
       </CardTitle>
-      {console.log({ imgArr, data: imgArr.map((elem) => elem.img) })}
+
       <Row>
         <Colxx xxs="12" md="12" xl="6" className="col-right">
           <Row>
             <Card className="mb-4">
-              <GlideComponentThumbs
-                settingsImages={{
-                  bound: true,
-                  rewind: true,
-                  focusAt: 0,
-                  startAt: 0,
-                  gap: 5,
-                  perView: 1,
-                  data: imgArr,
-                }}
-                settingsThumbs={{
-                  bound: true,
-                  rewind: true,
-                  focusAt: 0,
-                  startAt: 0,
-                  gap: 10,
-                  perView: 5,
-                  data: imgArr,
-                  breakpoints: {
-                    576: {
-                      perView: 4,
-                    },
-                    420: {
-                      perView: 3,
-                    },
-                  },
-                }}
-              />
+              <img src={activeImage} />
+              <Swiper
+                slidesPerView={5}
+                modules={[Autoplay, Pagination, Navigation]}
+                onSlideChange={() => console.log('slide change')}
+                onSwiper={(swiper) => console.log(swiper)}
+                style={{ width: '100%', height: 90, marginTop: 8 }}
+                spaceBetween={25}
+                navigation
+              >
+                {imgArr.map((img) => (
+                  <SwiperSlide
+                    key={img.img}
+                    onClick={() => setActiveImage(img.img)}
+                  >
+                    <img src={img.img} style={{ height: 90, width: 90 }} />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
               <CardBody>
                 <div className="d-flex align-items-center mb-2">
                   <img
@@ -553,15 +551,15 @@ function ViewProduct() {
             </Colxx>
           </Row>
 
-          <Row>
-            <Colxx xl="12">
-              <Card style={{ borderRadius: '0.75rem' }}>
-                {data && data.otherUnit.length ? (
+          {data && data.otherUnit.length > 1 && (
+            <Row>
+              <Colxx xl="12">
+                <Card style={{ borderRadius: '0.75rem' }}>
                   <CardBody>
                     <CardTitle>
                       <IntlMessages id="Other Unit" />
                     </CardTitle>
-                    <GlideComponent
+                    {/* <GlideComponent
                       settings={{
                         gap: 5,
                         perView: 2,
@@ -580,51 +578,66 @@ function ViewProduct() {
                           </div>
                         );
                       })}
-                    </GlideComponent>
+                    </GlideComponent> */}
+                    <Swiper
+                      slidesPerView={2}
+                      modules={[Autoplay, Pagination, Navigation]}
+                      onSlideChange={() => console.log('slide change')}
+                      onSwiper={(swiper) => console.log(swiper)}
+                      style={{ width: '100%' }}
+                      // spaceBetween={25}
+                      navigation
+                    >
+                      {data &&
+                        data.otherUnit.map((item) => {
+                          return (
+                            <SwiperSlide key={item._id}>
+                              <BasicCarouselItem {...item.value} />
+                            </SwiperSlide>
+                          );
+                        })}
+                    </Swiper>
                   </CardBody>
-                ) : null}
-              </Card>
-            </Colxx>
-          </Row>
-
-          <Row>
-            <Colxx xl="12">
-              <Card style={{ borderRadius: '0.75rem', marginTop: '20px' }}>
-                {data && data.otherColor.length ? (
+                </Card>
+              </Colxx>
+            </Row>
+          )}
+          {data && data.otherColor.length > 1 && (
+            <Row>
+              <Colxx xl="12">
+                <Card style={{ borderRadius: '0.75rem', marginTop: '20px' }}>
                   <CardBody>
                     <CardTitle>
                       <IntlMessages id="Other Color" />
                     </CardTitle>
-                    <GlideComponent
-                      settings={{
-                        gap: 5,
-                        perView: 2,
-                        type: 'carousel',
-                        breakpoints: {
-                          480: { perView: 1 },
-                          800: { perView: 2 },
-                          1200: { perView: 3 },
-                        },
-                      }}
+                    <Swiper
+                      slidesPerView={2}
+                      modules={[Autoplay, Pagination, Navigation]}
+                      onSlideChange={() => console.log('slide change')}
+                      onSwiper={(swiper) => console.log(swiper)}
+                      style={{ width: '100%' }}
+                      // spaceBetween={25}
+                      navigation
                     >
-                      {data.otherColor.map((item) => {
-                        return (
-                          <div key={item._id}>
-                            <BasicCarouselItem {...item.value} />
-                          </div>
-                        );
-                      })}
-                    </GlideComponent>
+                      {data &&
+                        data.otherColor.map((item) => {
+                          return (
+                            <SwiperSlide key={item._id}>
+                              <BasicCarouselItem {...item.value} />
+                            </SwiperSlide>
+                          );
+                        })}
+                    </Swiper>
                   </CardBody>
-                ) : null}
-              </Card>
-            </Colxx>
-          </Row>
-
-          <Row>
-            <Colxx xl="12">
-              <Card style={{ borderRadius: '0.75rem', marginTop: '20px' }}>
-                {data && data.otherFlavour.length ? (
+                </Card>
+              </Colxx>
+            </Row>
+          )}
+          {data && data.otherFlavour.length > 1 && (
+            <Row>
+              <Colxx xl="12">
+                <Card style={{ borderRadius: '0.75rem', marginTop: '20px' }}>
+                  {/* {data && data.otherFlavour.length ? (
                   <CardBody>
                     <CardTitle>
                       <IntlMessages id="Other Flavours" />
@@ -650,44 +663,63 @@ function ViewProduct() {
                       })}
                     </GlideComponent>
                   </CardBody>
-                ) : null}
-              </Card>
-            </Colxx>
-          </Row>
+                ) : null} */}
+                  <CardBody>
+                    <CardTitle>
+                      <IntlMessages id="Other Flavours" />
+                    </CardTitle>
+                    <Swiper
+                      slidesPerView={2}
+                      modules={[Autoplay, Pagination, Navigation]}
+                      onSlideChange={() => console.log('slide change')}
+                      onSwiper={(swiper) => console.log(swiper)}
+                      style={{ width: '100%' }}
+                      // spaceBetween={25}
+                      navigation
+                    >
+                      {data &&
+                        data.otherFlavour.map((item) => {
+                          return (
+                            <SwiperSlide key={item._id}>
+                              <BasicCarouselItem {...item.value} />
+                            </SwiperSlide>
+                          );
+                        })}
+                    </Swiper>
+                  </CardBody>
+                </Card>
+              </Colxx>
+            </Row>
+          )}
         </Colxx>
       </Row>
-      <Row>
-        <Colxx xxs="12" className="mt-3">
-          <CardTitle>
-            <h3>Suggested Product:</h3>
-          </CardTitle>
-        </Colxx>
-        {data && data.suggestedProduct.length ? (
-          <Colxx xxs="12" className="pl-0 pr-0 mb-5">
-            <GlideComponent
-              settings={{
-                gap: 5,
-                perView: 4,
-                type: 'carousel',
-                rewind: false,
-                breakpoints: {
-                  480: { perView: 1 },
-                  800: { perView: 2 },
-                  1200: { perView: 3 },
-                },
-              }}
-            >
-              {data.suggestedProduct.map((item) => {
+      {data && data.suggestedProduct.length > 1 && (
+        <Row>
+          <Colxx xxs="12" className="mt-3">
+            <CardTitle>
+              <h3>Suggested Product:</h3>
+            </CardTitle>
+          </Colxx>
+          <Swiper
+            slidesPerView={3}
+            modules={[Autoplay, Pagination, Navigation]}
+            onSlideChange={() => console.log('slide change')}
+            onSwiper={(swiper) => console.log(swiper)}
+            style={{ width: '100%' }}
+            // spaceBetween={25}
+            navigation
+          >
+            {data &&
+              data.suggestedProduct.map((item) => {
                 return (
-                  <div key={item._id}>
+                  <SwiperSlide key={item._id}>
                     <BasicCarouselItem {...item.value} />
-                  </div>
+                  </SwiperSlide>
                 );
               })}
-            </GlideComponent>
-          </Colxx>
-        ) : null}
-      </Row>
+          </Swiper>
+        </Row>
+      )}
     </>
   );
 }

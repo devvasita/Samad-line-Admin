@@ -294,3 +294,11 @@
 .ellipseAfter3Line ul {
   padding: 0 !important;
 }
+.swiper-button-prev,
+.swiper-button-next {
+  font-size: 20px;
+  color: #6fb327;
+  display: inline-block;
+  vertical-align: middle;
+  backdrop-filter: blur(10px);
+}
