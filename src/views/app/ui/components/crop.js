@@ -56,13 +56,13 @@ export default function CropImage({ setCropedImage, upImg, setUpImg, src }) {
     if (!crop || !canvas || !image) {
       return;
     }
-    setCrop((oldVal) => {
-      return {
-        ...oldVal,
-        height: image.height,
-        width: image.width,
-      };
-    });
+    // setCrop((oldVal) => {
+    //   return {
+    //     ...oldVal,
+    //     height: image.height,
+    //     width: image.width,
+    //   };
+    // });
     const scaleX = image.naturalWidth / image.width;
     const scaleY = image.naturalHeight / image.height;
     const ctx = canvas.getContext('2d');

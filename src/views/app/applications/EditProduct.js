@@ -55,9 +55,11 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     // width: '30%',
     margin: ' 0 auto',
-    height: '240px',
+    // height: '240px',
     cursor: 'pointer',
     marginTop: '15px',
+    height: '250px',
+    width: '250px',
     // [theme.breakpoints.up('sm')]: {
     //   backgroundColor: 'red',
     // },

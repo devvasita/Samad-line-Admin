@@ -37,7 +37,8 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     // width: '30%',
     margin: ' 0 auto',
-    height: '115px',
+    height: '250px',
+    width: '250px',
     cursor: 'pointer',
     marginTop: '15px',
     // [theme.breakpoints.up('sm')]: {
@@ -57,8 +58,8 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'center',
     margin: 'auto',
     // width: '30%',
-    height: '115px',
-    marginTop: '15px',
+    // height: '115px',
+    // marginTop: '15px',
 
     '@media (max-width: 450px)': {
       width: '70%',
