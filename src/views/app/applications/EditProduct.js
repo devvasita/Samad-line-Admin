@@ -269,6 +269,48 @@ function EditProduct({ history }) {
   }, [dispatch, id]);
 
   useEffect(() => {
+    const blankImgArray = [
+      {
+        url: '',
+        key: '',
+      },
+      {
+        url: '',
+        key: '',
+      },
+      {
+        url: '',
+        key: '',
+      },
+      {
+        url: '',
+        key: '',
+      },
+      {
+        url: '',
+        key: '',
+      },
+      {
+        url: '',
+        key: '',
+      },
+      {
+        url: '',
+        key: '',
+      },
+      {
+        url: '',
+        key: '',
+      },
+      {
+        url: '',
+        key: '',
+      },
+      {
+        url: '',
+        key: '',
+      },
+    ];
     if (selectedProduct) {
       setProduct({
         ...selectedProduct,
@@ -286,7 +328,10 @@ function EditProduct({ history }) {
           label: selectedProduct.unit,
           value: selectedProduct.unit,
         },
-        image: selectedProduct.image,
+        image: [
+          ...selectedProduct.image,
+          ...blankImgArray.splice(selectedProduct.image.length),
+        ],
       });
     }
   }, [selectedProduct]);
