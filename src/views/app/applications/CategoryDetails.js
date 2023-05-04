@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import {
@@ -14,7 +15,7 @@ import 'rc-switch/assets/index.css';
 import './order.css';
 import { Colxx, Separator } from 'components/common/CustomBootstrap';
 import Switch from '@mui/material/Switch';
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 import { Button } from 'reactstrap';
 import IntlMessages from 'helpers/IntlMessages';
 
@@ -92,10 +93,10 @@ function CategoryDetails() {
   const handleChangePage = (_, newPage) => {
     setPage(newPage);
   };
-  const history = useHistory();
-  const handleView = () => {
-    history.push('/app/pages/product/data-view');
-  };
+  // const history = useHistory();
+  // const handleView = () => {
+  //   history.push('/app/pages/product/data-view');
+  // };
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -120,16 +121,8 @@ function CategoryDetails() {
         <StyledTable>
           <TableHead>
             <TableRow>
-              <TableCell align="center">
-                <text>Customer Name</text>
-              </TableCell>
-              <TableCell align="center">Mobile</TableCell>
-              <TableCell align="center" width="200px">
-                {' '}
-                Email
-              </TableCell>
-              <TableCell align="center">Block / Unblock </TableCell>
-              <TableCell align="center">View</TableCell>
+              <TableCell>Name</TableCell>
+              <TableCell align="end" />
             </TableRow>
           </TableHead>
           <TableBody style={{ padding: '10px' }}>
@@ -137,27 +130,15 @@ function CategoryDetails() {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((userData) => (
                 <TableRow key={userData.id}>
-                  <TableCell align="center">{userData.userName}</TableCell>
-                  <TableCell align="center">{userData.mobile}</TableCell>
-                  <TableCell align="center">{userData.email}</TableCell>
-                  <TableCell align="center" className="-webkit-center">
-                    <div className="switch">
-                      <Switch {...label} />
-                    </div>
-                  </TableCell>
-
-                  <TableCell align="center">
-                    <i
-                      className="simple-icon-eye"
-                      onClick={handleView}
-                      onKeyDown={handleView}
-                      aria-hidden="true"
-                      style={{
-                        cursor: 'pointer',
-                        fontSize: '20px',
-                        color: '#6fb326',
-                      }}
-                    />
+                  <TableCell>{userData.userName}</TableCell>
+                  <TableCell
+                    className="-webkit-center"
+                    style={{ textAlign: 'right' }}
+                  >
+                    <Button>Edit</Button>{' '}
+                    <Button outline className="secondary-new">
+                      Delete
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
