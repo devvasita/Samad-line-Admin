@@ -1,5 +1,6 @@
 import React, { Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
+import CategoryDetails from './CategoryDetails';
 
 const Todo = React.lazy(() =>
   import(/* webpackChunkName: "application-todo" */ './todo')
@@ -76,12 +77,19 @@ const Applications = ({ match }) => (
         render={(props) => <Todo {...props} />}
       />
       <Route
+        exact
         path={`${match.url}/brand`}
         render={(props) => <Brand {...props} />}
       />
       <Route
+        exact
         path={`${match.url}/category`}
         render={(props) => <Category {...props} />}
+      />
+      <Route
+        exact
+        path={`${match.url}/category/:id`}
+        render={(props) => <CategoryDetails {...props} />}
       />
       <Route
         path={`${match.url}/blog`}
@@ -162,6 +170,7 @@ const Applications = ({ match }) => (
         path={`${match.url}/orders/:id`}
         render={(props) => <OrderDetails {...props} />}
       />
+
       <Redirect to="/error" />
     </Switch>
   </Suspense>

@@ -70,9 +70,9 @@ export const deleteBrandAndCategory = (id, type) => ({
   type: DELETE_BRAND_AND_CATEGORY,
   payload: { id, type },
 });
-export const deleteBrandAndCategorySuccess = (id, type) => ({
+export const deleteBrandAndCategorySuccess = (data, type) => ({
   type: DELETE_BRAND_AND_CATEGORY_SUCCESS,
-  payload: { id, type },
+  payload: { data, type },
 });
 export const deleteBrandAndCategoryError = (message) => ({
   type: DELETE_BRAND_AND_CATEGORY_ERROR,

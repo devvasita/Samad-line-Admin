@@ -119,8 +119,11 @@ const deleteBrandAndCategoryAsync = async (id, type) => {
 function* deleteBrandAndCategoryWorker({ payload }) {
   const { id, type } = payload;
   try {
-    const { data, status } = yield call(deleteBrandAndCategoryAsync, id, type);
-    const { message } = data;
+    const {
+      data: { message, data },
+      status,
+    } = yield call(deleteBrandAndCategoryAsync, id, type);
+
     if (status === 200) {
       yield put(deleteBrandAndCategorySuccess(data, type));
     } else {
