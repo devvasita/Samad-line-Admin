@@ -17,6 +17,7 @@ import {
   Input,
   ModalHeader,
 } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import IntlMessages from 'helpers/IntlMessages';
 import { Colxx, Separator } from 'components/common/CustomBootstrap';
 import IconButton from '@mui/material/IconButton';
@@ -269,7 +270,9 @@ function Category() {
                   </div>
                   <CardBody className="p-2">
                     <CardSubtitle className="mb-3 font-weight-bold font-size-11">
-                      <h2 className="truncate">{category?.name}</h2>
+                      <Link to={`/app/applications/category/${category?._id}`}>
+                        <h2 className="truncate">{category?.name}</h2>
+                      </Link>{' '}
                     </CardSubtitle>
                     {/* <CardText className="text-muted text-small mb-0 font-weight-light">
                 09.04.2018

@@ -1,5 +1,6 @@
+/* eslint-disable camelcase */
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import {
   Box,
@@ -11,13 +12,30 @@ import {
   TableRow,
 } from '@mui/material';
 
+import './category.css';
 import 'rc-switch/assets/index.css';
 import './order.css';
 import { Colxx, Separator } from 'components/common/CustomBootstrap';
 import Switch from '@mui/material/Switch';
 // import { useHistory } from 'react-router-dom';
-import { Button } from 'reactstrap';
+import {
+  Button,
+  Input,
+  Label,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+} from 'reactstrap';
 import IntlMessages from 'helpers/IntlMessages';
+import { useParams } from 'react-router-dom';
+import { connect } from 'react-redux';
+import {
+  createSubCategory,
+  deleteSubCategory,
+  getCategoryDetails,
+  updateSubCategory,
+} from 'redux/brandAndCategory/actions';
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
@@ -31,86 +49,184 @@ const StyledTable = styled(Table)(() => ({
     '& tr': { '& th': { paddingLeft: 0, paddingRight: 0 } },
   },
   '& tbody': {
-    '& tr': { '& td': { paddingLeft: 0, textTransform: 'capitalize' } },
+    '& tr': { '& td': { paddingLeft: 0 } },
   },
 }));
 
-const dataList = [
-  {
-    id: 1,
-    userName: 'Jay Patel',
-    mobile: '9876543211',
-    email: 'johntest@gmail.com',
-    status: 'block',
-  },
-  {
-    id: 2,
-    userName: 'Mayank tejani',
-    mobile: '9126543211',
-    email: 'mayanktejani@gmail.com',
-    status: 'block',
-  },
-  {
-    id: 3,
-    userName: 'Kuldeep Yadav',
-    mobile: '9876577777',
-    email: 'Kuldeep23@gmail.com',
-    status: 'block',
-  },
-  {
-    id: 4,
-    userName: 'Divya Sharma',
-    mobile: '9872243211',
-    email: 'divyasharma34@gmail.com',
-    status: 'block',
-  },
-  {
-    id: 5,
-    userName: 'Krupa Pandit',
-    mobile: '9922771188',
-    email: 'krupapandit90@gmail.com',
-    status: 'block',
-  },
-  {
-    id: 6,
-    userName: 'Harsh Mevani',
-    mobile: '6790126733',
-    email: 'harshmevani9@gmail.com',
-    status: 'block',
-  },
-];
+const NewTableRow = ({
+  name,
+  _id,
+  parent_id,
+  saveSubCategory,
+  removeSubCategory,
+}) => {
+  const [edit, setEdit] = useState(false);
+  const [subCategoryname, setSubCategoryName] = useState(name);
 
-function CategoryDetails() {
+  const handleEdit = () => {
+    setEdit((oldState) => !oldState);
+  };
+
+  const handleSave = () => {
+    setEdit((oldState) => !oldState);
+    saveSubCategory({ name: subCategoryname, parent_id, _id });
+  };
+  return (
+    <TableRow>
+      {edit ? (
+        <TableCell>
+          <Input
+            value={subCategoryname}
+            variant="outlined"
+            onChange={(e) => setSubCategoryName(e.target.value)}
+          />
+        </TableCell>
+      ) : (
+        <TableCell>{name}</TableCell>
+      )}
+      <TableCell className="-webkit-center" style={{ textAlign: 'right' }}>
+        {edit ? (
+          <Button onClick={handleSave}>Save</Button>
+        ) : (
+          <Button onClick={handleEdit}>Edit</Button>
+        )}
+        <Button
+          outline
+          className="secondary-new"
+          onClick={() => removeSubCategory({ parent_id, _id })}
+          style={{ marginLeft: '13px' }}
+        >
+          Delete
+        </Button>
+      </TableCell>
+    </TableRow>
+  );
+};
+
+function CategoryDetails({
+  selectedCategory,
+  getCategory,
+  saveSubCategory,
+  removeSubCategory,
+  createNewSubCategory,
+}) {
+  const { id } = useParams();
+  const { subCategory } = selectedCategory;
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [modalLong, setModalLong] = useState(false);
+  const [subText, setSubText] = useState('');
 
-  // const label = { inputProps: { 'aria-label': 'Switch demo' } };
+  useEffect(() => {
+    getCategory(id);
+  }, [id]);
 
-  // const data = useSelector((state) => state?.adminAddPlan);
-  // const [newData, setNewData] = React.useState();
-  // const [userId, setuserId] = React.useState();
+  const handeCreateSubCategory = () => {
+    createNewSubCategory({ _id: id, name: subText });
+  };
 
   const handleChangePage = (_, newPage) => {
     setPage(newPage);
   };
-  // const history = useHistory();
-  // const handleView = () => {
-  //   history.push('/app/pages/product/data-view');
-  // };
+
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  // useEffect(() => {
-  //   setNewData(data);
-  // }, [data]);
 
   return (
     <Container>
+      <Modal
+        centered
+        backdrop="static"
+        isOpen={modalLong}
+        toggle={() => {
+          setModalLong(!modalLong);
+          setSubText('');
+        }}
+        style={{
+          boxShadow: 'none',
+        }}
+      >
+        <ModalBody>
+          <ModalHeader style={{ padding: '5px 0px 5px 0px' }}>
+            Add New Brand
+          </ModalHeader>
+
+          <Label className="mt-4">
+            <IntlMessages id="Title :" />
+          </Label>
+
+          <Input
+            type="text"
+            defaultValue="kimi no"
+            value={subText}
+            onChange={(event) => {
+              setSubText(event.target.value);
+            }}
+          />
+        </ModalBody>
+        <ModalFooter style={{ borderTop: 'none' }}>
+          <Button
+            outline
+            className="primary-new"
+            type="submit"
+            onClick={() => {
+              handeCreateSubCategory();
+              setModalLong(false);
+            }}
+            press
+          >
+            Submit
+          </Button>{' '}
+          <Button
+            outline
+            className="secondary-new"
+            onClick={() => {
+              setModalLong(false);
+              setSubText('');
+            }}
+          >
+            Cancel
+          </Button>
+        </ModalFooter>
+      </Modal>
+
+      {/* <Modal isOpen={modalBasic} toggle={() => setModalBasic(!modalBasic)}>
+        <ModalHeader>
+          <IntlMessages id="modal.modal-title" />
+        </ModalHeader>
+        <ModalBody>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+          culpa qui officia deserunt mollit anim id est laborum.
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={() => setModalBasic(false)}>
+            Do Something
+          </Button>{' '}
+          <Button color="secondary" onClick={() => setModalBasic(false)}>
+            Cancel
+          </Button>
+        </ModalFooter>
+      </Modal> */}
       <Colxx xxs="12">
         <div className="d-flex justify-content-sm-between">
           <h1>Category Details</h1>
-          <Button size="sm" color="primary" outline>
+          <Button
+            size="sm"
+            color="primary"
+            outline
+            onClick={() => {
+              setModalLong(true);
+              setSubText('');
+            }}
+            style={{ marginBottom: 13 }}
+          >
             <IntlMessages id="+ Add Sub Category" />
           </Button>
         </div>
@@ -126,21 +242,17 @@ function CategoryDetails() {
             </TableRow>
           </TableHead>
           <TableBody style={{ padding: '10px' }}>
-            {dataList
+            {subCategory
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((userData) => (
-                <TableRow key={userData.id}>
-                  <TableCell>{userData.userName}</TableCell>
-                  <TableCell
-                    className="-webkit-center"
-                    style={{ textAlign: 'right' }}
-                  >
-                    <Button>Edit</Button>{' '}
-                    <Button outline className="secondary-new">
-                      Delete
-                    </Button>
-                  </TableCell>
-                </TableRow>
+              .map(({ _id, name }) => (
+                <NewTableRow
+                  key={_id}
+                  name={name}
+                  _id={_id}
+                  parent_id={id}
+                  saveSubCategory={saveSubCategory}
+                  removeSubCategory={removeSubCategory}
+                />
               ))}
           </TableBody>
         </StyledTable>
@@ -151,7 +263,7 @@ function CategoryDetails() {
           component="div"
           className="page"
           rowsPerPage={rowsPerPage}
-          count={dataList.length}
+          count={subCategory.length}
           onPageChange={handleChangePage}
           rowsPerPageOptions={[5, 10, 25]}
           onRowsPerPageChange={handleChangeRowsPerPage}
@@ -163,4 +275,15 @@ function CategoryDetails() {
   );
 }
 
-export default CategoryDetails;
+const mapStateToProps = ({ brandAndCategory }) => {
+  const { selectedCategory } = brandAndCategory;
+  return { selectedCategory };
+};
+const mapDispatchToProps = (dispatch) => ({
+  getCategory: (_id) => dispatch(getCategoryDetails(_id)),
+  saveSubCategory: (data) => dispatch(updateSubCategory(data)),
+  removeSubCategory: (data) => dispatch(deleteSubCategory(data)),
+  createNewSubCategory: (data) => dispatch(createSubCategory(data)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryDetails);
