@@ -181,6 +181,7 @@ function AddProduct({ history }) {
   const dispatch = useDispatch();
   const [brand, setbrand] = useState([]);
   const [category, setcategory] = useState([]);
+  const [subCategory, setSubCategory] = useState([]);
   const [relavantProduct, setRelavantProduct] = useState([]);
   const [product, setProduct] = useState({
     name: '',
@@ -199,6 +200,7 @@ function AddProduct({ history }) {
     ],
     brand: '',
     category: '',
+    subCategory: '',
     countInStock: '',
     numReviews: '',
     description: '',
@@ -257,6 +259,19 @@ function AddProduct({ history }) {
     setProduct((oldVal) => {
       return { ...oldVal, [key]: value };
     });
+
+    if (key === 'category' && categoryData && categoryData.length) {
+      const childCategories =
+        categoryData.find((elem) => elem.name === value.label).subCategory ||
+        [];
+      const finalCategories = childCategories.map((elem, i) => {
+        return { label: elem.name, value: elem._id, key: i };
+      });
+      setSubCategory([value, ...finalCategories]);
+      setProduct((oldVal) => {
+        return { ...oldVal, subCategory: '' };
+      });
+    }
     if (value !== '' && key === 'unit')
       dispatch(getProducts({ unit: value, key: 'otherUnit' }));
     if (key === 'color' && !product.color)
@@ -270,6 +285,7 @@ function AddProduct({ history }) {
     price: '',
     image: [],
     brand: '',
+    subCategory: '',
     category: '',
     countInStock: '',
     numReviews: '',
@@ -316,7 +332,9 @@ function AddProduct({ history }) {
     if (!product.sellerInformation) {
       errors.sellerInformation = 'Required';
     }
-
+    if (!product.subCategory) {
+      errors.subCategory = 'Required';
+    }
     return errors;
   };
 
@@ -338,6 +356,7 @@ function AddProduct({ history }) {
     formData.append('brand', product.brand.label);
     formData.append('unit', product.unit.label);
     formData.append('category', product.category.label);
+    formData.append('subCategory', product.subCategory.label);
     formData.append('countInStock', '');
     formData.append('numReviews', '');
     formData.append('description', product.description);
@@ -539,6 +558,24 @@ function AddProduct({ history }) {
                 <Row>
                   <Colxx lg="3" xs="12" sm="6">
                     <FormGroup>
+                      <Label>Sub Category:</Label>
+                      <Select
+                        className="react-select react-select__single-value"
+                        classNamePrefix="react-select"
+                        options={subCategory}
+                        name="subCategory"
+                        value={product.subCategory}
+                        onChange={(label) => handleChange(label, 'subCategory')}
+                      />
+                      {errors.subCategory && touched.subCategory && (
+                        <div className="invalid-feedback d-block">
+                          {errors.subCategory}
+                        </div>
+                      )}
+                    </FormGroup>
+                  </Colxx>
+                  <Colxx lg="3" xs="12" sm="6">
+                    <FormGroup>
                       <Label>Unit:</Label>
                       <Select
                         className="react-select react-select__single-value"
@@ -557,7 +594,7 @@ function AddProduct({ history }) {
                       )}
                     </FormGroup>
                   </Colxx>
-                  <Colxx lg="3" xs="12" sm="6">
+                  <Colxx lg="2" xs="12" sm="6">
                     <FormGroup>
                       <Label>Value:</Label>
                       <Field
@@ -577,7 +614,7 @@ function AddProduct({ history }) {
                       )}
                     </FormGroup>
                   </Colxx>
-                  <Colxx lg="3" xs="12" sm="6">
+                  <Colxx lg="2" xs="12" sm="6">
                     <FormGroup>
                       <Label>Color:</Label>
                       <Field
@@ -594,7 +631,7 @@ function AddProduct({ history }) {
                       )}
                     </FormGroup>
                   </Colxx>
-                  <Colxx lg="3" xs="12" sm="6">
+                  <Colxx lg="2" xs="12" sm="6">
                     <Form>
                       <Label>Flavour:</Label>
                       <Field

@@ -209,6 +209,7 @@ function EditProduct({ history }) {
 
   const [brand, setbrand] = useState([]);
   const [category, setcategory] = useState([]);
+  const [subCategory, setSubCategory] = useState([]);
   const [relavantProduct, setRelavantProduct] = useState([]);
 
   const [product, setProduct] = useState({
@@ -229,6 +230,7 @@ function EditProduct({ history }) {
     updatedImageIds: [],
     brand: '',
     category: '',
+    subCategory: '',
     countInStock: '',
     numReviews: '',
     description: '',
@@ -324,6 +326,10 @@ function EditProduct({ history }) {
           label: selectedProduct.category,
           value: selectedProduct.category,
         },
+        subCategory: {
+          label: selectedProduct.subCategory,
+          value: selectedProduct.subCategory,
+        },
         unit: {
           label: selectedProduct.unit,
           value: selectedProduct.unit,
@@ -381,8 +387,18 @@ function EditProduct({ history }) {
     setProduct((oldVal) => {
       return { ...oldVal, [key]: value };
     });
-    // if (key === 'unit')
-    //   dispatch(getProducts({ unit: value, key: 'otherUnit' }));
+    if (key === 'category' && categoryData && categoryData.length) {
+      const childCategories =
+        categoryData.find((elem) => elem.name === value.label).subCategory ||
+        [];
+      const finalCategories = childCategories.map((elem, i) => {
+        return { label: elem.name, value: elem._id, key: i };
+      });
+      setSubCategory([value, ...finalCategories]);
+      setProduct((oldVal) => {
+        return { ...oldVal, subCategory: '' };
+      });
+    }
   };
   const initialValues = {
     name: '',
@@ -460,6 +476,7 @@ function EditProduct({ history }) {
     formData.append('brand', product.brand.label);
     formData.append('unit', product.unit.label);
     formData.append('category', product.category.label);
+    formData.append('subCategory', product.subCategory.label);
     formData.append('countInStock', '');
     formData.append('numReviews', '');
     formData.append('description', product.description);
@@ -675,6 +692,24 @@ function EditProduct({ history }) {
                 <Row>
                   <Colxx lg="3" xs="12" sm="6">
                     <FormGroup>
+                      <Label>Sub Category:</Label>
+                      <Select
+                        className="react-select react-select__single-value"
+                        classNamePrefix="react-select"
+                        options={subCategory}
+                        name="subCategory"
+                        value={product.subCategory}
+                        onChange={(label) => handleChange(label, 'subCategory')}
+                      />
+                      {errors.subCategory && touched.subCategory && (
+                        <div className="invalid-feedback d-block">
+                          {errors.subCategory}
+                        </div>
+                      )}
+                    </FormGroup>
+                  </Colxx>
+                  <Colxx lg="3" xs="12" sm="6">
+                    <FormGroup>
                       <Label>Unit:</Label>
                       <Select
                         className="react-select react-select__single-value"
@@ -694,7 +729,7 @@ function EditProduct({ history }) {
                       )}
                     </FormGroup>
                   </Colxx>
-                  <Colxx lg="3" xs="12" sm="6">
+                  <Colxx lg="2" xs="12" sm="6">
                     <FormGroup>
                       <Label>Value:</Label>
                       <Field
@@ -713,7 +748,7 @@ function EditProduct({ history }) {
                       )}
                     </FormGroup>
                   </Colxx>
-                  <Colxx lg="3" xs="12" sm="6">
+                  <Colxx lg="2" xs="12" sm="6">
                     <FormGroup>
                       <Label>Color:</Label>
                       <Field
@@ -729,7 +764,7 @@ function EditProduct({ history }) {
                       )}
                     </FormGroup>
                   </Colxx>
-                  <Colxx lg="3" xs="12" sm="6">
+                  <Colxx lg="2" xs="12" sm="6">
                     <Form>
                       <Label>Flavour:</Label>
                       <Field
