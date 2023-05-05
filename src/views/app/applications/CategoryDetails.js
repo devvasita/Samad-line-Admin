@@ -150,7 +150,7 @@ function CategoryDetails({
       >
         <ModalBody>
           <ModalHeader style={{ padding: '5px 0px 5px 0px' }}>
-            Add New Brand
+            Add New Sub Category
           </ModalHeader>
 
           <Label className="mt-4">
