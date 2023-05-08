@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { Colxx, Separator } from 'components/common/CustomBootstrap';
 // import DropzoneExample from 'containers/forms/DropzoneExample';
@@ -156,7 +157,7 @@ function EditOffer({ history }) {
   const validate = () => {
     const errors = {};
 
-    if (!offer?.image?.file) {
+    if (!offer?.image?.url && !offer?.image?.file) {
       errors.image = 'Image Required';
     }
     if (!offer?.title) {
@@ -311,7 +312,7 @@ function EditOffer({ history }) {
                           <div>
                             <DatePicker
                               onChange={(date) => {
-                                handleChange(date, 'validTill');
+                                handleChange(date.toString(), 'validTill');
                               }}
                               className={classes.date}
                               placeholderText=""
@@ -426,9 +427,7 @@ function EditOffer({ history }) {
                       margin: '15px 0px 15px 0px',
                     }}
                   >
-                    <Button color="primary" type="submit">
-                      Submit
-                    </Button>
+                    <Button color="primary">Submit</Button>
 
                     <NavLink to="/app/applications/Offers">
                       <Button

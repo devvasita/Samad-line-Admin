@@ -296,7 +296,7 @@ function AddOffer() {
                             <DatePicker
                               selected={offer.validTill}
                               onChange={(value) =>
-                                handleChange(value, 'validTill')
+                                handleChange(value.toString(), 'validTill')
                               }
                               className={classes.date}
                               placeholderText=""
