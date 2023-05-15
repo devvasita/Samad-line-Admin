@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+/* eslint-disable import/no-unresolved */
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from 'react';
 import { Colxx, Separator } from 'components/common/CustomBootstrap';
 // import DropzoneExample from 'containers/forms/DropzoneExample';
 import { Formik, Form, Field } from 'formik';
@@ -15,6 +17,8 @@ import { makeStyles } from '@mui/styles';
 import { NavLink, useHistory } from 'react-router-dom';
 import { addOffer } from 'redux/actions';
 import { useDispatch } from 'react-redux';
+import CustomSelectInput from 'components/common/CustomSelectInput';
+import API from 'helpers/API';
 
 const useStyles = makeStyles(() => ({
   cancel: {
@@ -94,6 +98,10 @@ function AddOffer() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
+  const [offerOptions, setOfferOption] = useState({});
+  const [selectedApplicable, setSelectedApplicable] = useState('');
+  const [activeCategory, setActiveCategory] = useState('');
+
   const [offer, setOffer] = useState({
     image: { file: '', url: '' },
     title: '',
@@ -101,7 +109,36 @@ function AddOffer() {
     discountType: {},
     value: '',
     description: '',
+    discountValue: '',
+    offerType: '',
+    key: '',
   });
+
+  useEffect(async () => {
+    const { data } = await API.get('/offer/home');
+    if (data) setOfferOption(data);
+  }, []);
+
+  useEffect(async () => {
+    if (activeCategory !== '') {
+      const {
+        data: { subCategory },
+      } = await API.get(`/category/${activeCategory}`);
+      if (subCategory) {
+        setOfferOption((oldVal) => {
+          return {
+            ...oldVal,
+            subCategory: subCategory.map((elem) => {
+              return {
+                value: elem.name,
+                label: elem.name,
+              };
+            }),
+          };
+        });
+      }
+    }
+  }, [activeCategory]);
 
   function handleChangeImage(e) {
     e.stopPropagation();
@@ -120,14 +157,24 @@ function AddOffer() {
       },
     });
   };
+  console.log({ offer });
   const onSubmit = () => {
     const formData = new FormData();
     formData.append('title', offer.title);
     formData.append('validTill', offer.validTill);
-    formData.append('value', offer.value);
     formData.append('description', offer.description);
     formData.append('discountType', JSON.stringify(offer.discountType));
     formData.append('image', offer.image.file);
+    formData.append('key', offer.key);
+    formData.append('offerType', offer.offerType);
+    formData.append('discountValue', offer.discountValue);
+
+    if (Array.isArray(offer.value))
+      formData.append(
+        'value',
+        JSON.stringify(offer.value.map((elem) => elem.value))
+      );
+    else formData.append('value', JSON.stringify(offer.value));
     dispatch(addOffer(formData, history));
   };
   const handleChange = (value, key) => {
@@ -136,38 +183,38 @@ function AddOffer() {
     });
   };
 
-  const validate = () => {
-    const errors = {};
+  // const validate = () => {
+  //   const errors = {};
 
-    if (!offer?.image?.file) {
-      errors.image = 'Image Required';
-    }
-    if (!offer?.title) {
-      errors.title = 'Required';
-    }
-    if (!offer?.discountType?.value) {
-      errors.discountType = 'Required';
-    }
-    if (!offer?.value) {
-      errors.value = 'Required';
-    }
-    if (!offer?.description) {
-      errors.description = 'Required';
-    }
-    return errors;
-  };
+  //   if (!offer?.image?.file) {
+  //     errors.image = 'Image Required';
+  //   }
+  //   if (!offer?.title) {
+  //     errors.title = 'Required';
+  //   }
+  //   if (!offer?.discountType?.value) {
+  //     errors.discountType = 'Required';
+  //   }
+  //   if (!offer?.value) {
+  //     errors.value = 'Required';
+  //   }
+  //   if (!offer?.description) {
+  //     errors.description = 'Required';
+  //   }
+  //   return errors;
+  // };
 
   const options = [
-    { value: 'food', label: 'Flat' },
-    { value: 'beingfabulous', label: 'Percentage(%)', disabled: true },
+    { value: 'flat', label: 'Flat' },
+    { value: 'percents', label: 'Percentage(%)', disabled: true },
   ];
-  // const handleChangeselect = (val) => {
-  //   onChange(name, val);
-  // };
 
-  // const handleBlur = () => {
-  //   onBlur(name, true);
-  // };
+  const applicableOption = [
+    { value: 'brand', label: 'Brand' },
+    { value: 'category', label: 'Category' },
+    { value: 'products', label: 'Products' },
+  ];
+
   const initialValues = {
     title: '',
     validTill: new Date(),
@@ -185,7 +232,7 @@ function AddOffer() {
         <Row>
           <Colxx xxs="12">
             <Formik
-              validate={validate}
+              // validate={validate}
               initialValues={initialValues}
               onSubmit={onSubmit}
             >
@@ -296,7 +343,7 @@ function AddOffer() {
                             <DatePicker
                               selected={offer.validTill}
                               onChange={(value) =>
-                                handleChange(value.toString(), 'validTill')
+                                handleChange(value, 'validTill')
                               }
                               className={classes.date}
                               placeholderText=""
@@ -338,7 +385,7 @@ function AddOffer() {
                           name="discountType"
                           // isMulti={isMulti}
                           // onChange={handleChangeselect}
-                          onChange={(value) => {
+                          onChange={({ value }) => {
                             handleChange(value, 'discountType');
                           }}
                           // onBlur={handleBlur}
@@ -355,9 +402,9 @@ function AddOffer() {
                         <Label>Value</Label>
                         <Field
                           className="form-control"
-                          value={offer.value}
+                          value={offer.discountValue}
                           onChange={(e) =>
-                            handleChange(e.target.value, 'value')
+                            handleChange(e.target.value, 'discountValue')
                           }
                           onKeyPress={(event) => {
                             const charCode = event.which
@@ -379,6 +426,134 @@ function AddOffer() {
                         )}
                       </FormGroup>
                     </Colxx>
+                    <Colxx lg="6" xs="12" sm="6">
+                      <FormGroup>
+                        <Label>Applicable To</Label>
+                        <Select
+                          className="react-select react-select__single-value"
+                          classNamePrefix="react-select"
+                          options={applicableOption}
+                          name="offerType"
+                          // isMulti={isMulti}
+                          // onChange={handleChangeselect}
+                          onChange={({ value }) => {
+                            handleChange(value, 'offerType');
+                            setSelectedApplicable(value);
+                          }}
+                          // onBlur={handleBlur}
+                        />
+                        {errors.discountType && touched.discountType ? (
+                          <div className="invalid-feedback d-block">
+                            {errors.discountType}
+                          </div>
+                        ) : null}
+                      </FormGroup>
+                    </Colxx>
+                    {selectedApplicable === 'brand' && (
+                      <Colxx lg="6" xs="12" sm="6">
+                        <FormGroup>
+                          <Label>Brand</Label>
+                          <Select
+                            className="react-select react-select__single-value"
+                            classNamePrefix="react-select"
+                            options={offerOptions.brand}
+                            name="discountType"
+                            // isMulti={isMulti}
+                            // onChange={handleChangeselect}
+                            onChange={({ value }) => {
+                              handleChange('brand', 'key');
+                              handleChange(value, 'value');
+                            }}
+                            // onBlur={handleBlur}
+                          />
+                          {errors.discountType && touched.discountType ? (
+                            <div className="invalid-feedback d-block">
+                              {errors.discountType}
+                            </div>
+                          ) : null}
+                        </FormGroup>
+                      </Colxx>
+                    )}
+
+                    {selectedApplicable === 'category' && (
+                      <>
+                        <Colxx lg="6" xs="12" sm="6">
+                          <FormGroup>
+                            <Label>Category</Label>
+                            <Select
+                              className="react-select react-select__single-value"
+                              classNamePrefix="react-select"
+                              options={offerOptions.category}
+                              name="discountType"
+                              // isMulti={isMulti}
+                              // onChange={handleChangeselect}
+                              onChange={({ value, label }) => {
+                                handleChange('category', 'key');
+                                handleChange(label, 'value');
+                                setActiveCategory(value);
+                              }}
+                              // onBlur={handleBlur}
+                            />
+                            {errors.discountType && touched.discountType ? (
+                              <div className="invalid-feedback d-block">
+                                {errors.discountType}
+                              </div>
+                            ) : null}
+                          </FormGroup>
+                        </Colxx>
+                        <Colxx lg="6" xs="12" sm="6">
+                          <FormGroup>
+                            <Label>Sub Category</Label>
+                            <Select
+                              className="react-select react-select__single-value"
+                              classNamePrefix="react-select"
+                              options={offerOptions.subCategory}
+                              name="discountType"
+                              // isMulti={isMulti}
+                              // onChange={handleChangeselect}
+                              onChange={({ value, label }) => {
+                                handleChange('subCategory', 'key');
+                                handleChange(label, 'value');
+                                setActiveCategory(value);
+                              }}
+                              // onBlur={handleBlur}
+                            />
+                            {errors.discountType && touched.discountType ? (
+                              <div className="invalid-feedback d-block">
+                                {errors.discountType}
+                              </div>
+                            ) : null}
+                          </FormGroup>
+                        </Colxx>
+                      </>
+                    )}
+
+                    {selectedApplicable === 'products' && (
+                      <Colxx lg="6" xs="12" sm="6">
+                        <FormGroup>
+                          <Label>Products</Label>
+                          <Select
+                            isMulti
+                            components={{ Input: CustomSelectInput }}
+                            className="react-select react-select__single-value"
+                            classNamePrefix="react-select"
+                            options={offerOptions.products}
+                            name="discountType"
+                            // isMulti={isMulti}
+                            // onChange={handleChangeselect}
+                            onChange={(value) => {
+                              handleChange(value, 'value');
+                            }}
+                            // onBlur={handleBlur}
+                          />
+                          {errors.discountType && touched.discountType ? (
+                            <div className="invalid-feedback d-block">
+                              {errors.discountType}
+                            </div>
+                          ) : null}
+                        </FormGroup>
+                      </Colxx>
+                    )}
                   </Row>
 
                   <Row>
