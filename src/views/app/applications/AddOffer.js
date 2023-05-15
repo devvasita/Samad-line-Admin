@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable import/no-unresolved */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
@@ -157,13 +158,13 @@ function AddOffer() {
       },
     });
   };
-  console.log({ offer });
+
   const onSubmit = () => {
     const formData = new FormData();
     formData.append('title', offer.title);
     formData.append('validTill', offer.validTill);
     formData.append('description', offer.description);
-    formData.append('discountType', JSON.stringify(offer.discountType));
+    formData.append('discountType', offer.discountType);
     formData.append('image', offer.image.file);
     formData.append('key', offer.key);
     formData.append('offerType', offer.offerType);
@@ -542,6 +543,7 @@ function AddOffer() {
                             // isMulti={isMulti}
                             // onChange={handleChangeselect}
                             onChange={(value) => {
+                              handleChange('products', 'key');
                               handleChange(value, 'value');
                             }}
                             // onBlur={handleBlur}
