@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-return-assign */
 /* eslint no-underscore-dangle: 0 */
@@ -33,6 +34,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import 'react-image-crop/dist/ReactCrop.css';
 import { NotificationManager } from 'components/common/react-notifications';
 import CropImage from '../ui/components/crop';
+import UploadSingleImage from '../ui/components/UploadSingleImage';
 
 function Brand() {
   const BrandData = useSelector(
@@ -40,7 +42,6 @@ function Brand() {
   );
   const dispatch = useDispatch();
 
-  const [upImg, setUpImg] = useState();
   const [modalLong, setModalLong] = useState(false);
   const [modelEdit, setModelEdit] = useState(false);
   const [state, setState] = useState({
@@ -71,37 +72,19 @@ function Brand() {
   const handleChange = (e) => {
     setState({
       name: state.name,
-      image: e,
-      _id: state._id,
-    });
-  };
-  const handleCancelImage = () => {
-    setUpImg(null);
-    setState({
-      name: state.name,
-      image: '',
+      image: e?.url,
       _id: state._id,
     });
   };
 
   const handleSubmit = (e) => {
-    console.log('dsaf');
     e.preventDefault();
-    const formData = new FormData();
-    Object.keys(state).map(
-      (elem) => state[elem] && formData.append(elem, state[elem])
-    );
 
-    console.log({
-      state,
-      name: formData.get('name'),
-      image: formData.get('image'),
-    });
     if (modelEdit) {
-      dispatch(updateBrandAndCategory(formData, 'brand'));
+      dispatch(updateBrandAndCategory(state, 'brand'));
       setModalLong(false);
     } else {
-      dispatch(addBrandAndCategory(formData, 'brand'));
+      dispatch(addBrandAndCategory(state, 'brand'));
       setModalLong(false);
     }
     setModelEdit('');
@@ -168,49 +151,10 @@ function Brand() {
               <Label className="mt-4">
                 <IntlMessages id="Upload Image : " />
               </Label>
-              <div>
-                <div className="model">
-                  {state.image && (
-                    <CancelIcon
-                      onClick={handleCancelImage}
-                      style={{
-                        position: 'absolute',
-                        top: '-25px',
-                        right: '-30px',
-                        cursor: 'pointer',
-                      }}
-                    />
-                  )}
-                  {upImg ? (
-                    <CropImage
-                      upImg={upImg}
-                      setUpImg={(val) => setUpImg(val)}
-                      setCropedImage={(e) => handleChange(e)}
-                      src={state.image || null}
-                    />
-                  ) : (
-                    <IconButton
-                      color="primary"
-                      aria-label="upload picture"
-                      component="label"
-                      style={{
-                        margin: 'auto',
-                        borderRadius: 0,
-                        width: '100%',
-                        height: '100%',
-                        padding: 0,
-                      }}
-                    >
-                      <CropImage
-                        upImg={upImg}
-                        setUpImg={(val) => setUpImg(val)}
-                        setCropedImage={(e) => handleChange(e)}
-                        src={state.image || null}
-                      />
-                    </IconButton>
-                  )}
-                </div>
-              </div>
+              <UploadSingleImage
+                image={state?.image}
+                setImage={(e) => handleChange(e)}
+              />
 
               <Label className="mt-4">
                 <IntlMessages id="Title :" />
@@ -241,7 +185,6 @@ function Brand() {
                 className="secondary-new"
                 // style={{ background: '#6c757d', border: 'none' }}
                 onClick={() => {
-                  setUpImg(null);
                   setModalLong(false);
                 }}
               >

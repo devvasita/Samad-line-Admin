@@ -12,11 +12,11 @@ const headers = {
 
 const UploadSingleImage = ({
   image,
-  isArray,
   setImage,
-  setImageArray,
-  i,
   images,
+  i,
+  isArray,
+  setImageArray,
 }) => {
   const [cropImage, setCropImage] = useState(null);
   const [open, setOpen] = useState(false);
