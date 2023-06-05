@@ -1,8 +1,8 @@
 import React, { useRef } from 'react';
 import Cropper from 'react-cropper';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
+import { Button } from 'reactstrap';
 
 const style = {
   position: 'absolute',
@@ -58,21 +58,20 @@ const CropImage = ({ image, CloudUpload, open, setOpen, setImage }) => {
             }}
           >
             <Button
-              variant="outlined"
-              color="error"
-              sx={{ width: '45%' }}
-              onClick={handleClose}
-            >
-              Cancel
-            </Button>
-
-            <Button
-              variant="contained"
+              outline
               color="secondary"
-              sx={{ width: '45%' }}
+              style={{ width: '45%' }}
               onClick={handleUpload}
             >
               Save
+            </Button>
+            <Button
+              outline
+              color="danger"
+              style={{ width: '45%' }}
+              onClick={handleClose}
+            >
+              Cancel
             </Button>
           </Box>
         </Box>

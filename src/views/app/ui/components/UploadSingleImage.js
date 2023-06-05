@@ -36,6 +36,7 @@ const UploadSingleImage = ({
       });
     } else setImage({ url: '', key: '' });
     setCropImage(null);
+    setLoading(false);
   };
 
   const CloudUpload = async (blob) => {
@@ -55,6 +56,7 @@ const UploadSingleImage = ({
         return { ...oldState, image: images };
       });
     } else setImage(data);
+    setLoading(false);
   };
 
   return (
@@ -93,19 +95,24 @@ const UploadSingleImage = ({
             }}
             disabled={loading}
           >
-            <input
-              hidden
-              accept="image/*"
-              type="file"
-              // ref={hiddenFileInput}
-              onChange={handleChangeImage}
-            />
-
-            <img
-              src="/assets/uploadicon.svg"
-              alt=""
-              style={{ height: '35px' }}
-            />
+            {loading ? (
+              <div className="loading" style={{ position: 'unset' }} />
+            ) : (
+              <>
+                <input
+                  hidden
+                  accept="image/*"
+                  type="file"
+                  // ref={hiddenFileInput}
+                  onChange={handleChangeImage}
+                />
+                <img
+                  src="/assets/uploadicon.svg"
+                  alt=""
+                  style={{ height: '35px' }}
+                />
+              </>
+            )}
           </IconButton>
         </div>
       )}

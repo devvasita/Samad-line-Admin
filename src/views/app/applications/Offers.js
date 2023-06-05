@@ -126,9 +126,9 @@ function Offers() {
                           <>
                             {offersItem.discountType?.label ===
                             'Percentage(%)' ? (
-                              <b>{offersItem?.value}% off</b>
+                              <b>{offersItem?.discountValue}% off</b>
                             ) : (
-                              <b>{offersItem?.value}₹ off</b>
+                              <b>{offersItem?.discountValue}₹ off</b>
                             )}
                           </>
                         </h5>

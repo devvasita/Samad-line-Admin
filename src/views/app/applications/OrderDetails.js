@@ -61,9 +61,6 @@ const OrderDetails = ({ getOrderDetails, selectedOrder, updateOrder }) => {
         <div className="row">
           <div className="col-lg-8  ">
             <div className="Order-ID-body">
-              <div className="Order-ID-box">
-                <img src="asstes/img/order-logo/packStatus.png" alt="" />
-              </div>
               <div className="order-id-list">
                 <h5>Order ID: #{_id}</h5>
                 <p>
@@ -174,7 +171,10 @@ const OrderDetails = ({ getOrderDetails, selectedOrder, updateOrder }) => {
                         '0 1px 15px rgba(0, 0, 0, 0.04), 0 1px 6px rgba(0, 0, 0, 0.04)',
                     }}
                   >
-                    <p className="Shipping-details" style={{ marginBottom: 0 }}>
+                    <p
+                      className="Shipping-details"
+                      style={{ marginBottom: 0, background: '#FFFFFF' }}
+                    >
                       Shipping Details
                     </p>
                     <div className=" name-addres-details">
@@ -207,7 +207,12 @@ const OrderDetails = ({ getOrderDetails, selectedOrder, updateOrder }) => {
                     <table className="table">
                       <thead>
                         <tr>
-                          <th scope="col" colSpan="4" className="Price-detal ">
+                          <th
+                            scope="col"
+                            colSpan="4"
+                            className="Price-detal "
+                            style={{ background: '#FFFFFF' }}
+                          >
                             Price Details
                           </th>
                         </tr>

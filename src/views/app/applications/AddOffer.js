@@ -169,8 +169,27 @@ function AddOffer() {
     discountType: {},
     image: {},
   };
+  const validate = () => {
+    const errors = {};
 
-  console.log({ offer });
+    if (!offer?.image?.url && !offer?.image?.file) {
+      errors.image = 'Image Required';
+    }
+    if (!offer?.title) {
+      errors.title = 'Required';
+    }
+    if (!offer?.discountType?.value) {
+      errors.discountType = 'Required';
+    }
+    if (!offer?.value) {
+      errors.value = 'Required';
+    }
+    if (!offer?.description) {
+      errors.description = 'Required';
+    }
+    return errors;
+  };
+
   return (
     <>
       <div>
@@ -180,7 +199,7 @@ function AddOffer() {
           <Row>
             <Colxx xxs="12">
               <Formik
-                // validate={validate}
+                validate={validate}
                 initialValues={initialValues}
                 onSubmit={onSubmit}
               >
@@ -194,17 +213,19 @@ function AddOffer() {
                         <FormGroup>
                           <Label>Image</Label>
                           {/* <DropzoneExample /> */}
-                          <UploadSingleImage
-                            image={offer?.image?.url}
-                            setImage={(image) =>
-                              setOffer((oldState) => {
-                                return {
-                                  ...oldState,
-                                  image,
-                                };
-                              })
-                            }
-                          />
+                          <Colxx xxs="5" style={{ margin: '0 auto' }}>
+                            <UploadSingleImage
+                              image={offer?.image?.url}
+                              setImage={(image) =>
+                                setOffer((oldState) => {
+                                  return {
+                                    ...oldState,
+                                    image,
+                                  };
+                                })
+                              }
+                            />
+                          </Colxx>
 
                           {errors.image && touched.image && (
                             <div className="invalid-feedback d-block">

@@ -88,7 +88,7 @@
   .traking-progress-section
   .stepper-item.completed
   .step-counter {
-  background-color: var(--them-colour);
+  /* background-color: var(--them-colour); */
 }
 .Order-Details-traking-section
   .traking-progress-section
@@ -209,13 +209,11 @@
   .star-rating
   a
   i:hover {
-  color: #6fb327;
 }
 .Order-Details-traking-section
   .order-details-traking-contain
   .star-rating
   .active {
-  color: #6fb327;
 }
 .Order-Details-traking-section
   .order-details-traking-contain
@@ -228,7 +226,7 @@
   /* margin-top: 90px; */
 }
 .Order-Details-traking-section .delivery-address-details .Shipping-details {
-  background-color: #6fb327;
+  /* background-color: #6fb327; */
   padding: 10px 12px;
   font-weight: 600;
   border-bottom: 1px solid gray;
@@ -297,7 +295,7 @@
 .swiper-button-prev,
 .swiper-button-next {
   font-size: 20px;
-  color: #6fb327;
+
   display: inline-block;
   vertical-align: middle;
   backdrop-filter: blur(10px);
