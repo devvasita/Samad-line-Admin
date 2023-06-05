@@ -1,10 +1,10 @@
+/* eslint-disable react/jsx-no-undef */
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-useless-computed-key */
 import { Colxx, Separator } from 'components/common/CustomBootstrap';
 import React, { useEffect, useState } from 'react';
 import { Label, Row, FormGroup, Form, Button } from 'reactstrap';
-import CancelIcon from '@mui/icons-material/Cancel';
-import IconButton from '@mui/material/IconButton';
 import { makeStyles } from '@mui/styles';
 import { Field, Formik } from 'formik';
 import Select from 'react-select';
@@ -16,7 +16,7 @@ import 'react-quill/dist/quill.snow.css';
 import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addProduct, getBrandAndCategory, getProducts } from 'redux/actions';
-import CropImage from '../ui/components/crop';
+import UploadSingleImage from '../ui/components/UploadSingleImage';
 // import * as Yup from 'yup';
 
 const useStyles = makeStyles(() => ({
@@ -111,71 +111,6 @@ const quillFormats = [
   'image',
 ];
 
-function NewComp({ setimgArr, i, imgArr }) {
-  const [upImg, setUpImg] = useState();
-  const handleChange = (img) => {
-    imgArr.splice(i, 1, {
-      file: img,
-      url: URL.createObjectURL(img),
-    });
-
-    setimgArr(imgArr);
-  };
-
-  const classes = useStyles();
-
-  const handleCancelImage = () => {
-    console.log('cancle???????????');
-    imgArr.splice(i, 1, {
-      file: null,
-      url: '',
-    });
-
-    setimgArr(imgArr);
-    setUpImg(null);
-  };
-
-  return (
-    <Colxx xxs="3">
-      {i === 0 && <span className={classes.required}>* Cover Image</span>}
-      <div aria-hidden="true" className={classes.image}>
-        {imgArr[i] && imgArr[i].url && (
-          <CancelIcon
-            onClick={handleCancelImage}
-            style={{
-              position: 'absolute',
-              top: 0,
-              right: '-5px',
-              cursor: 'pointer',
-            }}
-          />
-        )}
-        <IconButton
-          color="primary"
-          aria-label="upload picture"
-          component="label"
-          style={{
-            margin: 'auto',
-            borderRadius: 0,
-            width: '100%',
-            height: '100%',
-            // background: 'red',
-          }}
-        >
-          <div className={classes.upload}>
-            <CropImage
-              upImg={upImg}
-              setUpImg={(val) => setUpImg(val)}
-              setCropedImage={(e) => handleChange(e, i)}
-              src={imgArr[i]?.url || ''}
-            />
-          </div>
-        </IconButton>
-      </div>
-    </Colxx>
-  );
-}
-
 function AddProduct({ history }) {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -262,7 +197,7 @@ function AddProduct({ history }) {
 
     if (key === 'category' && categoryData && categoryData.length) {
       const childCategories =
-        categoryData.find((elem) => elem.name === value.label).subCategory ||
+        categoryData.find((elem) => elem.name === value.label)?.subCategory ||
         [];
       const finalCategories = childCategories.map((elem, i) => {
         return { label: elem.name, value: elem._id, key: i };
@@ -332,9 +267,6 @@ function AddProduct({ history }) {
     if (!product.sellerInformation) {
       errors.sellerInformation = 'Required';
     }
-    if (!product.subCategory) {
-      errors.subCategory = 'Required';
-    }
     return errors;
   };
 
@@ -347,37 +279,7 @@ function AddProduct({ history }) {
   };
 
   const onSubmit = () => {
-    const formData = new FormData();
-    // eslint-disable-next-line array-callback-return
-    // const list = ['image', 'otherColor', 'otherFlavour', 'suggestedProduct'];
-
-    formData.append('name', product.name);
-    formData.append('price', product.price);
-    formData.append('brand', product.brand.label);
-    formData.append('unit', product.unit.label);
-    formData.append('category', product.category.label);
-    formData.append('subCategory', product.subCategory.label);
-    formData.append('countInStock', '');
-    formData.append('numReviews', '');
-    formData.append('description', product.description);
-    formData.append('sellerInformation', product.sellerInformation);
-    formData.append('mrp', product.mrp);
-    formData.append('flavour', product.flavour);
-    formData.append('value', product.value);
-    formData.append('color', product.color);
-    formData.append('nonVeg', product.nonVeg);
-    product.image.map(
-      (elem) => elem.file && formData.append('image', elem.file)
-    );
-    formData.append('otherColor', JSON.stringify(product.otherColor));
-    formData.append('otherUnit', JSON.stringify(product.otherUnit));
-    formData.append('otherFlavour', JSON.stringify(product.otherFlavour));
-    formData.append(
-      'suggestedProduct',
-      JSON.stringify(product.suggestedProduct)
-    );
-
-    dispatch(addProduct(formData, history));
+    dispatch(addProduct(product, history));
   };
 
   const handleKeyPress = (event) => {
@@ -401,16 +303,19 @@ function AddProduct({ history }) {
           <Row>
             {product.image &&
               product.image.map((elm, index) => (
-                <NewComp
-                  setimgArr={(val) =>
-                    setProduct((oldVal) => {
-                      return { ...oldVal, image: val };
-                    })
-                  }
-                  imgArr={product.image}
-                  i={index}
-                  key={elm.id}
-                />
+                <Colxx
+                  xxs="3"
+                  key={`${elm.key}+${index}`}
+                  style={{ marginBottom: '26px' }}
+                >
+                  <UploadSingleImage
+                    isArray
+                    i={index}
+                    image={elm?.url}
+                    images={product.image}
+                    setImageArray={setProduct}
+                  />
+                </Colxx>
               ))}
             {!imageValidation(product.image) && (
               <div className="invalid-feedback d-block">
@@ -524,7 +429,7 @@ function AddProduct({ history }) {
                         options={brand}
                         // validate={() => product.brand === '' && 'Required'}
                         name="brand"
-                        onChange={(label) => handleChange(label, 'brand')}
+                        onChange={({ label }) => handleChange(label, 'brand')}
                       />
                       {errors.brand && touched.brand && (
                         <div className="invalid-feedback d-block">
@@ -544,7 +449,9 @@ function AddProduct({ history }) {
                         //   product.category.length === 0 && 'Required'
                         // }
                         name="category"
-                        onChange={(label) => handleChange(label, 'category')}
+                        onChange={({ label }) =>
+                          handleChange(label, 'category')
+                        }
                       />
                       {errors.category && touched.category && (
                         <div className="invalid-feedback d-block">
@@ -564,8 +471,9 @@ function AddProduct({ history }) {
                         classNamePrefix="react-select"
                         options={subCategory}
                         name="subCategory"
-                        value={product.subCategory}
-                        onChange={(label) => handleChange(label, 'subCategory')}
+                        onChange={({ label }) =>
+                          handleChange(label, 'subCategory')
+                        }
                       />
                       {errors.subCategory && touched.subCategory && (
                         <div className="invalid-feedback d-block">
@@ -583,7 +491,7 @@ function AddProduct({ history }) {
                         options={unit}
                         // validate={() => product.unit.length === 0 && 'Required'}
                         name="unit"
-                        onChange={(label) => handleChange(label, 'unit')}
+                        onChange={({ label }) => handleChange(label, 'unit')}
                         // value={product.unit}
                         //  onChange={handleChange}
                       />

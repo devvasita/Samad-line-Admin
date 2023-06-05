@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-expressions */
+/* eslint-disable no-param-reassign */
 import React, { useState } from 'react';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { IconButton } from '@mui/material';
@@ -8,7 +10,14 @@ const headers = {
   'Content-Type': 'multipart/form-data',
 };
 
-const UploadSingleImage = ({ image, setImage }) => {
+const UploadSingleImage = ({
+  image,
+  isArray,
+  setImage,
+  setImageArray,
+  i,
+  images,
+}) => {
   const [cropImage, setCropImage] = useState(null);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -20,7 +29,12 @@ const UploadSingleImage = ({ image, setImage }) => {
   }
 
   const handleCancelImage = () => {
-    setImage(null);
+    if (isArray) {
+      images[i] = { url: '', key: '' };
+      setImageArray((oldState) => {
+        return { ...oldState, image: images };
+      });
+    } else setImage({ url: '', key: '' });
     setCropImage(null);
   };
 
@@ -35,7 +49,12 @@ const UploadSingleImage = ({ image, setImage }) => {
     } = await API.post('/image/upload', formData, {
       headers,
     });
-    setImage(data);
+    if (isArray) {
+      images[i] = data;
+      setImageArray((oldState) => {
+        return { ...oldState, image: images };
+      });
+    } else setImage(data);
   };
 
   return (
@@ -69,7 +88,7 @@ const UploadSingleImage = ({ image, setImage }) => {
               margin: 'auto',
               width: '100%',
               height: 250,
-              border: '1px solid',
+              border: '2px dotted',
               borderRadius: '6px',
             }}
             disabled={loading}

@@ -87,7 +87,7 @@ function Product() {
                         <img
                           alt="Thumbnail"
                           src={
-                            data.image
+                            data?.image
                               ? data.image.find((elem) => elem.url !== '') &&
                                 data.image.find((elem) => elem.url !== '').url
                               : null

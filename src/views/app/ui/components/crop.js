@@ -44,6 +44,7 @@ const CropImage = ({ image, CloudUpload, open, setOpen, setImage }) => {
       >
         <Box sx={style}>
           <Cropper
+            aspectRatio={1}
             ref={cropperRef}
             src={image}
             guides

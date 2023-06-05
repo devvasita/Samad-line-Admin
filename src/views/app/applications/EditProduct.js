@@ -1,3 +1,6 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-return-assign */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-useless-computed-key */
@@ -23,6 +26,7 @@ import {
   updateProduct,
 } from 'redux/actions';
 import CropImage from '../ui/components/crop';
+import UploadSingleImage from '../ui/components/UploadSingleImage';
 // import * as Yup from 'yup';
 
 const fetchOtherDetails = (list) => {
@@ -130,77 +134,6 @@ const quillFormats = [
   'link',
   'image',
 ];
-
-function NewComp({ setimgArr, i, imgArr, setImgIndex }) {
-  const [upImg, setUpImg] = useState();
-  const handleChange = (img) => {
-    imgArr.splice(i, 1, {
-      file: img,
-      url: URL.createObjectURL(img),
-    });
-    setImgIndex({
-      index: i,
-      removed: false,
-    });
-    setimgArr(imgArr);
-  };
-
-  const classes = useStyles();
-
-  const handleCancelImage = () => {
-    imgArr.splice(i, 1, {
-      file: null,
-      url: '',
-    });
-    setImgIndex({
-      index: i,
-      removed: true,
-    });
-    setimgArr(imgArr);
-    setUpImg(null);
-  };
-
-  return (
-    <Colxx xxs="3">
-      {i === 0 && <span className={classes.required}>* Cover Image</span>}
-      <div aria-hidden="true" className={classes.image}>
-        {imgArr[i] && imgArr[i].url && (
-          <CancelIcon
-            onClick={handleCancelImage}
-            style={{
-              position: 'absolute',
-              top: '-10px',
-              right: '-10px',
-              cursor: 'pointer',
-            }}
-          />
-        )}
-        <IconButton
-          color="primary"
-          aria-label="upload picture"
-          component="label"
-          style={{
-            margin: 'auto',
-            borderRadius: 0,
-            width: '100%',
-            height: '100%',
-            padding: 0,
-            // background: 'red',
-          }}
-        >
-          <div className={classes.upload}>
-            <CropImage
-              upImg={upImg}
-              setUpImg={(val) => setUpImg(val)}
-              setCropedImage={(e) => handleChange(e, i)}
-              src={imgArr[i]?.url || ''}
-            />
-          </div>
-        </IconButton>
-      </div>
-    </Colxx>
-  );
-}
 
 function EditProduct({ history }) {
   const classes = useStyles();
@@ -321,19 +254,19 @@ function EditProduct({ history }) {
         otherColor: fetchOtherDetails(selectedProduct.otherColor),
         suggestedProduct: fetchOtherDetails(selectedProduct.suggestedProduct),
         updatedImageIds: [],
-        brand: { label: selectedProduct.brand, value: selectedProduct.brand },
-        category: {
-          label: selectedProduct.category,
-          value: selectedProduct.category,
-        },
-        subCategory: {
-          label: selectedProduct.subCategory,
-          value: selectedProduct.subCategory,
-        },
-        unit: {
-          label: selectedProduct.unit,
-          value: selectedProduct.unit,
-        },
+        // brand: { label: selectedProduct.brand, value: selectedProduct.brand },
+        // category: {
+        //   label: selectedProduct.category,
+        //   value: selectedProduct.category,
+        // },
+        // subCategory: {
+        //   label: selectedProduct.subCategory,
+        //   value: selectedProduct.subCategory,
+        // },
+        // unit: {
+        //   label: selectedProduct.unit,
+        //   value: selectedProduct.unit,
+        // },
         image: [
           ...selectedProduct.image,
           ...blankImgArray.splice(selectedProduct.image.length),
@@ -389,7 +322,7 @@ function EditProduct({ history }) {
     });
     if (key === 'category' && categoryData && categoryData.length) {
       const childCategories =
-        categoryData.find((elem) => elem.name === value.label).subCategory ||
+        categoryData.find((elem) => elem.name === value.label)?.subCategory ||
         [];
       const finalCategories = childCategories.map((elem, i) => {
         return { label: elem.name, value: elem._id, key: i };
@@ -465,44 +398,7 @@ function EditProduct({ history }) {
     if (!imageValidation(product.image)) {
       return;
     }
-    const formData = new FormData();
-    // eslint-disable-next-line array-callback-return
-    // const list = ['image', 'otherColor', 'otherFlavour', 'suggestedProduct'];
-
-    // sort image index
-
-    formData.append('name', product.name);
-    formData.append('price', product.price);
-    formData.append('brand', product.brand.label);
-    formData.append('unit', product.unit.label);
-    formData.append('category', product.category.label);
-    formData.append('subCategory', product.subCategory.label);
-    formData.append('countInStock', '');
-    formData.append('numReviews', '');
-    formData.append('description', product.description);
-    formData.append('sellerInformation', product.sellerInformation);
-    formData.append('mrp', product.mrp);
-    formData.append('flavour', product.flavour);
-    formData.append('value', product.value);
-    formData.append('color', product.color);
-    formData.append('nonVeg', product.nonVeg);
-    formData.append('_id', id);
-    const sortedIndex = product.updatedImageIds.sort(
-      (a, b) => a.index - b.index
-    );
-    formData.append('updatedImageIds', JSON.stringify(sortedIndex));
-    product.image.map(
-      (elem) => elem.file && formData.append('image', elem.file)
-    );
-    formData.append('otherColor', JSON.stringify(product.otherColor));
-    formData.append('otherUnit', JSON.stringify(product.otherUnit));
-    formData.append('otherFlavour', JSON.stringify(product.otherFlavour));
-    formData.append(
-      'suggestedProduct',
-      JSON.stringify(product.suggestedProduct)
-    );
-
-    dispatch(updateProduct(formData, history, id));
+    dispatch(updateProduct(product, history, id));
   };
   const handleKeyPress = (event) => {
     const charCode = event.which ? event.which : event.keyCode;
@@ -526,30 +422,19 @@ function EditProduct({ history }) {
           <Row>
             {product.image &&
               product.image.map((elm, index) => (
-                <NewComp
-                  setimgArr={(val) =>
-                    setProduct((oldVal) => {
-                      return { ...oldVal, image: val };
-                    })
-                  }
-                  setImgIndex={(imgIndex) =>
-                    setProduct((oldVal) => {
-                      return {
-                        ...oldVal,
-                        updatedImageIds: [
-                          ...oldVal.updatedImageIds,
-                          imgIndex,
-                        ].filter(
-                          (v, i, a) =>
-                            a.findIndex((v2) => v2.index === v.index) === i
-                        ),
-                      };
-                    })
-                  }
-                  imgArr={product?.image}
-                  i={index}
-                  key={elm?.id}
-                />
+                <Colxx
+                  xxs="3"
+                  key={`${elm.key}+${index}`}
+                  style={{ marginBottom: '26px' }}
+                >
+                  <UploadSingleImage
+                    isArray
+                    i={index}
+                    image={elm?.url}
+                    images={product.image}
+                    setImageArray={setProduct}
+                  />
+                </Colxx>
               ))}
             {!imageValidation(product.image) && (
               <div className="invalid-feedback d-block">
@@ -659,8 +544,11 @@ function EditProduct({ history }) {
                         classNamePrefix="react-select"
                         options={brand}
                         name="brand"
-                        value={product?.brand}
-                        onChange={(label) => handleChange(label, 'brand')}
+                        value={{
+                          label: product?.brand,
+                          value: product?.brand,
+                        }}
+                        onChange={({ label }) => handleChange(label, 'brand')}
                       />
                       {errors.brand && touched.brand && (
                         <div className="invalid-feedback d-block">
@@ -676,9 +564,14 @@ function EditProduct({ history }) {
                         className="react-select react-select__single-value"
                         classNamePrefix="react-select"
                         options={category}
-                        value={product?.category}
+                        value={{
+                          label: product?.category,
+                          value: product?.category,
+                        }}
                         name="category"
-                        onChange={(label) => handleChange(label, 'category')}
+                        onChange={({ label }) =>
+                          handleChange(label, 'category')
+                        }
                       />
                       {errors.category && touched.category && (
                         <div className="invalid-feedback d-block">
@@ -698,8 +591,13 @@ function EditProduct({ history }) {
                         classNamePrefix="react-select"
                         options={subCategory}
                         name="subCategory"
-                        value={product.subCategory}
-                        onChange={(label) => handleChange(label, 'subCategory')}
+                        value={{
+                          label: product?.subCategory,
+                          value: product?.subCategory,
+                        }}
+                        onChange={({ label }) =>
+                          handleChange(label, 'subCategory')
+                        }
                       />
                       {errors.subCategory && touched.subCategory && (
                         <div className="invalid-feedback d-block">
@@ -715,10 +613,13 @@ function EditProduct({ history }) {
                         className="react-select react-select__single-value"
                         classNamePrefix="react-select"
                         options={unit}
-                        value={product?.unit}
+                        value={{
+                          label: product?.unit,
+                          value: product?.unit,
+                        }}
                         validate={() => product.unit.length === 0 && 'Required'}
                         name="unit"
-                        onChange={(label) => handleChange(label, 'unit')}
+                        onChange={({ label }) => handleChange(label, 'unit')}
                         // value={product.unit}
                         //  onChange={handleChange}
                       />
