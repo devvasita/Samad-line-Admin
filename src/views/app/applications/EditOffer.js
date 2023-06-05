@@ -16,6 +16,7 @@ import { makeStyles } from '@mui/styles';
 import { NavLink, useParams } from 'react-router-dom';
 import { getSingleOffer, updateOffer } from 'redux/actions';
 import { useDispatch, useSelector } from 'react-redux';
+import UploadSingleImage from '../ui/components/UploadSingleImage';
 
 const useStyles = makeStyles(() => ({
   cancel: {
@@ -110,44 +111,15 @@ function EditOffer({ history }) {
     value: '',
     description: '',
   });
+
   useEffect(() => {
     if (selectedOffer) setOffer(selectedOffer);
   }, [selectedOffer]);
 
-  function handleChangeImage(e) {
-    e.stopPropagation();
-    setOffer((oldVal) => {
-      return {
-        ...oldVal,
-        image: {
-          file: e.target.files[0],
-          url: URL.createObjectURL(e.target.files[0]),
-        },
-      };
-    });
-  }
-  const handleCancelImage = () => {
-    setOffer((oldVal) => {
-      return {
-        ...oldVal,
-        image: {
-          file: null,
-          url: '',
-        },
-      };
-    });
-  };
   const onSubmit = () => {
-    const formData = new FormData();
-    formData.append('title', offer.title);
-    formData.append('validTill', offer.validTill);
-    formData.append('value', offer.value);
-    formData.append('description', offer.description);
-    formData.append('discountType', JSON.stringify(offer.discountType));
-
-    if (offer.image.file) formData.append('image', offer.image.file);
-    dispatch(updateOffer(formData, history, id));
+    dispatch(updateOffer(offer, history, id));
   };
+
   const handleChange = (value, key) => {
     setOffer((oldVal) => {
       return { ...oldVal, [key]: value };
@@ -179,13 +151,7 @@ function EditOffer({ history }) {
     { value: 'food', label: 'Flat' },
     { value: 'beingfabulous', label: 'Percentage(%)', disabled: true },
   ];
-  // const handleChangeselect = (val) => {
-  //   onChange(name, val);
-  // };
 
-  // const handleBlur = () => {
-  //   onBlur(name, true);
-  // };
   const initialValues = {
     image: { file: '', url: '' },
     title: '',
@@ -217,72 +183,25 @@ function EditOffer({ history }) {
                       <FormGroup>
                         <Label>Image</Label>
                         {/* <DropzoneExample /> */}
+                        <UploadSingleImage
+                          image={offer?.image?.url}
+                          setImage={(image) =>
+                            setOffer((oldState) => {
+                              return {
+                                ...oldState,
+                                image,
+                              };
+                            })
+                          }
+                        />
 
-                        <div>
-                          {!offer.image.url ? (
-                            <div aria-hidden="true" className={classes.image}>
-                              <IconButton
-                                color="primary"
-                                aria-label="upload picture"
-                                component="label"
-                                style={{
-                                  margin: 'auto',
-                                  borderRadius: 0,
-                                  width: '100%',
-                                  height: '100%',
-                                }}
-                              >
-                                <input
-                                  hidden
-                                  accept="image/*"
-                                  type="file"
-                                  // ref={hiddenFileInput}
-                                  onChange={handleChangeImage}
-                                />
-
-                                <img
-                                  src="/assets/uploadicon.svg"
-                                  alt=""
-                                  style={{ height: '35px' }}
-                                />
-                              </IconButton>
-                            </div>
-                          ) : (
-                            <div>
-                              {offer.image.url ? (
-                                <div className={classes.upload}>
-                                  <CancelIcon
-                                    onClick={handleCancelImage}
-                                    style={{
-                                      position: 'absolute',
-                                      top: 0,
-                                      right: '-25px',
-                                      cursor: 'pointer',
-                                    }}
-                                  />
-                                  <img
-                                    src={offer.image.url}
-                                    alt=""
-                                    style={{
-                                      objectFit: 'contain',
-                                      borderRadius: '10px',
-                                      height: '100%',
-                                      width: '100%',
-                                      border: '1px solid',
-                                      // boxShadow:
-                                      //   '0px 16px 16px rgb(50 50 71 / 8%), 0px 24px 32px rgb(50 50 71 / 8%)',
-                                    }}
-                                  />
-                                </div>
-                              ) : null}
+                        {!offer?.image?.url &&
+                          errors.image &&
+                          touched.image && (
+                            <div className="invalid-feedback d-block">
+                              {errors.image}
                             </div>
                           )}
-                        </div>
-                        {!offer.image.url && errors.image && touched.image && (
-                          <div className="invalid-feedback d-block">
-                            {errors.image}
-                          </div>
-                        )}
                       </FormGroup>
                     </Colxx>
                   </Row>

@@ -121,7 +121,7 @@ function* deleteOfferWorker({ payload }) {
     const { status, data } = yield call(deleteOfferAsync, _id);
     const { message } = data;
     if (status === 200) {
-      yield put(deleteOfferSuccess(_id));
+      yield put(deleteOfferSuccess(data));
     } else {
       yield put(deleteOfferError(message));
     }

@@ -1,6 +1,8 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import React, { Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import CategoryDetails from './CategoryDetails';
+import 'cropperjs/dist/cropper.css';
 
 const Todo = React.lazy(() =>
   import(/* webpackChunkName: "application-todo" */ './todo')

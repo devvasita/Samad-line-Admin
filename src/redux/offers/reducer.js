@@ -48,16 +48,10 @@ export default (state = INIT_STATE, action) => {
       return { ...state, loaded: false };
 
     case UPDATE_OFFER_SUCCESS: {
-      const { item } = action.payload;
-      const { _id } = item;
-      const index = [...state.offers.data].map((e) => e._id).indexOf(_id);
-      const dataToUpdate = [...state.offers.data];
-      dataToUpdate.splice(index, 1, item);
-
       return {
         ...state,
         loaded: true,
-        offers: { ...state.offers, data: dataToUpdate },
+        offers: action.payload,
       };
     }
     case UPDATE_OFFER_ERROR:
@@ -101,15 +95,10 @@ export default (state = INIT_STATE, action) => {
       return { ...state, loaded: false };
 
     case DELETE_OFFER_SUCCESS: {
-      const _id = action.payload;
-      const index = [...state.offers].map((e) => e._id).indexOf(_id);
-      const dataToUpdate = [...state.offers];
-      dataToUpdate.splice(index, 1);
-
       return {
         ...state,
         loaded: true,
-        offers: dataToUpdate,
+        offers: action.payload,
       };
     }
 

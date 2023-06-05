@@ -66,10 +66,10 @@ export const updateOffer = (offer, history, id) => {
     payload: { offer, history, _id: id },
   };
 };
-export const updateOfferSuccess = (item, type) => {
+export const updateOfferSuccess = (data) => {
   return {
     type: UPDATE_OFFER_SUCCESS,
-    payload: { item, type },
+    payload: data,
   };
 };
 export const updateOfferError = (message) => ({
@@ -81,9 +81,9 @@ export const deleteOffer = (_id) => ({
   type: DELETE_OFFER,
   payload: { _id },
 });
-export const deleteOfferSuccess = (_id) => ({
+export const deleteOfferSuccess = (data) => ({
   type: DELETE_OFFER_SUCCESS,
-  payload: { _id },
+  payload: data,
 });
 export const deleteOfferError = (message) => ({
   type: DELETE_OFFER_ERROR,
