@@ -28,17 +28,31 @@ import {
 import CropImage from '../ui/components/crop';
 import UploadSingleImage from '../ui/components/UploadSingleImage';
 // import * as Yup from 'yup';
-
 const fetchOtherDetails = (list) => {
-  return list.map((element) => {
-    const {
-      value: { name },
-    } = element;
-    return {
-      label: name,
-      value: element?.value?._id,
-    };
-  });
+  if (!Array.isArray(list)) {
+    return [];
+  }
+
+  return list
+    .map((element) => {
+      const { value } = element;
+
+      if (!value || typeof value !== 'object') {
+        return null;
+      }
+
+      const { name, _id } = value;
+
+      if (typeof name !== 'string' || !_id) {
+        return null;
+      }
+
+      return {
+        label: name,
+        value: _id,
+      };
+    })
+    .filter((item) => item !== null);
 };
 
 const useStyles = makeStyles(() => ({
