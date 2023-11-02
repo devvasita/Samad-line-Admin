@@ -11,7 +11,7 @@ import ReactAutoSugegstExample from 'containers/forms/ReactAutoSugegstExample';
 import DatePickerExamples from 'containers/forms/DatePickerExamples';
 import DropzoneExample from 'containers/forms/DropzoneExample';
 import TagsInputExample from 'containers/forms/TagsInputExample';
-import SwitchExamples from 'containers/forms/SwitchExamples';
+import SwitchExamples from 'containers/forms/RoutesExamples';
 import SliderExamples from 'containers/forms/SliderExamples';
 import RatingExamples from 'containers/forms/RatingExamples';
 
@@ -96,7 +96,7 @@ const ComponentsUi = ({ match }) => {
 
       <Row className="mb-4">
         <Colxx xxs="12">
-          <SwitchExamples />
+          <RoutesExamples />
         </Colxx>
       </Row>
 

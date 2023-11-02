@@ -288,7 +288,7 @@ const FormikSwitch = ({ name, value, className, onChange, onBlur }) => {
   };
 
   return (
-    <Switch
+    <Routes
       name={name}
       className={className}
       checked={value}

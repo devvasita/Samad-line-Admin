@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import {   Route, Switch } from 'react-router-dom';
 
 const Forms = React.lazy(() =>
   import(/* webpackChunkName: "ui-forms" */ './forms')
@@ -10,18 +10,18 @@ const Components = React.lazy(() =>
 
 const UI = ({ match }) => (
   <Suspense fallback={<div className="loading" />}>
-    <Switch>
+    <Routes>
       <Redirect exact from={`${match.url}/`} to={`${match.url}/forms`} />
       <Route
         path={`${match.url}/forms`}
-        render={(props) => <Forms {...props} />}
+        element={(props) => <Forms {...props} />}
       />
       <Route
         path={`${match.url}/components`}
-        render={(props) => <Components {...props} />}
+        element={(props) => <Components {...props} />}
       />
       <Redirect to="/error" />
-    </Switch>
+    </Routes>
   </Suspense>
 );
 export default UI;

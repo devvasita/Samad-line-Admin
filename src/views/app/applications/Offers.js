@@ -11,7 +11,7 @@ import {
 } from 'reactstrap';
 import LinesEllipsis from 'react-lines-ellipsis';
 import responsiveHOC from 'react-lines-ellipsis/lib/responsiveHOC';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Moment from 'moment';
 
 import { Separator, Colxx } from 'components/common/CustomBootstrap';
@@ -37,16 +37,16 @@ function Offers() {
     setAnchorEl(event.currentTarget);
     setActiveOfferId(id);
   };
-  const history = useHistory();
+  const history = useNavigate();
 
   const handleAddOffer = () => {
-    history.push(`/app/applications/addoffer`);
+    history(`/app/applications/addoffer`);
   };
   const handleEditOffer = () => {
-    history.push(`/app/applications/editOffer/${activeOfferId}`);
+    history(`/app/applications/editOffer/${activeOfferId}`);
   };
   const handleViewOffer = () => {
-    history.push(`/app/applications/viewOffer/${activeOfferId}`);
+    history(`/app/applications/viewOffer/${activeOfferId}`);
   };
   const handleDeleteOffer = () => {
     dispatch(deleteOffer(activeOfferId));

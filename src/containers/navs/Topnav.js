@@ -39,7 +39,7 @@ const TopNav = ({
   const [changePasswordModal, setChangePasswordModal] = useState(false);
 
   const search = () => {
-    history.push(`${searchPath}?key=${searchKeyword}`);
+    history(`${searchPath}?key=${searchKeyword}`);
     setSearchKeyword('');
   };
 

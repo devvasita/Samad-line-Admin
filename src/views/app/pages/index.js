@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import {   Route, Switch } from 'react-router-dom';
 
 const Product = React.lazy(() =>
   import(/* webpackChunkName: "pages-product" */ './product')
@@ -16,26 +16,26 @@ const Blog = React.lazy(() =>
 
 const Pages = ({ match }) => (
   <Suspense fallback={<div className="loading" />}>
-    <Switch>
+    <Routes>
       <Redirect exact from={`${match.url}/`} to={`${match.url}/product`} />
       <Route
         path={`${match.url}/product`}
-        render={(props) => <Product {...props} />}
+        element={(props) => <Product {...props} />}
       />
       <Route
         path={`${match.url}/profile`}
-        render={(props) => <Profile {...props} />}
+        element={(props) => <Profile {...props} />}
       />
       <Route
         path={`${match.url}/blog`}
-        render={(props) => <Blog {...props} />}
+        element={(props) => <Blog {...props} />}
       />
       <Route
         path={`${match.url}/miscellaneous`}
-        render={(props) => <Miscellaneous {...props} />}
+        element={(props) => <Miscellaneous {...props} />}
       />
       <Redirect to="/error" />
-    </Switch>
+    </Routes>
   </Suspense>
 );
 export default Pages;

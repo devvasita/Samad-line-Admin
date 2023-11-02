@@ -31,7 +31,7 @@ function* addOfferWorker({ payload }) {
     const { data, status } = yield call(addOfferAsync, offer);
     const { messgae } = data;
     if (status === 201) {
-      history.push('/app/applications/Offers');
+      history('/app/applications/Offers');
       yield put(addOfferSuccess(data));
     } else {
       yield put(addOfferError(messgae));
@@ -98,7 +98,7 @@ function* updateOfferWorker({ payload }) {
     const { data, status } = yield call(updateOfferAsync, offer, _id);
     const { message } = data;
     if (status === 200) {
-      history.push('/app/applications/Offers');
+      history('/app/applications/Offers');
       yield put(updateOfferSuccess(data));
     } else {
       yield put(updateOfferError(message));

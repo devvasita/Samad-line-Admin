@@ -363,7 +363,7 @@ function AddProduct({ history }) {
                   <Colxx lg="3" xs="12" sm="6">
                     <Form>
                       <Label>Non-Veg :</Label>
-                      <Switch
+                      <Routes
                         className="custom-switch custom-switch-red"
                         checked={product.nonVeg}
                         onChange={(value) => handleChange(value, 'nonVeg')}

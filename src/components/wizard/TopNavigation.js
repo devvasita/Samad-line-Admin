@@ -26,7 +26,7 @@ const TopNavigation = ({ className, disableNav, topNavClick }) => {
 
   return (
     <WithWizard
-      render={({ next, previous, step, steps, go, push }) => (
+      element={({ next, previous, step, steps, go, push }) => (
         <ul
           className={`nav nav-tabs ${className}${
             disableNav ? ' disabled' : ''

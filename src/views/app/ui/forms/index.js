@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import {   Route, Switch } from 'react-router-dom';
 
 const Components = React.lazy(() =>
   import(/* webpackChunkName: "forms-components" */ './components')
@@ -16,26 +16,26 @@ const Wizard = React.lazy(() =>
 
 const Forms = ({ match }) => (
   <Suspense fallback={<div className="loading" />}>
-    <Switch>
+    <Routes>
       <Redirect exact from={`${match.url}/`} to={`${match.url}/components`} />
       <Route
         path={`${match.url}/components`}
-        render={(props) => <Components {...props} />}
+        element={(props) => <Components {...props} />}
       />
       <Route
         path={`${match.url}/layouts`}
-        render={(props) => <Layouts {...props} />}
+        element={(props) => <Layouts {...props} />}
       />
       <Route
         path={`${match.url}/validations`}
-        render={(props) => <Validations {...props} />}
+        element={(props) => <Validations {...props} />}
       />
       <Route
         path={`${match.url}/wizard`}
-        render={(props) => <Wizard {...props} />}
+        element={(props) => <Wizard {...props} />}
       />
       <Redirect to="/error" />
-    </Switch>
+    </Routes>
   </Suspense>
 );
 export default Forms;

@@ -13,7 +13,7 @@ import {
 import 'rc-switch/assets/index.css';
 import './order.css';
 import { Colxx, Separator } from 'components/common/CustomBootstrap';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled('div')(() => ({
   paddingTop: '1rem',
@@ -37,9 +37,9 @@ function OrderList({ orders }) {
   const handleChangePage = (_, newPage) => {
     setPage(newPage);
   };
-  const history = useHistory();
+  const history = useNavigate();
   const handleView = (_id) => {
-    history.push(`/app/applications/orders/${_id}`);
+    history(`/app/applications/orders/${_id}`);
   };
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);

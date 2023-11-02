@@ -30,7 +30,7 @@ const TopnavDarkSwitch = () => {
 
   return (
     <div className="d-none d-md-inline-block align-middle mr-3">
-      <Switch
+      <Routes
         id="tooltip_switch"
         className="custom-switch custom-switch-primary custom-switch-small"
         checked={switchChecked}

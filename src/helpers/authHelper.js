@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Route, Redirect, useHistory } from 'react-router-dom';
+import { Route , useNavigate } from 'react-router-dom';
 import { getUserDetails } from 'redux/actions';
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const history = useNavigate();
   const {
     authUser: { currentUser },
   } = useSelector((state) => state);
@@ -21,25 +21,19 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
     }
     if (!token) {
       return (
-        <Redirect
-          to={{
-            pathname: '/',
-            state: { from: props.location },
-          }}
+        <Route
+         element={<Navigate to="/" />}
         />
       );
     }
     return (
-      <Redirect
-        to={{
-          pathname: '/',
-          state: { from: props.location },
-        }}
+      <Route
+       element={<Navigate to="/" />}
       />
     );
   };
 
-  return <Route {...rest} render={setComponent} />;
+  return <Route {...rest}  element={setComponent} />;
 };
 
 // eslint-disable-next-line import/prefer-default-export

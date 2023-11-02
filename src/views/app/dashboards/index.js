@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import {   Route, Switch } from 'react-router-dom';
 // import { ProtectedRoute, UserRole } from 'helpers/authHelper';
 
 const DashboardDefault = React.lazy(() =>
@@ -17,25 +17,25 @@ const EcommerceDefault = React.lazy(() =>
 
 const Dashboards = ({ match }) => (
   <Suspense fallback={<div className="loading" />}>
-    <Switch>
+    <Routes>
       <Redirect exact from={`${match.url}/`} to={`${match.url}/default`} />
       <Route
         path={`${match.url}/default`}
-        render={(props) => <DashboardDefault {...props} />}
+        element={(props) => <DashboardDefault {...props} />}
       />
       <Route
         path={`${match.url}/content`}
-        render={(props) => <ContentDefault {...props} />}
+        element={(props) => <ContentDefault {...props} />}
       />
       <Route
         path={`${match.url}/ecommerce`}
-        render={(props) => <EcommerceDefault {...props} />}
+        element={(props) => <EcommerceDefault {...props} />}
       />
       <Route
         path={`${match.url}/analytics`}
-        render={(props) => <AnalyticsDefault {...props} />}
+        element={(props) => <AnalyticsDefault {...props} />}
       />
-      {/* 
+      {/*
       <ProtectedRoute
         path={`${match.url}/default`}
         component={DashboardDefault}
@@ -59,7 +59,7 @@ const Dashboards = ({ match }) => (
       */}
 
       <Redirect to="/error" />
-    </Switch>
+    </Routes>
   </Suspense>
 );
 export default Dashboards;

@@ -14,7 +14,7 @@ import {
 } from 'reactstrap';
 import LinesEllipsis from 'react-lines-ellipsis';
 import responsiveHOC from 'react-lines-ellipsis/lib/responsiveHOC';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Separator, Colxx } from 'components/common/CustomBootstrap';
 // import { blogData } from 'data/blog';
 import IntlMessages from 'helpers/IntlMessages';
@@ -23,22 +23,22 @@ import { deleteBlogById, getBlog } from 'redux/auth/actions';
 
 const ResponsiveEllipsis = responsiveHOC()(LinesEllipsis);
 function Blog({ getBlogList, blogs, deleteBlog }) {
-  const history = useHistory();
+  const history = useNavigate();
   console.log({ blogs });
   useEffect(() => {
     getBlogList();
   }, [getBlogList]);
 
   const handleView = (_id) => {
-    history.push(`/app/applications/blog/${_id}`);
+    history(`/app/applications/blog/${_id}`);
   };
 
   const handleAddBlog = () => {
-    history.push(`/app/applications/addblog`);
+    history(`/app/applications/addblog`);
   };
 
   const handleEdit = (_id) => {
-    history.push(`/app/applications/blog/edit/${_id}`);
+    history(`/app/applications/blog/edit/${_id}`);
   };
 
   return (

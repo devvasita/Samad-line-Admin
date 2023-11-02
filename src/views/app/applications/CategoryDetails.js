@@ -16,8 +16,8 @@ import './category.css';
 import 'rc-switch/assets/index.css';
 import './order.css';
 import { Colxx, Separator } from 'components/common/CustomBootstrap';
-import Switch from '@mui/material/Switch';
-// import { useHistory } from 'react-router-dom';
+import Switch from '@mui/material/Routes';
+// import { useNavigate } from 'react-router-dom';
 import {
   Button,
   Input,

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Row, Card, CardTitle, Label, FormGroup, Button } from 'reactstrap';
-import { NavLink, useHistory } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Formik, Form, Field } from 'formik';
@@ -46,7 +46,7 @@ const Login = ({ loading, error, loginUserAction }) => {
       NotificationManager.warning(error, 'Login Error', 3000, null, null, '');
     }
   }, [error]);
-  const history = useHistory();
+  const history = useNavigate();
 
   const onUserLogin = (values) => {
     if (!loading) {

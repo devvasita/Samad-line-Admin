@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React, { Suspense } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import {   Route, Switch } from 'react-router-dom';
 import CategoryDetails from './CategoryDetails';
 import 'cropperjs/dist/cropper.css';
 
@@ -72,109 +72,110 @@ const OrderDetails = React.lazy(() => import('./OrderDetails'));
 
 const Applications = ({ match }) => (
   <Suspense fallback={<div className="loading" />}>
-    <Switch>
-      <Redirect exact from={`${match.url}/`} to={`${match.url}/todo`} />
+    <Routes>
+      {/* <Redirect exact from={`${match.url}/`} to={`${match.url}/todo`} /> */}
       <Route
         path={`${match.url}/todo`}
-        render={(props) => <Todo {...props} />}
+        element={(props) => <Todo {...props} />}
       />
       <Route
         exact
         path={`${match.url}/brand`}
-        render={(props) => <Brand {...props} />}
+        element={(props) => <Brand {...props} />}
       />
       <Route
         exact
         path={`${match.url}/category`}
-        render={(props) => <Category {...props} />}
+        element={(props) => <Category {...props} />}
       />
       <Route
         exact
         path={`${match.url}/category/:id`}
-        render={(props) => <CategoryDetails {...props} />}
+        element={(props) => <CategoryDetails {...props} />}
       />
       <Route
         path={`${match.url}/blog`}
         exact
-        render={(props) => <Blog {...props} />}
+        element={(props) => <Blog {...props} />}
       />
       <Route
         exact
         path={`${match.url}/blog/:id`}
-        render={(props) => <BlogDetails {...props} />}
+        element={(props) => <BlogDetails {...props} />}
       />
       <Route
         path={`${match.url}/addblog`}
-        render={(props) => <AddBlog {...props} />}
+        element={(props) => <AddBlog {...props} />}
       />
 
       <Route
         exact
         path={`${match.url}/blog/edit/:id`}
-        render={(props) => <EditBlog {...props} />}
+        element={(props) => <EditBlog {...props} />}
       />
 
       <Route
         path={`${match.url}/addOffer`}
-        render={(props) => <AddOffer {...props} />}
+        element={(props) => <AddOffer {...props} />}
       />
       <Route
         path={`${match.url}/addProduct`}
-        render={(props) => <AddProduct {...props} />}
+        element={(props) => <AddProduct {...props} />}
       />
 
       <Route
         path={`${match.url}/editProduct/:id`}
-        render={(props) => <EditProduct {...props} />}
+        element={(props) => <EditProduct {...props} />}
       />
       <Route
         path={`${match.url}/editOffer/:id`}
-        render={(props) => <EditOffer {...props} />}
+        element={(props) => <EditOffer {...props} />}
       />
 
       <Route
         path={`${match.url}/viewOffer/:id`}
-        render={(props) => <ViewOffer {...props} />}
+        element={(props) => <ViewOffer {...props} />}
       />
       <Route
         path={`${match.url}/Offers`}
-        render={(props) => <Offers {...props} />}
+        element={(props) => <Offers {...props} />}
       />
       <Route
         path={`${match.url}/survey/:surveyid`}
-        render={(props) => <SurveyDetail {...props} />}
+        element={(props) => <SurveyDetail {...props} />}
         isExact
       />
       <Route
         path={`${match.url}/survey`}
-        render={(props) => <Survey {...props} />}
+        element={(props) => <Survey {...props} />}
         isExact
       />
       <Route
         path={`${match.url}/chat`}
-        render={(props) => <Chat {...props} />}
+        element={(props) => <Chat {...props} />}
       />
       <Route
         path={`${match.url}/product`}
-        render={(props) => <Product {...props} />}
+        element={(props) => <Product {...props} />}
       />
       <Route
         path={`${match.url}/viewproduct/:id`}
-        render={(props) => <ViewProduct {...props} />}
+        element={(props) => <ViewProduct {...props} />}
       />
       <Route
         exact
         path={`${match.url}/orders`}
-        render={(props) => <Orders {...props} />}
+        element={(props) => <Orders {...props} />}
       />
       <Route
         exact
         path={`${match.url}/orders/:id`}
-        render={(props) => <OrderDetails {...props} />}
+        element={(props) => <OrderDetails {...props} />}
       />
 
-      <Redirect to="/error" />
-    </Switch>
+
+                <Route path="*" element={<Navigate to="/error" />} />
+    </Routes>
   </Suspense>
 );
 export default Applications;

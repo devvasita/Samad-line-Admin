@@ -13,7 +13,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import 'react-quill/dist/quill.snow.css';
 import Select from 'react-select';
 import { makeStyles } from '@mui/styles';
-import { NavLink, useHistory } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { addOffer } from 'redux/actions';
 import { useDispatch } from 'react-redux';
 import CustomSelectInput from 'components/common/CustomSelectInput';
@@ -97,7 +97,7 @@ const quillFormats = [
 function AddOffer() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const history = useHistory();
+  const history = useNavigate();
   const [offerOptions, setOfferOption] = useState({});
   const [selectedApplicable, setSelectedApplicable] = useState('');
   const [activeCategory, setActiveCategory] = useState('');

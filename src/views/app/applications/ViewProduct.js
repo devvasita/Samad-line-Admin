@@ -3,7 +3,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Colxx, Separator } from 'components/common/CustomBootstrap';
 import React, { useEffect, useState } from 'react';
 import {
@@ -188,11 +188,11 @@ export const items = [
 ];
 const BasicCarouselItem = ({ name, image, createdAt, _id }) => {
   console.log({ name, image, createdAt, _id });
-  const history = useHistory();
+  const history = useNavigate();
   const dispatch = useDispatch();
   const handleViewProduct = () => {
     dispatch(getSingleProduct(_id));
-    history.push(`/app/applications/viewProduct/${_id}`);
+    history(`/app/applications/viewProduct/${_id}`);
   };
   return (
     <div className="glide-item">

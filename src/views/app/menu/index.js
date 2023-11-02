@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import {   Route, Switch } from 'react-router-dom';
 
 const MenuTypes = React.lazy(() =>
   import(/* webpackChunkName: "menu-types" */ './types')
@@ -10,18 +10,18 @@ const Levels = React.lazy(() =>
 
 const UI = ({ match }) => (
   <Suspense fallback={<div className="loading" />}>
-    <Switch>
+    <Routes>
       <Redirect exact from={`${match.url}/`} to={`${match.url}/types`} />
       <Route
         path={`${match.url}/types`}
-        render={(props) => <MenuTypes {...props} />}
+        element={(props) => <MenuTypes {...props} />}
       />
       <Route
         path={`${match.url}/levels`}
-        render={(props) => <Levels {...props} />}
+        element={(props) => <Levels {...props} />}
       />
       <Redirect to="/error" />
-    </Switch>
+    </Routes>
   </Suspense>
 );
 export default UI;

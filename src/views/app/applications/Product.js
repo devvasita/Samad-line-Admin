@@ -5,12 +5,12 @@ import IntlMessages from 'helpers/IntlMessages';
 import React, { useState, useEffect } from 'react';
 import { Menu, MenuItem } from '@mui/material';
 import { Button, Card, CardBody, Row, Table } from 'reactstrap';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteProduct, getProducts } from 'redux/actions';
 
 function Product() {
-  const history = useHistory();
+  const history = useNavigate();
   const dispatch = useDispatch();
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -32,13 +32,13 @@ function Product() {
     setAnchorEl(null);
   };
   const handleAddProduct = () => {
-    history.push(`/app/applications/addProduct`);
+    history(`/app/applications/addProduct`);
   };
   const handleEditProduct = () => {
-    history.push(`/app/applications/editProduct/${activeProductId}`);
+    history(`/app/applications/editProduct/${activeProductId}`);
   };
   const handleViewProduct = () => {
-    history.push(`/app/applications/viewProduct/${activeProductId}`);
+    history(`/app/applications/viewProduct/${activeProductId}`);
   };
 
   const handleDeleteProduct = () => {

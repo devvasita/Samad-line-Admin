@@ -3,7 +3,7 @@ import { Row, Card, CardTitle, Label, FormGroup, Button } from 'reactstrap';
 import { Formik, Form, Field } from 'formik';
 import { Colxx } from 'components/common/CustomBootstrap';
 import IntlMessages from 'helpers/IntlMessages';
-import { NavLink, useHistory } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { verifyOtp } from 'redux/auth/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { NotificationManager } from 'components/common/react-notifications';
@@ -24,7 +24,7 @@ import { NotificationManager } from 'components/common/react-notifications';
 
 const Otp = ({ loading }) => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const history = useNavigate();
 
   const { mobileNo, resetPass } =
     JSON.parse(localStorage.getItem('mobileNo')) ?? {};

@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import {   Route, Switch } from 'react-router-dom';
 
 const Faq = React.lazy(() =>
   import(/* webpackChunkName: "miscellaneous-faq" */ './faq')
@@ -24,31 +24,31 @@ const Search = React.lazy(() =>
 
 const PagesMiscellaneous = ({ match }) => (
   <Suspense fallback={<div className="loading" />}>
-    <Switch>
+    <Routes>
       <Redirect exact from={`${match.url}/`} to={`${match.url}/faq`} />
-      <Route path={`${match.url}/faq`} render={(props) => <Faq {...props} />} />
+      <Route path={`${match.url}/faq`} element={(props) => <Faq {...props} />} />
       <Route
         path={`${match.url}/invoice`}
-        render={(props) => <Invoice {...props} />}
+        element={(props) => <Invoice {...props} />}
       />
       <Route
         path={`${match.url}/knowledge-base`}
-        render={(props) => <KnowledgeBase {...props} />}
+        element={(props) => <KnowledgeBase {...props} />}
       />
       <Route
         path={`${match.url}/mailing`}
-        render={(props) => <Mailing {...props} />}
+        element={(props) => <Mailing {...props} />}
       />
       <Route
         path={`${match.url}/prices`}
-        render={(props) => <Prices {...props} />}
+        element={(props) => <Prices {...props} />}
       />
       <Route
         path={`${match.url}/search`}
-        render={(props) => <Search {...props} />}
+        element={(props) => <Search {...props} />}
       />
       <Redirect to="/error" />
-    </Switch>
+    </Routes>
   </Suspense>
 );
 export default PagesMiscellaneous;

@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import {   Route, Switch } from 'react-router-dom';
 
 const Alerts = React.lazy(() =>
   import(/* webpackChunkName: "components-alerts" */ './alerts')
@@ -60,82 +60,82 @@ const Tables = React.lazy(() =>
 
 const Components = ({ match }) => (
   <Suspense fallback={<div className="loading" />}>
-    <Switch>
+    <Routes>
       <Redirect exact from={`${match.url}/`} to={`${match.url}/alerts`} />
       <Route
         path={`${match.url}/alerts`}
-        render={(props) => <Alerts {...props} />}
+        element={(props) => <Alerts {...props} />}
       />
       <Route
         path={`${match.url}/badges`}
-        render={(props) => <Badges {...props} />}
+        element={(props) => <Badges {...props} />}
       />
       <Route
         path={`${match.url}/buttons`}
-        render={(props) => <Buttons {...props} />}
+        element={(props) => <Buttons {...props} />}
       />
       <Route
         path={`${match.url}/cards`}
-        render={(props) => <Cards {...props} />}
+        element={(props) => <Cards {...props} />}
       />
       <Route
         path={`${match.url}/carousel`}
-        render={(props) => <Carousel {...props} />}
+        element={(props) => <Carousel {...props} />}
       />
       <Route
         path={`${match.url}/charts`}
-        render={(props) => <Charts {...props} />}
+        element={(props) => <Charts {...props} />}
       />
       <Route
         path={`${match.url}/collapse`}
-        render={(props) => <Collapse {...props} />}
+        element={(props) => <Collapse {...props} />}
       />
       <Route
         path={`${match.url}/dropdowns`}
-        render={(props) => <Dropdowns {...props} />}
+        element={(props) => <Dropdowns {...props} />}
       />
       <Route
         path={`${match.url}/editors`}
-        render={(props) => <Editors {...props} />}
+        element={(props) => <Editors {...props} />}
       />
       <Route
         path={`${match.url}/icons`}
-        render={(props) => <Icons {...props} />}
+        element={(props) => <Icons {...props} />}
       />
       <Route
         path={`${match.url}/input-groups`}
-        render={(props) => <InputGroups {...props} />}
+        element={(props) => <InputGroups {...props} />}
       />
       <Route
         path={`${match.url}/jumbotron`}
-        render={(props) => <Jumbotron {...props} />}
+        element={(props) => <Jumbotron {...props} />}
       />
       <Route
         path={`${match.url}/maps`}
-        render={(props) => <Maps {...props} />}
+        element={(props) => <Maps {...props} />}
       />
       <Route
         path={`${match.url}/modal`}
-        render={(props) => <Modal {...props} />}
+        element={(props) => <Modal {...props} />}
       />
       <Route
         path={`${match.url}/navigation`}
-        render={(props) => <Navigation {...props} />}
+        element={(props) => <Navigation {...props} />}
       />
       <Route
         path={`${match.url}/popover-tooltip`}
-        render={(props) => <PopoverTooltip {...props} />}
+        element={(props) => <PopoverTooltip {...props} />}
       />
       <Route
         path={`${match.url}/sortable`}
-        render={(props) => <Sortable {...props} />}
+        element={(props) => <Sortable {...props} />}
       />
       <Route
         path={`${match.url}/tables`}
-        render={(props) => <Tables {...props} />}
+        element={(props) => <Tables {...props} />}
       />
       <Redirect to="/error" />
-    </Switch>
+    </Routes>
   </Suspense>
 );
 export default Components;

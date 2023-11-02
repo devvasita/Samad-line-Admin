@@ -9,7 +9,7 @@ import 'react-quill/dist/quill.snow.css';
 import CancelIcon from '@mui/icons-material/Cancel';
 import IconButton from '@mui/material/IconButton';
 import { makeStyles } from '@mui/styles';
-import { NavLink, useHistory } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { addBlog } from 'redux/auth/actions';
 
@@ -84,7 +84,7 @@ const quillFormats = [
 ];
 
 function AddBlog({ createBlog }) {
-  const history = useHistory();
+  const history = useNavigate();
   const [description, setDescription] = useState('');
   const classes = useStyles();
   const [file, setFile] = useState();

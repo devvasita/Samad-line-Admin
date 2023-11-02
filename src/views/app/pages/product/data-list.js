@@ -15,8 +15,8 @@ import {
 import 'rc-switch/assets/index.css';
 import './dataList.css';
 import { Colxx, Separator } from 'components/common/CustomBootstrap';
-import Switch from '@mui/material/Switch';
-import { useHistory } from 'react-router-dom';
+import Switch from '@mui/material/Routes';
+import { useNavigate } from 'react-router-dom';
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
@@ -100,9 +100,9 @@ function DataListPages() {
   const handleChangePage = (_, newPage) => {
     setPage(newPage);
   };
-  const history = useHistory();
+  const history = useNavigate();
   const handleView = () => {
-    history.push('/app/pages/product/data-view');
+    history('/app/pages/product/data-view');
   };
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
@@ -147,7 +147,7 @@ function DataListPages() {
                   <TableCell align="center">{userData.email}</TableCell>
                   <TableCell align="center" className="-webkit-center">
                     <div className="switch">
-                      <Switch {...label} />
+                      <Routes {...label} />
                     </div>
                   </TableCell>
 

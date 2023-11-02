@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import {   Route, Switch } from 'react-router-dom';
 
 const BlogList = React.lazy(() =>
   import(/* webpackChunkName: "blog-list" */ './blog-list')
@@ -11,18 +11,18 @@ const BlogDetail = React.lazy(() =>
 
 const PagesBlog = ({ match }) => (
   <Suspense fallback={<div className="loading" />}>
-    <Switch>
+    <Routes>
       <Redirect exact from={`${match.url}/`} to={`${match.url}/blog-list`} />
       <Route
         path={`${match.url}/blog-list`}
-        render={(props) => <BlogList {...props} />}
+        element={(props) => <BlogList {...props} />}
       />
       <Route
         path={`${match.url}/blog-detail`}
-        render={(props) => <BlogDetail {...props} />}
+        element={(props) => <BlogDetail {...props} />}
       />
       <Redirect to="/error" />
-    </Switch>
+    </Routes>
   </Suspense>
 );
 export default PagesBlog;

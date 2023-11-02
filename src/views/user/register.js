@@ -24,7 +24,7 @@ const Register = ({ history }) => {
 
   const onUserRegister = () => {
     if (email !== '' && password !== '') {
-      history.push(adminRoot);
+      history(adminRoot);
     }
     // call registerUserAction()
   };

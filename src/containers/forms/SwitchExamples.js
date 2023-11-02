@@ -32,7 +32,7 @@ const SwitchExamples = () => {
             <label>
               <IntlMessages id="form-components.primary" />
             </label>
-            <Switch
+            <Routes
               className="custom-switch custom-switch-primary"
               checked={checkedPrimary}
               onChange={(primary) => setCheckedPrimary(primary)}
@@ -43,7 +43,7 @@ const SwitchExamples = () => {
             <label>
               <IntlMessages id="form-components.secondary" />
             </label>
-            <Switch
+            <Routes
               className="custom-switch custom-switch-secondary"
               checked={checkedSecondary}
               onChange={(secondary) => setCheckedSecondary(secondary)}
@@ -56,7 +56,7 @@ const SwitchExamples = () => {
             <label>
               <IntlMessages id="form-components.primary-inverse" />
             </label>
-            <Switch
+            <Routes
               className="custom-switch custom-switch-primary-inverse"
               checked={checkedPrimaryInverse}
               onChange={(primaryInverse) =>
@@ -69,7 +69,7 @@ const SwitchExamples = () => {
             <label>
               <IntlMessages id="form-components.secondary-inverse" />
             </label>
-            <Switch
+            <Routes
               className="custom-switch custom-switch-secondary-inverse"
               checked={checkedSecondaryInverse}
               onChange={(secondaryInverse) =>
@@ -84,7 +84,7 @@ const SwitchExamples = () => {
             <label>
               <IntlMessages id="form-components.primary" />
             </label>
-            <Switch
+            <Routes
               className="custom-switch custom-switch-primary custom-switch-small"
               checked={checkedPrimarySmall}
               onChange={(primary) => setCheckedPrimarySmall(primary)}
@@ -95,7 +95,7 @@ const SwitchExamples = () => {
             <label>
               <IntlMessages id="form-components.secondary" />
             </label>
-            <Switch
+            <Routes
               className="custom-switch custom-switch-secondary custom-switch-small"
               checked={checkedSecondarySmall}
               onChange={(secondary) => setCheckedSecondarySmall(secondary)}
@@ -108,7 +108,7 @@ const SwitchExamples = () => {
             <label>
               <IntlMessages id="form-components.primary-inverse" />
             </label>
-            <Switch
+            <Routes
               className="custom-switch custom-switch-primary-inverse custom-switch-small"
               checked={checkedPrimaryInverseSmall}
               onChange={(primaryInverse) =>
@@ -121,7 +121,7 @@ const SwitchExamples = () => {
             <label>
               <IntlMessages id="form-components.secondary-inverse" />
             </label>
-            <Switch
+            <Routes
               className="custom-switch custom-switch-secondary-inverse custom-switch-small"
               checked={checkedSecondaryInverseSmall}
               onChange={(secondaryInverse) =>

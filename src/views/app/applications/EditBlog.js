@@ -9,7 +9,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import IconButton from '@mui/material/IconButton';
 
 import { makeStyles } from '@mui/styles';
-import { NavLink, useHistory, useParams } from 'react-router-dom';
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getBlogById, updateBlog } from 'redux/auth/actions';
 
@@ -85,7 +85,7 @@ const quillFormats = [
 
 function EditBlog({ selectedBlog, getBlogDetails, updateBlogDetails }) {
   const { id } = useParams();
-  const history = useHistory();
+  const history = useNavigate();
   const classes = useStyles();
 
   const [description, setDescription] = useState('');

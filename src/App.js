@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import {
   BrowserRouter as Router,
   Route,
-  Switch,
-  Redirect,
+  Routes,
+
 } from 'react-router-dom';
 import { IntlProvider } from 'react-intl';
 import './helpers/Firebase';
@@ -55,7 +55,7 @@ const App = ({ locale }) => {
 
           <Suspense fallback={<div className="loading" />}>
             <Router>
-              <Switch>
+              <Routes>
                 <ProtectedRoute
                   path={adminRoot}
                   component={ViewApp}
@@ -63,31 +63,31 @@ const App = ({ locale }) => {
                 />
                 <Route
                   path="/user"
-                  render={(props) => <ViewUser {...props} />}
+                  element={(props) => <ViewUser {...props} />}
                 />
                 <Route
                   path="/error"
                   exact
-                  render={(props) => <ViewError {...props} />}
+                  element={(props) => <ViewError {...props} />}
                 />
                 <Route
                   path="/unauthorized"
                   exact
-                  render={(props) => <ViewUnauthorized {...props} />}
+                  element={(props) => <ViewUnauthorized {...props} />}
                 />
                 <UserLayout>
                   <Route
                     path="/"
                     exact
-                    render={(props) => <ViewHome {...props} />}
+                    element={(props) => <ViewHome {...props} />}
                   />
                 </UserLayout>
 
                 {/*
                 <Redirect exact from="/" to={adminRoot} />
                 */}
-                <Redirect to="/error" />
-              </Switch>
+                {/* <Redirect to="/error" /> */}
+              </Routes>
             </Router>
           </Suspense>
         </>

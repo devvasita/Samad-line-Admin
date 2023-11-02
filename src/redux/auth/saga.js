@@ -78,11 +78,11 @@ export function* getUserWorker({ payload }) {
     if (data) {
       yield put(getUserDetailSuccess(data));
     } else {
-      history.push('/');
+      history('/');
       yield put(getUserDetailsError('token expired'));
     }
   } catch (error) {
-    history.push('/');
+    history('/');
     yield put(getUserDetailsError('something went wrong'));
   }
 }
@@ -132,7 +132,7 @@ function* loginWithPhoneNumberPassword({ payload }) {
       yield call(GenerateOtpAsync, mobileNo);
       yield put(authSuccess());
       localStorage.setItem('mobileNo', JSON.stringify({ mobileNo }));
-      history.push('/user/otp');
+      history('/user/otp');
     } else {
       yield put(loginUserError(message));
     }
@@ -170,11 +170,11 @@ function* verifyOtp({ payload }) {
     if (status === 200 && success) {
       yield put(verifyOtpSuccess());
       localStorage.removeItem('mobileNo');
-      if (resetPass) history.push(`/user/reset-password/${token}`);
+      if (resetPass) history(`/user/reset-password/${token}`);
       else {
         localStorage.setItem('auth_token', token);
         yield put(getUserDetailSuccess(user));
-        history.push('/app/dashboards/ecommerce');
+        history('/app/dashboards/ecommerce');
       }
     } else {
       yield put(verifyOtpError(message));
@@ -209,7 +209,7 @@ function* registerWithEmailPassword({ payload }) {
       const item = { uid: registerUser.user.uid, ...currentUser };
       setCurrentUser(item);
       yield put(registerUserSuccess(item));
-      history.push(adminRoot);
+      history(adminRoot);
     } else {
       yield put(registerUserError(registerUser.message));
     }
@@ -224,7 +224,7 @@ export function* watchLogoutUser() {
 }
 
 const logoutAsync = async (history) => {
-  history.push('/');
+  history('/');
 };
 
 function* logout({ payload }) {
@@ -248,7 +248,7 @@ function* forgotPassword({ payload }) {
     } = yield call(GenerateOtpAsync, mobileNo);
     if (status === 200) {
       yield put(forgotPasswordSuccess('OTP sent successfully to your number'));
-      history.push('/user/otp');
+      history('/user/otp');
     } else {
       yield put(forgotPasswordError(message));
     }
@@ -406,7 +406,7 @@ function* addBlod({ payload }) {
 
     if (status === 201) {
       yield put(addBlogSuccess(data));
-      history.push('/app/applications/blog');
+      history('/app/applications/blog');
     } else {
       yield put(addBlogError('something went wrong'));
     }
@@ -476,7 +476,7 @@ function* updateBlogById({ payload }) {
 
     if (status === 200) {
       yield put(updateBlogSuccess(data));
-      history.push('/app/applications/blog');
+      history('/app/applications/blog');
     } else {
       yield put(updateBlogError('Something went wrong'));
     }

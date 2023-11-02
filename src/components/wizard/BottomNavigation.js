@@ -14,7 +14,7 @@ const BottomNavigation = ({
 }) => {
   return (
     <WithWizard
-      render={({ next, previous, step, steps }) => (
+      element={({ next, previous, step, steps }) => (
         <div className={`wizard-buttons ${className}`}>
           <Button
             color="primary"
