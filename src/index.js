@@ -1,27 +1,34 @@
-/* eslint-disable global-require */
-import './assets/css/vendor/bootstrap.min.css';
-import './assets/css/vendor/bootstrap.rtl.only.min.css';
-import 'react-circular-progressbar/dist/styles.css';
-import 'react-perfect-scrollbar/dist/css/styles.css';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
-import 'react-image-lightbox/style.css';
-import 'video.js/dist/video-js.css';
-import 'index.css';
+import { createRoot } from 'react-dom/client';
 
-import {
-  isMultiColorActive,
-  defaultColor,
-  isDarkSwitchActive,
-} from './constants/defaultValues';
-import { getCurrentColor, setCurrentColor } from './helpers/Utils';
+// third party
+import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { NotificationContainer } from 'react-notifications';
 
-const color =
-  isMultiColorActive || isDarkSwitchActive ? getCurrentColor() : defaultColor;
-setCurrentColor(color);
+// project imports
+import * as serviceWorker from 'serviceWorker';
+import App from 'App';
+import { store } from 'store';
 
-const render = () => {
-  import(`./assets/css/sass/themes/gogo.${color}.scss`).then(() => {
-    require('./AppRenderer');
-  });
-};
-render();
+// style + assets
+import 'assets/scss/style.scss';
+import config from './config';
+
+// ==============================|| REACT DOM RENDER  ||============================== //
+
+const container = document.getElementById('root');
+const root = createRoot(container); // createRoot(container!) if you use TypeScript
+root.render(
+    <>
+        <Provider store={store}>
+            <BrowserRouter basename={config.basename}>
+                <App />
+            </BrowserRouter>
+        </Provider>
+    </>
+);
+
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://bit.ly/CRA-PWA
+serviceWorker.unregister();
