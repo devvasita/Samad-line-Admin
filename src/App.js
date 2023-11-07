@@ -1,106 +1,37 @@
-import React, { Suspense, useEffect } from 'react';
-import { connect } from 'react-redux';
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect,
-} from 'react-router-dom';
-import { IntlProvider } from 'react-intl';
-import './helpers/Firebase';
-import UserLayout from 'layout/UserLayout';
-import AppLocale from './lang';
-import { NotificationContainer } from './components/common/react-notifications';
-import { adminRoot, UserRole } from './constants/defaultValues';
-import { getDirection } from './helpers/Utils';
-import { ProtectedRoute } from './helpers/authHelper';
+import { useSelector } from 'react-redux';
 
-const ViewHome = React.lazy(() =>
-  import(/* webpackChunkName: "views" */ './views/user/login')
-);
-const ViewApp = React.lazy(() =>
-  import(/* webpackChunkName: "views-app" */ './views/app')
-);
-const ViewUser = React.lazy(() =>
-  import(/* webpackChunkName: "views-user" */ './views/user')
-);
-const ViewError = React.lazy(() =>
-  import(/* webpackChunkName: "views-error" */ './views/error')
-);
-const ViewUnauthorized = React.lazy(() =>
-  import(/* webpackChunkName: "views-error" */ './views/unauthorized')
-);
+import { ThemeProvider } from '@mui/material/styles';
+import { CssBaseline, StyledEngineProvider } from '@mui/material';
+import 'react-notifications/lib/notifications.css';
+import 'cropperjs/dist/cropper.css';
+import { NotificationContainer } from 'react-notifications';
+import 'react-quill/dist/quill.snow.css';
 
-const App = ({ locale }) => {
-  const direction = getDirection();
-  const currentAppLocale = AppLocale[locale];
-  useEffect(() => {
-    if (direction.isRtl) {
-      document.body.classList.add('rtl');
-      document.body.classList.remove('ltr');
-    } else {
-      document.body.classList.add('ltr');
-      document.body.classList.remove('rtl');
-    }
-  }, [direction]);
+// routing
+import Routes from 'routes';
 
-  return (
-    <div className="h-100">
-      <IntlProvider
-        locale={currentAppLocale.locale}
-        messages={currentAppLocale.messages}
-      >
-        <>
-          <NotificationContainer />
+// defaultTheme
+import themes from 'themes';
 
-          <Suspense fallback={<div className="loading" />}>
-            <Router>
-              <Switch>
-                <ProtectedRoute
-                  path={adminRoot}
-                  component={ViewApp}
-                  roles={[UserRole.Admin, UserRole.Editor]}
-                />
-                <Route
-                  path="/user"
-                  render={(props) => <ViewUser {...props} />}
-                />
-                <Route
-                  path="/error"
-                  exact
-                  render={(props) => <ViewError {...props} />}
-                />
-                <Route
-                  path="/unauthorized"
-                  exact
-                  render={(props) => <ViewUnauthorized {...props} />}
-                />
-                <UserLayout>
-                  <Route
-                    path="/"
-                    exact
-                    render={(props) => <ViewHome {...props} />}
-                  />
-                </UserLayout>
+// project imports
+import NavigationScroll from 'layout/NavigationScroll';
 
-                {/*
-                <Redirect exact from="/" to={adminRoot} />
-                */}
-                <Redirect to="/error" />
-              </Switch>
-            </Router>
-          </Suspense>
-        </>
-      </IntlProvider>
-    </div>
-  );
+// ==============================|| APP ||============================== //
+
+const App = () => {
+    const customization = useSelector((state) => state.customization);
+
+    return (
+        <StyledEngineProvider injectFirst>
+            <NotificationContainer />
+            <ThemeProvider theme={themes(customization)}>
+                <CssBaseline />
+                <NavigationScroll>
+                    <Routes />
+                </NavigationScroll>
+            </ThemeProvider>
+        </StyledEngineProvider>
+    );
 };
 
-const mapStateToProps = ({ authUser, settings }) => {
-  const { currentUser } = authUser;
-  const { locale } = settings;
-  return { currentUser, locale };
-};
-const mapActionsToProps = {};
-
-export default connect(mapStateToProps, mapActionsToProps)(App);
+export default App;
