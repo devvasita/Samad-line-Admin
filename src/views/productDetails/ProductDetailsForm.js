@@ -106,6 +106,7 @@ export default function ProductDetailsForm({ productDetails, readOnly, updatePro
                     description: Yup.string().required('Description is required'),
                     productCode: Yup.string().max(255).required('ProductCode is required'),
                     price: Yup.string().max(255).required('Price is required'),
+                    mrp: Yup.string().max(255).required('MRP is required'),
                     images: Yup.lazy((value) => {
                         if (!value[0].url) {
                             return Yup.array().of(
@@ -300,20 +301,20 @@ export default function ProductDetailsForm({ productDetails, readOnly, updatePro
                                             </FormHelperText>
                                         )}
                                         <CustomInput
-                                            id="minQuantity"
-                                            name="minQuantity"
+                                            id="mrp"
+                                            name="mrp"
                                             type="number"
-                                            value={values.minQuantity}
+                                            value={values.mrp}
                                             // onChange={changeField}
-                                            title="Minimum Quantity"
+                                            title="MRP"
                                             disabled={readOnly}
-                                            error={touched.minQuantity && errors.minQuantity}
+                                            error={touched.mrp && errors.mrp}
                                             onBlur={handleBlur}
                                             onChange={handleChange}
                                         />
-                                        {touched.minQuantity && errors.minQuantity && (
-                                            <FormHelperText error id="standard-weight-helper-text-minQuantity-login">
-                                                {errors.minQuantity}
+                                        {touched.mrp && errors.mrp && (
+                                            <FormHelperText error id="standard-weight-helper-text-mrp-login">
+                                                {errors.mrp}
                                             </FormHelperText>
                                         )}
                                     </Grid>
