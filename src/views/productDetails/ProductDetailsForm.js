@@ -11,6 +11,7 @@ import CustomInput from 'views/customerDetails/CustomInput';
 import { Upload } from 'utils/Upload';
 import API from 'API';
 import ReactQuill from 'react-quill';
+import MultipleSelectWithRemove from 'ui-component/fields/MultipleSelectWithRemove';
 
 //APP
 
@@ -124,10 +125,12 @@ export default function ProductDetailsForm({ productDetails, readOnly, updatePro
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
+                        const otherProducts = values.otherProductsData.map((elem) => elem.id);
                         if (createNewProduct) {
                             createNewProduct(
                                 {
-                                    ...values
+                                    ...values,
+                                    otherProducts
                                 },
                                 navigate
                             );
@@ -135,7 +138,8 @@ export default function ProductDetailsForm({ productDetails, readOnly, updatePro
                             updateProduct(
                                 productDetails._id,
                                 {
-                                    ...values
+                                    ...values,
+                                    otherProducts
                                 },
                                 navigate
                             );
@@ -155,6 +159,7 @@ export default function ProductDetailsForm({ productDetails, readOnly, updatePro
                                 textAlign: { xs: 'center', md: 'start' }
                             }}
                         >
+                            {console.log({ values })}
                             <FormControl fullWidth>
                                 <Grid container direction={{ xs: 'column', md: 'row' }} columnSpacing={5} rowSpacing={3}>
                                     <Grid component="form" item xs={12}>
@@ -289,7 +294,7 @@ export default function ProductDetailsForm({ productDetails, readOnly, updatePro
                                             name="price"
                                             value={values.price}
                                             // onChange={changeField}
-                                            title="Price"
+                                            title="Selling Price"
                                             disabled={readOnly}
                                             error={touched.price && errors.price}
                                             onBlur={handleBlur}
@@ -320,6 +325,9 @@ export default function ProductDetailsForm({ productDetails, readOnly, updatePro
                                     </Grid>
 
                                     <Grid item xs={6}>
+                                        <label style={{ fontWeight: 'bold' }} htmlFor={values.description}>
+                                            Description
+                                        </label>
                                         <ReactQuill
                                             theme="snow"
                                             id="Description"
@@ -330,7 +338,7 @@ export default function ProductDetailsForm({ productDetails, readOnly, updatePro
                                             }}
                                             modules={quillModules}
                                             formats={quillFormats}
-                                            style={{ height: 165, width: '100%', maxWidth: 550 }}
+                                            style={{ height: 165, width: '100%', maxWidth: 550, marginTop: 6 }}
                                         />
                                         {touched.description && errors.description && (
                                             <FormHelperText error id="standard-weight-helper-text-email-login">
@@ -339,7 +347,14 @@ export default function ProductDetailsForm({ productDetails, readOnly, updatePro
                                         )}
                                     </Grid>
 
-                                    <Grid item xs={6}></Grid>
+                                    <Grid item xs={6}>
+                                        <MultipleSelectWithRemove
+                                            otherProductsData={values?.otherProductsData}
+                                            productOptions={values?.productOptions}
+                                            // label="Select other products"
+                                            title="Other Products"
+                                        />
+                                    </Grid>
                                     <Grid item xs={6}>
                                         <Button
                                             type="submit"
