@@ -11,7 +11,7 @@ import { Formik } from 'formik';
 
 // project imports
 import AnimateButton from 'ui-component/extended/AnimateButton';
-
+import bg from "../../../../assets/images/auth/bg.jpg"
 // assets
 import { useNavigate } from 'react-router';
 import AuthWrapper1 from '../AuthWrapper1';
@@ -34,12 +34,13 @@ const Otp = ({ sendOtp, verifyUserOtp, ...others }) => {
                     justifyContent="flex-end"
                     sx={{ minHeight: '100vh' }}
                     style={{
-                        background: 'url(https://newjennypoint.jennypoint.com/assets/images/others/login-2.png)',
+                        background: `url(${bg})`,
                         height: '100%',
                         width: '100%',
                         backgroundRepeat: 'no-repeat',
-                        backgroundSize: 'contain',
-                        backgroundPosition: 'right'
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center'
+
                     }}
                 >
                     <Grid item xs={12}>

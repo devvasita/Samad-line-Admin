@@ -97,13 +97,13 @@ const ProfileSection = ({ userDetails }) => {
                     borderRadius: '27px',
                     transition: 'all .2s ease-in-out',
                     borderColor: theme.palette.primary.light,
-                    backgroundColor: theme.palette.primary.light,
+                    backgroundColor: theme.palette.primary.dark,
                     '&[aria-controls="menu-list-grow"], &:hover': {
                         borderColor: theme.palette.primary.main,
                         background: `${theme.palette.primary.main}!important`,
-                        color: theme.palette.primary.light,
+                        color: theme.palette.primary.contrastText,
                         '& svg': {
-                            stroke: theme.palette.primary.light
+                            stroke: theme.palette.primary.contrastText
                         }
                     },
                     '& .MuiChip-label': {
@@ -124,7 +124,7 @@ const ProfileSection = ({ userDetails }) => {
                         color="inherit"
                     />
                 }
-                label={<IconSettings stroke={1.5} size="1.5rem" color={theme.palette.primary.main} />}
+                label={<IconSettings stroke={1.5} size="1.5rem" color={theme.palette.primary.contrastText} />}
                 variant="outlined"
                 ref={anchorRef}
                 aria-controls={open ? 'menu-list-grow' : undefined}
