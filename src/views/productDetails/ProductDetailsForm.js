@@ -108,6 +108,7 @@ export default function ProductDetailsForm({ productDetails, readOnly, updatePro
                     productCode: Yup.string().max(255).required('ProductCode is required'),
                     price: Yup.string().max(255).required('Price is required'),
                     mrp: Yup.string().max(255).required('MRP is required'),
+                    color: Yup.string().max(255).required('Color is required'),
                     images: Yup.lazy((value) => {
                         if (!value[0].url) {
                             return Yup.array().of(
@@ -320,6 +321,23 @@ export default function ProductDetailsForm({ productDetails, readOnly, updatePro
                                         {touched.mrp && errors.mrp && (
                                             <FormHelperText error id="standard-weight-helper-text-mrp-login">
                                                 {errors.mrp}
+                                            </FormHelperText>
+                                        )}
+                                        <CustomInput
+                                            id="color"
+                                            name="color"
+                                            // type="number"
+                                            value={values.color}
+                                            // onChange={changeField}
+                                            title="Color"
+                                            disabled={readOnly}
+                                            error={touched.color && errors.color}
+                                            onBlur={handleBlur}
+                                            onChange={handleChange}
+                                        />
+                                        {touched.color && errors.color && (
+                                            <FormHelperText error id="standard-weight-helper-text-color-login">
+                                                {errors.color}
                                             </FormHelperText>
                                         )}
                                     </Grid>
