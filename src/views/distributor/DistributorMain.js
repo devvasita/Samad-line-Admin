@@ -49,7 +49,7 @@ const CandidateRows = ({ userData, i, blockUser, navigate, deleteUser }) => {
 
     useEffect(() => {
         setChecked(userData.isBlocked);
-    }, userData);
+    }, [userData]);
 
     const handleChange = (event) => {
         setChecked(event.target.checked);

@@ -10,7 +10,8 @@ import {
     Menu,
     MenuItem,
     InputAdornment,
-    Grid
+    Grid,
+    Switch
 } from '@mui/material';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -37,7 +38,8 @@ const StyledTable = styled(Table)(() => ({
     }
 }));
 
-const CandidateRows = ({ product, i, navigate, deleteProductById }) => {
+const CandidateRows = ({ product, i, navigate, deleteProductById, updateProduct }) => {
+    const [checked, setChecked] = useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -46,23 +48,38 @@ const CandidateRows = ({ product, i, navigate, deleteProductById }) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+    useEffect(() => {
+        setChecked(product.isTrending);
+    }, [product]);
 
+    const handleChange = (event) => {
+        setChecked(event.target.checked);
+        console.log({
+            product: {
+                ...product,
+                isTrending: event.target.checked
+            }
+        });
+        updateProduct(product._id, {
+            isTrending: event.target.checked
+        });
+    };
     return (
         <TableRow>
             <TableCell align="center" style={{ paddingLeft: 16 }}>
                 {i + 1}
             </TableCell>
             <TableCell align="center" style={{ paddingLeft: 16 }}>
-                {product.productCode}
+                {product.name}
             </TableCell>
             <TableCell align="center" style={{ paddingLeft: 16 }}>
-                {product.name}
+                {product.color}
             </TableCell>
             <TableCell align="center" style={{ paddingLeft: 16 }}>
                 ₹{product.price}
             </TableCell>
             <TableCell align="center" style={{ paddingLeft: 16 }}>
-                {product.minQuantity}
+                <Switch color="secondary" checked={checked} onChange={handleChange} inputProps={{ 'aria-label': 'controlled' }} />
             </TableCell>
             <TableCell align="center" style={{ paddingLeft: 16 }}>
                 <IconButton onClick={handleClick}>
@@ -107,7 +124,7 @@ const CandidateRows = ({ product, i, navigate, deleteProductById }) => {
     );
 };
 
-const ProductsMain = ({ loading, productList, fetchProducts, deleteProductById }) => {
+const ProductsMain = ({ loading, productList, fetchProducts, deleteProductById, updateProduct }) => {
     const navigate = useNavigate();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -170,10 +187,10 @@ const ProductsMain = ({ loading, productList, fetchProducts, deleteProductById }
                                 <TableHead>
                                     <TableRow>
                                         <TableCell align="center">No.</TableCell>
-                                        <TableCell align="center">Code</TableCell>
                                         <TableCell align="center">Name</TableCell>
+                                        <TableCell align="center">Color</TableCell>
                                         <TableCell align="center">Price</TableCell>
-                                        <TableCell align="center">Min. Qty</TableCell>
+                                        <TableCell align="center">Trending</TableCell>
                                         <TableCell align="center">Actions</TableCell>
                                     </TableRow>
                                 </TableHead>
@@ -185,6 +202,7 @@ const ProductsMain = ({ loading, productList, fetchProducts, deleteProductById }
                                             i={page * rowsPerPage + i}
                                             deleteProductById={deleteProductById}
                                             navigate={navigate}
+                                            updateProduct={updateProduct}
                                         />
                                     ))}
                                 </TableBody>
@@ -217,7 +235,7 @@ const mapStateToProps = ({ products }) => {
 const mapDispatchToProps = (dispatch) => ({
     fetchProducts: (query) => dispatch(getProducts(query)),
     createNewProduct: (data) => dispatch(createProduct(data)),
-    updateProductDetails: (data, _id) => dispatch(updateProduct(data, _id)),
+    updateProduct: (_id, ProductDetails, navigate) => dispatch(updateProduct(_id, ProductDetails, navigate)),
     deleteProductById: (_id) => dispatch(deleteProduct(_id))
 });
 

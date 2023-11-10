@@ -149,7 +149,7 @@ export const updateProduct = (_id, ProductDetails, navigate) => async (dispatch)
             });
 
             Notification('success', message);
-            navigate('/dashboard/products');
+            if (navigate) navigate('/dashboard/products');
         } else {
             Notification('error', message);
             dispatch({
