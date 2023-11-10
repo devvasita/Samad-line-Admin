@@ -39,7 +39,7 @@ const CreateNewProduct = ({ loading, createNewProduct }) => {
                 return { ...oldVal, productOptions };
             });
         })();
-    }, [productDetails]);
+    }, []);
 
     return (
         <MainCard
