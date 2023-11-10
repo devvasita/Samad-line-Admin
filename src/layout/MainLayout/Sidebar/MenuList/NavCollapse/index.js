@@ -80,7 +80,7 @@ const NavCollapse = ({ menu, level }) => {
         <FiberManualRecordIcon
             sx={{
                 width: selected === menu.id ? 8 : 6,
-                height: selected === menu.id ? 8 : 6
+                height: selected === menu.id ? 8 : 6,
             }}
             fontSize={level > 0 ? 'inherit' : 'medium'}
         />

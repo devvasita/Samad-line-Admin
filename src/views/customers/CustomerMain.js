@@ -1,17 +1,16 @@
 import { Table, TableCell, TableHead, TableRow, TableBody, TablePagination, Switch, Grid, InputAdornment } from '@mui/material';
-import { Box } from '@mui/system';
+import { Box, color } from '@mui/system';
 import MainCard from 'ui-component/cards/MainCard';
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { IconEye } from '@tabler/icons';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { blockCandidate, getCustomer } from 'store/actions/userActions';
 import Loading from 'layout/loader/Loading';
 import CustomInput from 'views/customerDetails/CustomInput';
 import SearchIcon from '@mui/icons-material/Search';
-
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 const StyledTable = styled(Table)(() => ({
     whiteSpace: 'pre',
     '& thead': {
@@ -52,7 +51,7 @@ const CandidateRows = ({ userData, i, blockUser }) => {
             </TableCell>
             <TableCell align="center" style={{ paddingLeft: 16 }}>
                 <Link to={userData._id}>
-                    <IconEye />
+                    <VisibilityOutlinedIcon color="secondary" />
                 </Link>
             </TableCell>
         </TableRow>
