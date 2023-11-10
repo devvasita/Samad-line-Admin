@@ -160,7 +160,6 @@ export default function ProductDetailsForm({ productDetails, readOnly, updatePro
                                 textAlign: { xs: 'center', md: 'start' }
                             }}
                         >
-                            {console.log({ values })}
                             <FormControl fullWidth>
                                 <Grid container direction={{ xs: 'column', md: 'row' }} columnSpacing={5} rowSpacing={3}>
                                     <Grid component="form" item xs={12}>

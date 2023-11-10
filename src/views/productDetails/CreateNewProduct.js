@@ -7,6 +7,7 @@ import { createProduct, getProductById, updateProduct } from 'store/actions/prod
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import Loading from 'layout/loader/Loading';
+import API from 'API';
 
 const CreateNewProduct = ({ loading, createNewProduct }) => {
     const [productDetails, setProductDetails] = useState({
@@ -25,8 +26,20 @@ const CreateNewProduct = ({ loading, createNewProduct }) => {
         discount: '',
         productCode: '',
         price: '',
-        minQuantity: 1
+        minQuantity: 1,
+        productOptions: []
     });
+
+    useEffect(() => {
+        (async () => {
+            const {
+                data: { data: productOptions }
+            } = await API.get('/product/options');
+            setProductDetails((oldVal) => {
+                return { ...oldVal, productOptions };
+            });
+        })();
+    }, [productDetails]);
 
     return (
         <MainCard

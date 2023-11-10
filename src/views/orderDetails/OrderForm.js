@@ -77,7 +77,6 @@ export default function OrderForm({ userDetails, add, readOnly, setReadOnly, upd
                                 textAlign: { xs: 'center', md: 'start' }
                             }}
                         >
-                            {console.log({ values })}
                             <FormControl fullWidth>
                                 <Grid container direction={{ xs: 'column', md: 'row' }} columnSpacing={5} rowSpacing={3}>
                                     <Grid item xs={6}>
