@@ -73,28 +73,25 @@ export default function OrderForm({ userDetails, add, readOnly, setReadOnly, upd
                         <CardContent
                             sx={{
                                 p: 3,
-                                // maxHeight: { md: '40vh' },
+
                                 textAlign: { xs: 'center', md: 'start' }
                             }}
                         >
-                            {/* FIELDS */}
-
+                            {console.log({ values })}
                             <FormControl fullWidth>
                                 <Grid container direction={{ xs: 'column', md: 'row' }} columnSpacing={5} rowSpacing={3}>
                                     <Grid item xs={6}>
                                         <CustomInput
                                             id="name"
                                             name="name"
-                                            value={values.user?.name}
+                                            value={values.user?.firstName}
                                             title="Name"
                                             disabled={readOnly}
-                                            error={touched.name && errors.name}
-                                            // onBlur={handleBlur}
-                                            // onChange={handleChange}
+                                            error={touched.firstname && errors.firstname}
                                         />
-                                        {touched.name && errors.name && (
+                                        {touched.firstname && errors.firstname && (
                                             <FormHelperText error id="standard-weight-helper-text-email-login">
-                                                {errors.name}
+                                                {errors.firstname}
                                             </FormHelperText>
                                         )}
                                     </Grid>
@@ -104,12 +101,9 @@ export default function OrderForm({ userDetails, add, readOnly, setReadOnly, upd
                                             id="email"
                                             name="email"
                                             value={values.user?.email}
-                                            // onChange={changeField}
                                             title="Email Address"
                                             disabled={readOnly}
                                             error={touched.email && errors.email}
-                                            // onBlur={handleBlur}
-                                            // onChange={handleChange}
                                         />
                                         {touched.email && errors.email && (
                                             <FormHelperText error id="standard-weight-helper-text-email-login">
@@ -123,12 +117,9 @@ export default function OrderForm({ userDetails, add, readOnly, setReadOnly, upd
                                             id="phone"
                                             name="mobileNo"
                                             value={values.user?.mobileNo}
-                                            // onChange={changeField}
                                             title="Phone No."
                                             disabled={readOnly}
                                             error={touched.mobileNo && errors.mobileNo}
-                                            // onBlur={handleBlur}
-                                            // onChange={handleChange}
                                         />
                                         {touched.mobileNo && errors.mobileNo && (
                                             <FormHelperText error id="standard-weight-helper-text-email-login">
@@ -136,64 +127,45 @@ export default function OrderForm({ userDetails, add, readOnly, setReadOnly, upd
                                             </FormHelperText>
                                         )}
                                     </Grid>
-                                    <Grid item xs={6}>
-                                        {Boolean(distributors.length) && (
-                                            <>
-                                                <CustomInput
-                                                    select
-                                                    id="distributors"
-                                                    name="distributors"
-                                                    onChange={(e) => assignOrder(e.target.value, values._id)}
-                                                    disabled={readOnly}
-                                                    title="Assign Distributor"
-                                                    value={values?.distributor?._id || values?.distributor}
-                                                    error={touched.distributors && errors.distributors}
-                                                    content={distributors.map((option) => (
-                                                        <MenuItem value={option.value}>{option.label}</MenuItem>
-                                                    ))}
-                                                />
-                                                {touched.distributors && errors.distributors && (
-                                                    <FormHelperText error id="standard-weight-helper-text-email-login">
-                                                        {errors.distributors}
-                                                    </FormHelperText>
-                                                )}
-                                            </>
-                                        )}
-                                    </Grid>
                                     <Grid component="form" item xs={6} sx={{ '&>div': { marginBottom: '24px' } }}>
                                         <CustomInput
                                             id="phone"
                                             name="order_id"
                                             value={'#' + values._id}
-                                            // onChange={changeField}
                                             title="Order ID"
                                             disabled={readOnly}
                                             error={touched.order_id && errors.order_id}
-                                            // onBlur={handleBlur}
-                                            // onChange={handleChange}
                                         />
                                         {touched.order_id && errors.order_id && (
                                             <FormHelperText error id="standard-weight-helper-text-email-login">
                                                 {errors.order_id}
                                             </FormHelperText>
                                         )}
-                                        {/* <CustomInput
-                                            type="orderStatus"
-                                            id="orderStatus"
-                                            name="orderStatus"
-                                            value={values.currentOrderStatus?.status}
-                                            // onChange={changeField}
-                                            title="Order Status"
-                                            disabled={readOnly}
-                                            error={touched.orderStatus && errors.orderStatus}
-                                            // onBlur={handleBlur}
-                                            // onChange={handleChange}
-                                        />
-                                        {touched.orderStatus && errors.orderStatus && (
-                                            <FormHelperText error id="standard-weight-helper-text-orderStatus-login">
-                                                {errors.orderStatus}
-                                            </FormHelperText>
-                                        )} */}{' '}
+                                    </Grid>{' '}
+                                    <Grid container item xs={6} spacing={2}>
+                                        <Grid item sm={12} xs={12}>
+                                            <CustomInput
+                                                id="Address"
+                                                name="address"
+                                                // onBlur={handleBlur}
+                                                // onChange={handleChange}
+                                                disabled={readOnly}
+                                                value={
+                                                    values.shippingAddress &&
+                                                    values.shippingAddress.addressLine1 + values.shippingAddress.addressLine2
+                                                }
+                                                title="Address"
+                                                multiline
+                                                minRows={7}
+                                            />{' '}
+                                            {touched.address && errors.address && (
+                                                <FormHelperText error id="standard-weight-helper-text-email-login">
+                                                    {errors.address}
+                                                </FormHelperText>
+                                            )}
+                                        </Grid>
+                                    </Grid>{' '}
+                                    <Grid component="form" item xs={6} sx={{ '&>div': { marginBottom: '24px' } }}>
                                         <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>Order Status</label>
                                         <Chip
                                             label={values.currentOrderStatus?.status}
@@ -207,82 +179,11 @@ export default function OrderForm({ userDetails, add, readOnly, setReadOnly, upd
                                                         ? 'secondary.dark'
                                                         : values.currentOrderStatus?.status === 'Delivered'
                                                         ? 'rgb(25 116 63)'
-                                                        : 'primary.dark',
+                                                        : 'secondary.dark',
                                                 color: '#FFFFFF'
                                             }}
                                         />
-                                        <CustomInput
-                                            id="phone"
-                                            name="totalPrice"
-                                            value={values.totalPrice}
-                                            // onChange={changeField}
-                                            title="Total Amount"
-                                            disabled={readOnly}
-                                            error={touched.totalPrice && errors.totalPrice}
-                                            // onBlur={handleBlur}
-                                            // onChange={handleChange}
-                                        />
-                                        {touched.totalPrice && errors.totalPrice && (
-                                            <FormHelperText error id="standard-weight-helper-text-email-login">
-                                                {errors.totalPrice}
-                                            </FormHelperText>
-                                        )}
                                     </Grid>
-                                    <Grid container item xs={6} spacing={2}>
-                                        <Grid item sm={6} xs={12}>
-                                            {' '}
-                                            <CustomInput
-                                                id="Address"
-                                                name="address"
-                                                // onBlur={handleBlur}
-                                                // onChange={handleChange}
-                                                disabled={readOnly}
-                                                value={values.shippingAddress}
-                                                title="Address"
-                                                multiline
-                                                minRows={7}
-                                            />{' '}
-                                            {touched.address && errors.address && (
-                                                <FormHelperText error id="standard-weight-helper-text-email-login">
-                                                    {errors.address}
-                                                </FormHelperText>
-                                            )}
-                                        </Grid>
-                                        <Grid item sm={6} xs={12}>
-                                            {values.invoice && values.invoice.url !== '' ? (
-                                                <>
-                                                    {' '}
-                                                    <label style={{ fontWeight: 'bold' }}>Invoice</label>
-                                                    <img
-                                                        src={values.invoice.url}
-                                                        alt="test"
-                                                        style={{ height: 160, width: '100%', marginTop: '8px', borderRadius: 12 }}
-                                                    />
-                                                </>
-                                            ) : (
-                                                <img
-                                                    src={process.env.PUBLIC_URL + '/images/Invoice.png'}
-                                                    style={{ height: 160, width: '100%', marginTop: '26px', borderRadius: 12 }}
-                                                    alt="invoice"
-                                                />
-                                            )}
-                                        </Grid>
-                                        {values.invoice && (
-                                            <Button
-                                                fullWidth
-                                                color="secondary"
-                                                component="a"
-                                                variant="contained"
-                                                href={values.invoice.url}
-                                                rel="noopener noreferrer"
-                                                sx={{ height: 40, width: '47%', marginLeft: 'auto' }}
-                                                disabled={values.invoice && values.invoice.url === ''}
-                                            >
-                                                Download Invoice
-                                            </Button>
-                                        )}
-                                    </Grid>
-
                                     <button type="submit" id="customerSubmit" style={{ display: 'none', opacity: 0 }} />
                                 </Grid>
                             </FormControl>

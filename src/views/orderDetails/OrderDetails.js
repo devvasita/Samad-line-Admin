@@ -119,7 +119,7 @@ const OrderDetails = ({ getCandidateDetails, selectedOrder, loading, updateCandi
                                     <TableCell align="center" style={{ paddingLeft: 16 }}></TableCell>
                                     <TableCell align="center" style={{ paddingLeft: 16 }}></TableCell>
                                     <TableCell align="center" style={{ paddingLeft: 16 }}>
-                                        ₹{selectedOrder.totalPrice}
+                                        ₹{selectedOrder.total}
                                     </TableCell>
                                 </TableRow>
                             </TableBody>

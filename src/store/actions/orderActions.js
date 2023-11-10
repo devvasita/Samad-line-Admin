@@ -17,7 +17,7 @@ export const getOrders = (params) => async (dispatch) => {
         const {
             data: { data, message },
             status
-        } = await API.get(`/admin/order`, params);
+        } = await API.get(`/order`, params);
 
         if (status === 200) {
             dispatch({

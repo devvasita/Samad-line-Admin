@@ -58,19 +58,16 @@ const CandidateRows = ({ userData, i }) => {
                                 ? 'secondary.dark'
                                 : userData.currentOrderStatus?.status === 'Delivered'
                                 ? 'rgb(25 116 63)'
-                                : 'primary.dark',
+                                : 'secondary.dark',
                         color: '#FFFFFF'
                     }}
                 />
             </TableCell>
             <TableCell align="center" style={{ paddingLeft: 16 }}>
-                {userData.distributor?.name}
-            </TableCell>
-            <TableCell align="center" style={{ paddingLeft: 16 }}>
                 {moment(userData.createdAt).format('Do MMMM YYYY ,  h:mm a')}
             </TableCell>
             <TableCell align="center" style={{ paddingLeft: 16 }}>
-                ₹{userData.totalPrice}
+                ₹{userData.total}
             </TableCell>
             <TableCell align="center" style={{ paddingLeft: 16 }}>
                 <Link to={userData._id}>
@@ -184,7 +181,6 @@ const OrdersMain = ({ getOrders, orders, loading, blockUser }) => {
                                     <TableCell align="center">No.</TableCell>
                                     <TableCell align="center">Order ID</TableCell>
                                     <TableCell align="center">Order Status</TableCell>
-                                    <TableCell align="center">Distributor</TableCell>
                                     <TableCell align="center">Order Date</TableCell>
                                     <TableCell align="center">Amount</TableCell>
                                     <TableCell align="center">View</TableCell>

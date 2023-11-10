@@ -38,21 +38,13 @@ const CandidateRows = ({ userData, i, blockUser }) => {
                 {i + 1}
             </TableCell>
             <TableCell align="center" style={{ paddingLeft: 16 }}>
-                {userData.name}
+                {userData.firstName} {userData.lastName}
             </TableCell>
             <TableCell align="center" style={{ paddingLeft: 16 }}>
                 {userData.mobileNo}
             </TableCell>
             <TableCell align="center" style={{ paddingLeft: 16 }}>
-                {userData.address}
-            </TableCell>
-            <TableCell align="center" style={{ paddingLeft: 16 }}>
                 <Switch color="secondary" checked={checked} onChange={handleChange} inputProps={{ 'aria-label': 'controlled' }} />
-            </TableCell>
-            <TableCell align="center" style={{ paddingLeft: 16 }}>
-                <Link to={userData._id}>
-                    <VisibilityOutlinedIcon color="secondary" />
-                </Link>
             </TableCell>
         </TableRow>
     );
@@ -116,9 +108,7 @@ const CustomerMain = ({ getCandidateList, customers, loading, blockUser }) => {
                                     <TableCell align="center">No.</TableCell>
                                     <TableCell align="center">Name</TableCell>
                                     <TableCell align="center">Mobile</TableCell>
-                                    <TableCell align="center">Address</TableCell>
                                     <TableCell align="center">Block</TableCell>
-                                    <TableCell align="center">View</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody style={{ padding: '10px' }}>
