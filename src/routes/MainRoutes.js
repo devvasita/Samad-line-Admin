@@ -108,10 +108,10 @@ const MainRoutes = {
                     element: <DistributorDetailsMain />
                 },
                 { path: 'orders', element: <OrdersMain /> },
-                { path: 'orders/:id', element: <OrderDetails /> },
-                { path: 'offers', element: <OffersMain /> },
-                { path: 'offers/new', element: <AddOffer /> },
-                { path: 'offers/:id', element: <OfferDetailsMain /> }
+                { path: 'orders/:id', element: <OrderDetails /> }
+                // { path: 'offers', element: <OffersMain /> },
+                // { path: 'offers/new', element: <AddOffer /> },
+                // { path: 'offers/:id', element: <OfferDetailsMain /> }
             ]
         },
         {

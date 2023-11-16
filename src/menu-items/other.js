@@ -67,15 +67,15 @@ const other = {
             url: '/dashboard/orders',
             icon: ReceiptIcon,
             breadcrumbs: false
-        },
-        {
-            id: 'offers',
-            title: 'Offers',
-            type: 'item',
-            url: '/dashboard/offers',
-            icon: LocalOfferIcon,
-            breadcrumbs: false
         }
+        // {
+        //     id: 'offers',
+        //     title: 'Offers',
+        //     type: 'item',
+        //     url: '/dashboard/offers',
+        //     icon: LocalOfferIcon,
+        //     breadcrumbs: false
+        // }
     ]
 };
 
