@@ -332,7 +332,7 @@ export default function ProductDetailsForm({ productDetails, readOnly, updatePro
                                             }}
                                             modules={quillModules}
                                             formats={quillFormats}
-                                            style={{ height: 165, width: '100%', maxWidth: 550, marginTop: 6 }}
+                                            style={{ height: 215, width: '100%', maxWidth: 550, marginTop: 6 }}
                                             readOnly={readOnly}
                                         />
                                         {touched.description && errors.description && (
