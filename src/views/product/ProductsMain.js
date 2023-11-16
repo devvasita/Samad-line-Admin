@@ -13,7 +13,6 @@ import {
     Grid,
     Switch
 } from '@mui/material';
-import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import MainCard from 'ui-component/cards/MainCard';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -106,8 +105,7 @@ const CandidateRows = ({ product, i, navigate, deleteProductById, updateProduct 
                             navigate(product._id);
                         }}
                     >
-                        <ModeEditIcon color="success" sx={{ mr: 1 }} />
-                        Edit
+                        <VisibilityIcon color="secondary" sx={{ mr: 1 }} /> View
                     </MenuItem>
                     <MenuItem
                         onClick={() => {

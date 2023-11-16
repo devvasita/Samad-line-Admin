@@ -45,6 +45,7 @@ function MultipleSelectWithRemove({ otherProductsData = [], productOptions = [],
                 }
                 variant="outlined"
                 renderInput={(params) => <TextField {...params} placeholder="Options" variant="outlined" {...rest} />}
+                {...rest}
             />
         </Stack>
     );
