@@ -25,49 +25,72 @@ const quillModules = {
 
 const quillFormats = ['header', 'bold', 'italic', 'underline', 'strike', 'blockquote', 'list', 'bullet', 'indent', 'link', 'image'];
 
-const fetchData = async (endpoint, params = {}, transformFn) => {
-    try {
-        const {
-            data: { data }
-        } = await API.get(endpoint, { params });
-        return transformFn(data);
-    } catch (error) {
-        console.error('Error fetching data:', error);
-        return [];
-    }
-};
-const processList = (initialItem, data) => {
-    const list = [initialItem, ...data];
-    const uniqueList = list.filter((obj, index) => {
-        return index === list.findIndex((o) => obj.id === o.id && obj.name === o.name);
-    });
-
-    return uniqueList.map((elem) => ({ value: elem._id, label: elem.name }));
-};
 export default function ProductDetailsForm({ productDetails, readOnly, updateProduct, setProductDetails, createNewProduct }) {
+    const navigate = useNavigate();
     const { images, category, subCategory: sub, brand } = productDetails;
-    const [categoryList, setCategoryList] = useState([]);
-    const [subCategories, setSubCategories] = useState([]);
+
+    const [categoryList, setcategoryList] = useState([]);
+    const [subCategories, setsubCategories] = useState([]);
     const [brandList, setBrandList] = useState([]);
-    const [activeCategory, setActiveCategory] = useState(category || null);
+    const [activeCategory, setActiveCategory] = useState(null);
 
     useEffect(() => {
-        fetchData('/brand', {}, (data) => processList({ value: brand, label: brand }, data)).then(setBrandList);
-    }, [brand]);
+        (async () => {
+            const {
+                data: { data }
+            } = await API.get('/brand');
+
+            const list = [{ value: brand, label: brand }, ...data];
+            const unique = list.filter((obj, index) => {
+                return index === list.findIndex((o) => obj.id === o.id && obj.name === o.name);
+            });
+            setBrandList(
+                unique.map((elem) => {
+                    return { value: elem._id, label: elem.name };
+                })
+            );
+        })();
+    }, [productDetails]);
 
     useEffect(() => {
-        fetchData('/category', {}, (data) => processList({ value: category, label: category }, data)).then(setCategoryList);
-    }, [category]);
+        (async () => {
+            const {
+                data: { data }
+            } = await API.get('/category');
+
+            const list = [{ value: category, label: category }, ...data];
+            const unique = list.filter((obj, index) => {
+                return index === list.findIndex((o) => obj.id === o.id && obj.name === o.name);
+            });
+            setcategoryList(
+                unique.map((elem) => {
+                    return { value: elem._id, label: elem.name };
+                })
+            );
+        })();
+    }, [productDetails]);
 
     useEffect(() => {
-        const keyword = activeCategory || category;
-        if (keyword) {
-            fetchData(`/category/${keyword}`, { keyword }, (data) => {
+        (async () => {
+            const keyword = activeCategory || category;
+            if (keyword) {
+                const {
+                    data: { data }
+                } = await API.get(`/category/${keyword}`, { params: { keyword } });
                 const { subCategory } = data;
-                return processList({ value: sub, label: sub }, subCategory);
-            }).then(setSubCategories);
-        }
-    }, [activeCategory, category, sub]);
+                const list = [{ value: sub, label: sub }, ...subCategory];
+                const unique = list.filter((obj, index) => {
+                    return index === list.findIndex((o) => obj.id === o.id && obj.name === o.name);
+                });
+
+                setsubCategories(
+                    unique.map((elem) => {
+                        return { value: elem._id, label: elem.name };
+                    })
+                );
+            }
+        })();
+    }, [activeCategory, category, productDetails]);
 
     return (
         <Card variant="outlined" sx={{ height: '100%', width: '100%', padding: 0, border: 'none' }}>

@@ -3,7 +3,8 @@ import { Box } from '@mui/system';
 import MainCard from 'ui-component/cards/MainCard';
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
-import { IconEye } from '@tabler/icons';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { blockCandidate } from 'store/actions/userActions';
@@ -71,7 +72,7 @@ const CandidateRows = ({ userData, i }) => {
             </TableCell>
             <TableCell align="center" style={{ paddingLeft: 16 }}>
                 <Link to={userData._id}>
-                    <IconEye />
+                    <VisibilityIcon color="secondary" />
                 </Link>
             </TableCell>
         </TableRow>

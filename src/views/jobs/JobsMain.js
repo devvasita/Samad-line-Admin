@@ -4,7 +4,7 @@ import MainCard from 'ui-component/cards/MainCard';
 import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { IconEye } from '@tabler/icons';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getJobs } from 'store/actions/jobActions';
@@ -85,7 +85,7 @@ const JobsMain = ({ getJobList, jobList, loading }) => {
 
                                     <TableCell align="center" style={{ paddingLeft: 16 }}>
                                         <Link to={jobData._id}>
-                                            <IconEye />
+                                            <VisibilityIcon color="secondary" />
                                         </Link>
                                     </TableCell>
                                 </TableRow>
