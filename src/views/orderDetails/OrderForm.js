@@ -16,6 +16,7 @@ import { useEffect } from 'react';
 import API from 'API';
 import { width } from '@mui/system';
 import { grey } from '@mui/material/colors';
+import OrderStatusSelect from './OrderStatusSelect';
 
 //APP
 export default function OrderForm({ userDetails, add, readOnly, setReadOnly, updateCandidate, assignOrder }) {
@@ -166,22 +167,7 @@ export default function OrderForm({ userDetails, add, readOnly, setReadOnly, upd
                                     </Grid>{' '}
                                     <Grid component="form" item xs={6} sx={{ '&>div': { marginBottom: '24px' } }}>
                                         <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>Order Status</label>
-                                        <Chip
-                                            label={values.currentOrderStatus?.status}
-                                            sx={{
-                                                backgroundColor:
-                                                    values.currentOrderStatus?.status === 'In Process'
-                                                        ? '#e95858d1'
-                                                        : values.currentOrderStatus?.status === 'In Packaging'
-                                                        ? grey[600]
-                                                        : values.currentOrderStatus?.status === 'Out for Delivery'
-                                                        ? 'secondary.dark'
-                                                        : values.currentOrderStatus?.status === 'Delivered'
-                                                        ? 'rgb(25 116 63)'
-                                                        : 'secondary.dark',
-                                                color: '#FFFFFF'
-                                            }}
-                                        />
+                                        <OrderStatusSelect value={values.currentOrderStatus?.status} _id={userDetails._id} />
                                     </Grid>
                                     <button type="submit" id="customerSubmit" style={{ display: 'none', opacity: 0 }} />
                                 </Grid>
