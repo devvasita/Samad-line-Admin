@@ -126,7 +126,7 @@ export default function ProductDetailsForm({ productDetails, readOnly, updatePro
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
-                        const otherProducts = values.otherProductsData.map((elem) => elem.id);
+                        const otherProducts = values.otherProductsData ? values.otherProductsData.map((elem) => elem.id) : [];
                         if (createNewProduct) {
                             createNewProduct(
                                 {
