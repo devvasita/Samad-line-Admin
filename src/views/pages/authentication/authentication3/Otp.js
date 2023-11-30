@@ -11,7 +11,7 @@ import { Formik } from 'formik';
 
 // project imports
 import AnimateButton from 'ui-component/extended/AnimateButton';
-import bg from "../../../../assets/images/auth/bg.jpg"
+import bg from '../../../../assets/images/auth/bg.jpg';
 // assets
 import { useNavigate } from 'react-router';
 import AuthWrapper1 from '../AuthWrapper1';
@@ -22,9 +22,12 @@ import { generateOTP, verifyOTP } from 'store/actions/userActions';
 
 const Otp = ({ sendOtp, verifyUserOtp, ...others }) => {
     const theme = useTheme();
+    const reg = new RegExp('^[0-9]{0,10}$');
     const navigate = useNavigate();
     const buttonRef = useRef(null);
     const [otpSent, setOtpSent] = useState(false);
+    const countryCode = process.env.REACT_APP_COUNTRY_CODE || '+91';
+
     return (
         <>
             <AuthWrapper1>
@@ -40,7 +43,6 @@ const Otp = ({ sendOtp, verifyUserOtp, ...others }) => {
                         backgroundRepeat: 'no-repeat',
                         backgroundSize: 'cover',
                         backgroundPosition: 'center'
-
                     }}
                 >
                     <Grid item xs={12}>
@@ -72,7 +74,7 @@ const Otp = ({ sendOtp, verifyUserOtp, ...others }) => {
 
                                             <Formik
                                                 initialValues={{
-                                                    mobileNo: '',
+                                                    mobileNo: countryCode,
                                                     otp: ''
                                                 }}
                                                 validationSchema={Yup.object().shape({
@@ -95,7 +97,16 @@ const Otp = ({ sendOtp, verifyUserOtp, ...others }) => {
                                                     }
                                                 }}
                                             >
-                                                {({ errors, handleBlur, handleSubmit, handleChange, isSubmitting, touched, values }) => (
+                                                {({
+                                                    errors,
+                                                    handleBlur,
+                                                    handleSubmit,
+                                                    handleChange,
+                                                    isSubmitting,
+                                                    touched,
+                                                    values,
+                                                    setFieldValue
+                                                }) => (
                                                     <form noValidate onSubmit={handleSubmit} {...others}>
                                                         <FormControl
                                                             fullWidth
@@ -111,15 +122,19 @@ const Otp = ({ sendOtp, verifyUserOtp, ...others }) => {
                                                                 value={values.mobileNo}
                                                                 name="mobileNo"
                                                                 onBlur={handleBlur}
-                                                                onChange={handleChange}
+                                                                onChange={(e) => {
+                                                                    const input = e.target.value;
+                                                                    const numericPart = input.slice(countryCode.length); // Get the part of the input excluding the country code
+
+                                                                    if (reg.test(numericPart)) {
+                                                                        setFieldValue('mobileNo', `${countryCode}${numericPart}`);
+                                                                    }
+                                                                }}
                                                                 label="Mobile Number"
                                                                 inputProps={{}}
                                                                 onKeyPress={(event) => {
                                                                     var charCode = event.which ? event.which : event.keyCode;
-                                                                    if (
-                                                                        String.fromCharCode(charCode).match(/[^0-9]/g) ||
-                                                                        event.target.value.length > 9
-                                                                    ) {
+                                                                    if (String.fromCharCode(charCode).match(/[^0-9]/g)) {
                                                                         event.preventDefault();
                                                                     }
                                                                     if (event.key === 'Enter' && buttonRef.current) {
