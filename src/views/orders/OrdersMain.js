@@ -1,4 +1,17 @@
-import { Table, TableCell, TableHead, TableRow, TableBody, TablePagination, Grid, MenuItem, Chip } from '@mui/material';
+import {
+    Table,
+    TableCell,
+    TableHead,
+    TableRow,
+    TableBody,
+    TablePagination,
+    Grid,
+    MenuItem,
+    Chip,
+    Select,
+    FormControl,
+    InputLabel
+} from '@mui/material';
 import { Box } from '@mui/system';
 import MainCard from 'ui-component/cards/MainCard';
 import styled from '@emotion/styled';
@@ -130,24 +143,24 @@ const OrdersMain = ({ getOrders, orders, loading, blockUser }) => {
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <Grid container item xs={12} sm={8} xl={8} spacing={2}>
                             <Grid item xs={12} sm={4} xl={4}>
-                                <CustomInput
-                                    select
-                                    id="status"
-                                    name="status"
-                                    // onChange={(e) => assignOrder(e.target.value, values._id)}
-                                    // value={values?.distributor?._id}
-                                    onChange={(e) => setstatus(e.target.value)}
-                                    label="Status"
-                                    content={statusList.map((option) => (
-                                        <MenuItem value={option.value}>{option.label}</MenuItem>
-                                    ))}
-                                    sx={{
-                                        width: '100%',
-                                        '&>div': { height: '51px !important' },
-                                        '&>label': { lineHeight: '2rem' },
-                                        margin: 0
-                                    }}
-                                />
+                                <FormControl fullWidth>
+                                    <InputLabel id="order-status-label">Order Status</InputLabel>
+                                    <Select
+                                        labelId="order-status-label"
+                                        id="order-status-select"
+                                        label="Order Status"
+                                        onChange={(e) => setstatus(e.target.value)}
+                                        variant="outlined"
+                                        placeholder="Status"
+                                        fullWidth
+                                    >
+                                        <MenuItem value="Order Placed">Order Placed</MenuItem>
+                                        <MenuItem value="Order Confirmed">Order Confirmed</MenuItem>
+                                        <MenuItem value="Out For Delivery">Out For Delivery</MenuItem>
+                                        <MenuItem value="Order Delivered">Order Delivered</MenuItem>
+                                        <MenuItem value="Cancelled">Cancelled</MenuItem>
+                                    </Select>
+                                </FormControl>
                             </Grid>
                             <Grid item xs={12} sm={4} xl={4}>
                                 <DatePicker
