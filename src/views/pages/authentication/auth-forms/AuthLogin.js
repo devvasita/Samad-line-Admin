@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { connect, useSelector } from 'react-redux';
+import axios from 'axios';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -47,6 +48,25 @@ const FirebaseLogin = ({ login, ...others }) => {
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
+    const url = process.env.REACT_APP_BASE_URL;
+    const submitLogin = (values) => {
+        axios
+            .post(`${url}//user/verify-otp`, values)
+            .then((res) => {
+                // Notification('successfully logged in');
+                const { token } = res.data.data;
+                console.log(token);
+                localStorage.setItem('auth_token', token);
+                console.log(res);
+                setTimeout(() => {
+                    window.location.href = '/dashboard/category';
+                }, 500);
+                // window.location.reload();
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    };
 
     return (
         <>
@@ -81,8 +101,8 @@ const FirebaseLogin = ({ login, ...others }) => {
                     try {
                         setStatus({ success: true });
                         setSubmitting(true);
-                        login(values, navigate);
-                        // navigate('/dashboard/customers');
+                        console.log(values);
+                        submitLogin(values);
                     } catch (err) {
                         setStatus({ success: false });
                         setErrors({ submit: err.message });
@@ -158,11 +178,11 @@ const FirebaseLogin = ({ login, ...others }) => {
                                 }
                                 label="Remember me"
                             /> */}
-                            <Link to="/otp">
+                            {/* <Link to="/otp">
                                 <Typography variant="subtitle1" color="secondary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
                                     Forgot Password?
                                 </Typography>
-                            </Link>
+                            </Link> */}
                         </Stack>
                         {errors.submit && (
                             <Box sx={{ mt: 3 }}>
@@ -194,7 +214,7 @@ const FirebaseLogin = ({ login, ...others }) => {
 
 const mapStateToProps = (state) => {};
 const mapDispatchToProps = (dispatch) => ({
-    login: (values, navigate) => dispatch(authUser(values, navigate))
+    // login: (values, navigate) => dispatch(authUser(values, navigate))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FirebaseLogin);

@@ -14,14 +14,14 @@ const PassReset = Loadable(lazy(() => import('views/pages/authentication/authent
 // ==============================|| AUTHENTICATION ROUTING ||============================== //
 
 const AuthenticationRoutes = [
-    // {
-    //     path: '/',
-    //     element: <AuthLogin3 />
-    // },
     {
         path: '/',
-        element: <Otp />
+        element: <AuthLogin3 />
     },
+    // {
+    //     path: '/',
+    //     element: <Otp />
+    // },
     {
         path: '/password-reset/:token',
         element: <PassReset />
