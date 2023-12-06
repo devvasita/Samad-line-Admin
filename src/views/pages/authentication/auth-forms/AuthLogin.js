@@ -51,7 +51,7 @@ const FirebaseLogin = ({ login, ...others }) => {
     const url = process.env.REACT_APP_BASE_URL;
     const submitLogin = (values) => {
         axios
-            .post(`${url}//user/verify-otp`, values)
+            .post(`${url}/user/verify-otp`, values)
             .then((res) => {
                 // Notification('successfully logged in');
                 const { token } = res.data.data;
