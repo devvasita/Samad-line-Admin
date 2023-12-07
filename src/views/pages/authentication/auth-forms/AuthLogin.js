@@ -178,11 +178,11 @@ const FirebaseLogin = ({ login, ...others }) => {
                                 }
                                 label="Remember me"
                             /> */}
-                            {/* <Link to="/otp">
+                            <Link to="/forgotpassword">
                                 <Typography variant="subtitle1" color="secondary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
                                     Forgot Password?
                                 </Typography>
-                            </Link> */}
+                            </Link>
                         </Stack>
                         {errors.submit && (
                             <Box sx={{ mt: 3 }}>

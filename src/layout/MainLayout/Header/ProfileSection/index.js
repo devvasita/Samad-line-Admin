@@ -22,15 +22,18 @@ import {
     Stack,
     Typography
 } from '@mui/material';
+import TextField from '@mui/material/TextField';
 
 // third-party
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import Transitions from 'ui-component/extended/Transitions';
+import Notification from 'utils/Notification';
+import API from '../../../../API';
 
 // assets
-import { IconLogout, IconSettings, IconUser } from '@tabler/icons';
+import { IconLogout, IconSettings, IconUser, IconKey, IconEye, IconEyeOff } from '@tabler/icons';
 
 // ==============================|| PROFILE MENU ||============================== //
 
@@ -59,6 +62,26 @@ const ProfileSection = ({ userDetails }) => {
     const [open, setOpen] = useState(false);
 
     const [popupState, setPopupState] = useState(false);
+
+    // for change password modal pop
+    const [oldPassword, setOldPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [error, setError] = useState('');
+    const [showChangePasswordPopup, setShowChangePasswordPopup] = useState(false);
+    const [showOldPassword, setShowOldPassword] = useState(false);
+    const [showNewPassword, setShowNewPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+    const togglePasswordVisibility = (passwordType) => {
+        if (passwordType === 'old') {
+            setShowOldPassword(!showOldPassword);
+        } else if (passwordType === 'new') {
+            setShowNewPassword(!showNewPassword);
+        } else if (passwordType === 'confirm') {
+            setShowConfirmPassword(!showConfirmPassword);
+        }
+    };
     /**
      * anchorRef is used on different componets and specifying one type leads to other components throwing an error
      * */
@@ -87,6 +110,47 @@ const ProfileSection = ({ userDetails }) => {
 
         prevOpen.current = open;
     }, [open]);
+
+    // change password functionality
+
+    const handlePasswordChange = () => {
+        // Add your password validation logic here
+        if (newPassword !== confirmPassword) {
+            setError('New password and confirm password do not match');
+            Notification('error', 'New Password and confirm password does not match');
+        } else {
+            // Call your password change API or function here
+            // Reset the form and close the modal
+            changePassword({ oldPassword, newPassword, email: userDetails.email });
+            setOldPassword('');
+            setNewPassword('');
+            setConfirmPassword('');
+            setError('');
+            setShowChangePasswordPopup(false);
+        }
+    };
+
+    const changePassword = async (req) => {
+        try {
+            const res = await API.post('/user/change-password', req);
+            const { status } = res; // Make API call
+            console.log(res.data); // Log the response
+            if (status === 200) {
+                // Handle successful signup
+                Notification('success', 'Password changed successfully!');
+
+                changePopupState(false);
+            } else {
+                Notification('error', 'Please Enter Required Fields');
+                // Additional logic if needed
+            }
+            // Handle success or other logic based on the response
+        } catch (error) {
+            Notification('Error:', error.response.data);
+            console.error('Error:', error.response.data); // Log any errors
+            // Handle errors or display error messages to the user
+        }
+    };
 
     return (
         <>
@@ -259,6 +323,33 @@ const ProfileSection = ({ userDetails }) => {
                                                 <ListItemText primary={<Typography variant="body2">Logout</Typography>} />
                                             </ListItemButton>
                                         </List>
+                                        <List
+                                            component="nav"
+                                            sx={{
+                                                width: '100%',
+                                                maxWidth: 350,
+                                                minWidth: 300,
+                                                backgroundColor: theme.palette.background.paper,
+                                                borderRadius: '10px',
+                                                [theme.breakpoints.down('md')]: {
+                                                    minWidth: '100%'
+                                                },
+                                                '& .MuiListItemButton-root': {
+                                                    mt: 0.5
+                                                }
+                                            }}
+                                        >
+                                            <ListItemButton
+                                                sx={{ borderRadius: `${customization.borderRadius}px` }}
+                                                selected={selectedIndex === 4}
+                                                onClick={() => setShowChangePasswordPopup(true)}
+                                            >
+                                                <ListItemIcon>
+                                                    <IconKey stroke={1.5} size="1.3rem" />
+                                                </ListItemIcon>
+                                                <ListItemText primary={<Typography variant="body2">Change Password</Typography>} />
+                                            </ListItemButton>
+                                        </List>
                                     </Box>
                                     {/* </PerfectScrollbar> */}
                                 </MainCard>
@@ -283,6 +374,143 @@ const ProfileSection = ({ userDetails }) => {
 
                             <Button variant="contained" color="error" sx={{ width: '45%' }} onClick={() => setPopupState(false)}>
                                 No
+                            </Button>
+                        </Box>
+                    </Box>
+                </Modal>
+            </div>
+
+            {/* Modal Popup for change password */}
+            {/* <div>
+                <Modal
+                    open={showChangePasswordPopup}
+                    onClose={() => setShowChangePasswordPopup(false)}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
+                    <Box sx={style}>
+                        <Typography variant="h5" gutterBottom>
+                            Change Password
+                        </Typography>
+
+                        <TextField
+                            label="Old Password"
+                            type="password"
+                            fullWidth
+                            margin="normal"
+                            value={oldPassword}
+                            onChange={(e) => setOldPassword(e.target.value)}
+                        />
+
+                        <TextField
+                            label="New Password"
+                            type="password"
+                            fullWidth
+                            margin="normal"
+                            value={newPassword}
+                            onChange={(e) => setNewPassword(e.target.value)}
+                        />
+
+                        <TextField
+                            label="Confirm Password"
+                            type="password"
+                            fullWidth
+                            margin="normal"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            error={error !== ''}
+                            helperText={error}
+                        />
+
+                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', paddingTop: '20px' }}>
+                            <Button variant="outlined" color="secondary" onClick={() => handlePasswordChange()}>
+                                Submit
+                            </Button>
+                            <Button
+                                variant="contained"
+                                color="error"
+                                onClick={() => setShowChangePasswordPopup(false)}
+                                sx={{ marginLeft: 1 }}
+                            >
+                                Cancel
+                            </Button>
+                        </Box>
+                    </Box>
+                </Modal>
+            </div> */}
+            <div>
+                <Modal
+                    open={showChangePasswordPopup}
+                    onClose={() => setShowChangePasswordPopup(false)}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
+                    <Box sx={style}>
+                        <Typography variant="h3" gutterBottom align="center">
+                            Change Password
+                        </Typography>
+
+                        <TextField
+                            label="Old Password"
+                            type={showOldPassword ? 'text' : 'password'}
+                            fullWidth
+                            margin="normal"
+                            value={oldPassword}
+                            onChange={(e) => setOldPassword(e.target.value)}
+                            InputProps={{
+                                endAdornment: (
+                                    <Button onClick={() => togglePasswordVisibility('old')} size="small">
+                                        {showOldPassword ? <IconEyeOff size={18} /> : <IconEye size={18} />}
+                                    </Button>
+                                )
+                            }}
+                        />
+
+                        <TextField
+                            label="New Password"
+                            type={showNewPassword ? 'text' : 'password'}
+                            fullWidth
+                            margin="normal"
+                            value={newPassword}
+                            onChange={(e) => setNewPassword(e.target.value)}
+                            InputProps={{
+                                endAdornment: (
+                                    <Button onClick={() => togglePasswordVisibility('new')} size="small">
+                                        {showNewPassword ? <IconEyeOff size={18} /> : <IconEye size={18} />}
+                                    </Button>
+                                )
+                            }}
+                        />
+
+                        <TextField
+                            label="Confirm Password"
+                            type={showConfirmPassword ? 'text' : 'password'}
+                            fullWidth
+                            margin="normal"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            error={error !== ''}
+                            helperText={error}
+                            InputProps={{
+                                endAdornment: (
+                                    <Button onClick={() => togglePasswordVisibility('confirm')} size="small">
+                                        {showConfirmPassword ? <IconEyeOff size={18} /> : <IconEye size={18} />}
+                                    </Button>
+                                )
+                            }}
+                        />
+
+                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', paddingTop: '20px' }}>
+                            <Button variant="outlined" color="secondary" onClick={handlePasswordChange}>
+                                Submit
+                            </Button>
+                            <Button
+                                variant="contained"
+                                color="error"
+                                onClick={() => setShowChangePasswordPopup(false)}
+                                sx={{ marginLeft: 1 }}
+                            >
+                                Cancel
                             </Button>
                         </Box>
                     </Box>
