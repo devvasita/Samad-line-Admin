@@ -152,7 +152,7 @@ const ForgotPassword = ({ login, ...others }) => {
                                                                     variant="contained"
                                                                     color="secondary"
                                                                 >
-                                                                    Sign in
+                                                                    Submit
                                                                 </Button>
                                                             </AnimateButton>
                                                         </Box>

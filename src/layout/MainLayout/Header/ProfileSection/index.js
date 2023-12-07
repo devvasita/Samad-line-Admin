@@ -23,7 +23,8 @@ import {
     Typography
 } from '@mui/material';
 import TextField from '@mui/material/TextField';
-
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 // third-party
 
 // project imports
@@ -126,6 +127,9 @@ const ProfileSection = ({ userDetails }) => {
             setNewPassword('');
             setConfirmPassword('');
             setError('');
+            setShowOldPassword(false);
+            setShowNewPassword(false);
+            setShowConfirmPassword(false);
             setShowChangePasswordPopup(false);
         }
     };
@@ -368,12 +372,11 @@ const ProfileSection = ({ userDetails }) => {
                     <Box sx={style}>
                         <Typography variant="h3">Are you sure to log out?</Typography>
                         <Box sx={{ display: 'flex', justifyContent: 'space-between', paddingTop: '30px' }}>
-                            <Button variant="outlined" color="secondary" sx={{ width: '45%' }} onClick={() => handleLogout()}>
-                                Yes
-                            </Button>
-
-                            <Button variant="contained" color="error" sx={{ width: '45%' }} onClick={() => setPopupState(false)}>
+                            <Button variant="outlined" color="error" sx={{ width: '45%' }} onClick={() => setPopupState(false)}>
                                 No
+                            </Button>
+                            <Button variant="contained" color="secondary" sx={{ width: '45%' }} onClick={() => handleLogout()}>
+                                Yes
                             </Button>
                         </Box>
                     </Box>
@@ -459,8 +462,8 @@ const ProfileSection = ({ userDetails }) => {
                             onChange={(e) => setOldPassword(e.target.value)}
                             InputProps={{
                                 endAdornment: (
-                                    <Button onClick={() => togglePasswordVisibility('old')} size="small">
-                                        {showOldPassword ? <IconEyeOff size={18} /> : <IconEye size={18} />}
+                                    <Button onClick={() => togglePasswordVisibility('old')} style={{ color: 'black' }}>
+                                        {showOldPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
                                     </Button>
                                 )
                             }}
@@ -475,8 +478,8 @@ const ProfileSection = ({ userDetails }) => {
                             onChange={(e) => setNewPassword(e.target.value)}
                             InputProps={{
                                 endAdornment: (
-                                    <Button onClick={() => togglePasswordVisibility('new')} size="small">
-                                        {showNewPassword ? <IconEyeOff size={18} /> : <IconEye size={18} />}
+                                    <Button onClick={() => togglePasswordVisibility('new')} style={{ color: 'black' }}>
+                                        {showNewPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
                                     </Button>
                                 )
                             }}
@@ -493,24 +496,34 @@ const ProfileSection = ({ userDetails }) => {
                             helperText={error}
                             InputProps={{
                                 endAdornment: (
-                                    <Button onClick={() => togglePasswordVisibility('confirm')} size="small">
-                                        {showConfirmPassword ? <IconEyeOff size={18} /> : <IconEye size={18} />}
+                                    <Button onClick={() => togglePasswordVisibility('confirm')} style={{ color: 'black' }}>
+                                        {showConfirmPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
                                     </Button>
                                 )
                             }}
                         />
 
                         <Box sx={{ display: 'flex', justifyContent: 'flex-end', paddingTop: '20px' }}>
-                            <Button variant="outlined" color="secondary" onClick={handlePasswordChange}>
-                                Submit
-                            </Button>
                             <Button
-                                variant="contained"
+                                variant="outlined"
                                 color="error"
-                                onClick={() => setShowChangePasswordPopup(false)}
-                                sx={{ marginLeft: 1 }}
+                                onClick={() => {
+                                    setShowChangePasswordPopup(false);
+                                    setOldPassword('');
+                                    setNewPassword('');
+                                    setConfirmPassword('');
+                                    setError('');
+                                    togglePasswordVisibility('');
+                                    setShowOldPassword(false);
+                                    setShowNewPassword(false);
+                                    setShowConfirmPassword(false);
+                                }}
+                                // sx={{ marginLeft: 1 }}
                             >
                                 Cancel
+                            </Button>
+                            <Button variant="contained" color="secondary" onClick={handlePasswordChange} sx={{ marginLeft: 1 }}>
+                                Submit
                             </Button>
                         </Box>
                     </Box>

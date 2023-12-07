@@ -34,6 +34,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useNavigate } from 'react-router';
 import { authUser } from 'store/actions/userActions';
 import { Link } from 'react-router-dom';
+import Notification from 'utils/Notification';
 
 const FirebaseLogin = ({ login, ...others }) => {
     const theme = useTheme();
@@ -53,7 +54,7 @@ const FirebaseLogin = ({ login, ...others }) => {
         axios
             .post(`${url}/user/verify-otp`, values)
             .then((res) => {
-                // Notification('successfully logged in');
+                Notification('success', 'successfully logged in');
                 const { token } = res.data.data;
                 console.log(token);
                 localStorage.setItem('auth_token', token);
@@ -65,6 +66,8 @@ const FirebaseLogin = ({ login, ...others }) => {
             })
             .catch((err) => {
                 console.error(err);
+                // console.log('test response', err.response.data.message);
+                Notification('error', err.response.data.message);
             });
     };
 
@@ -179,7 +182,7 @@ const FirebaseLogin = ({ login, ...others }) => {
                                 label="Remember me"
                             /> */}
                             <Link to="/forgotpassword">
-                                <Typography variant="subtitle1" color="secondary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
+                                <Typography variant="subtitle1" color="black" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
                                     Forgot Password?
                                 </Typography>
                             </Link>
@@ -201,7 +204,7 @@ const FirebaseLogin = ({ login, ...others }) => {
                                     variant="contained"
                                     color="secondary"
                                 >
-                                    Sign in
+                                    Submit
                                 </Button>
                             </AnimateButton>
                         </Box>
