@@ -75,7 +75,7 @@ const CandidateRows = ({ product, i, navigate, deleteProductById, updateProduct 
                 {product.color}
             </TableCell>
             <TableCell align="center" style={{ paddingLeft: 16 }}>
-                ₹{product.price}
+                ${product.price}
             </TableCell>
             <TableCell align="center" style={{ paddingLeft: 16 }}>
                 <Switch color="secondary" checked={checked} onChange={handleChange} inputProps={{ 'aria-label': 'controlled' }} />
