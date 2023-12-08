@@ -96,10 +96,20 @@ const ForgotPassword = ({ login, ...others }) => {
                                                                 Notification('Success', 'Password has been sent to your mail');
                                                                 console.log('Success', 'Password has been sent to your mail');
                                                                 navigate('/');
+                                                            })
+                                                            .catch((error) => {
+                                                                // Handle axios request error
+                                                                console.error('Axios error:', error);
+                                                                setStatus({ success: false });
+                                                                setErrors({ submit: error.response.data.error });
+                                                                Notification('error', error.response.data.error);
+                                                                setSubmitting(false);
                                                             });
                                                     } catch (err) {
                                                         setStatus({ success: false });
                                                         setErrors({ submit: err.message });
+                                                        // console.log('error', err);
+                                                        Notification('error', 'User Not Found');
                                                         setSubmitting(false);
                                                     }
                                                 }}
