@@ -7,6 +7,7 @@ import CustomInput from 'views/customerDetails/CustomInput';
 import { CardMedia, IconButton } from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { useParams } from 'react-router';
+import Notification from 'utils/Notification';
 
 const style = {
     position: 'absolute',
@@ -40,8 +41,19 @@ export default function SubCategoryModal({ open, setOpen, saveCategory, selected
         if (!open) setCategoryDetails({ name: '' });
     }, [open]);
     const handleSaveData = () => {
-        if (selectedCategory) updateCategoryDetails(categoryDetails, id, selectedCategory._id);
-        else saveCategory(categoryDetails, id);
+        console.log(categoryDetails, id, selectedCategory);
+        if (!categoryDetails || !categoryDetails.name.trim()) {
+            Notification('error', 'Please fill in some details');
+            return;
+        }
+        if (categoryDetails) {
+            // Only proceed with the second condition if categoryDetails is truthy
+            if (selectedCategory) {
+                updateCategoryDetails(categoryDetails, id, selectedCategory._id);
+            } else {
+                saveCategory(categoryDetails, id);
+            }
+        }
     };
 
     return (
