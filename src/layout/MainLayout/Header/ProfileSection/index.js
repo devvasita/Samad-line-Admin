@@ -319,12 +319,12 @@ const ProfileSection = ({ userDetails }) => {
                                             <ListItemButton
                                                 sx={{ borderRadius: `${customization.borderRadius}px` }}
                                                 selected={selectedIndex === 4}
-                                                onClick={() => setPopupState(true)}
+                                                onClick={() => setShowChangePasswordPopup(true)}
                                             >
                                                 <ListItemIcon>
-                                                    <IconLogout stroke={1.5} size="1.3rem" />
+                                                    <IconKey stroke={1.5} size="1.3rem" />
                                                 </ListItemIcon>
-                                                <ListItemText primary={<Typography variant="body2">Logout</Typography>} />
+                                                <ListItemText primary={<Typography variant="body2">Change Password</Typography>} />
                                             </ListItemButton>
                                         </List>
                                         <List
@@ -346,12 +346,12 @@ const ProfileSection = ({ userDetails }) => {
                                             <ListItemButton
                                                 sx={{ borderRadius: `${customization.borderRadius}px` }}
                                                 selected={selectedIndex === 4}
-                                                onClick={() => setShowChangePasswordPopup(true)}
+                                                onClick={() => setPopupState(true)}
                                             >
                                                 <ListItemIcon>
-                                                    <IconKey stroke={1.5} size="1.3rem" />
+                                                    <IconLogout stroke={1.5} size="1.3rem" />
                                                 </ListItemIcon>
-                                                <ListItemText primary={<Typography variant="body2">Change Password</Typography>} />
+                                                <ListItemText primary={<Typography variant="body2">Logout</Typography>} />
                                             </ListItemButton>
                                         </List>
                                     </Box>
