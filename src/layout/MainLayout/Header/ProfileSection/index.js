@@ -123,14 +123,8 @@ const ProfileSection = ({ userDetails }) => {
             // Call your password change API or function here
             // Reset the form and close the modal
             changePassword({ oldPassword, newPassword, email: userDetails.email });
-            setOldPassword('');
-            setNewPassword('');
-            setConfirmPassword('');
-            setError('');
-            setShowOldPassword(false);
-            setShowNewPassword(false);
-            setShowConfirmPassword(false);
-            setShowChangePasswordPopup(false);
+
+            // setShowChangePasswordPopup(false);
         }
     };
 
@@ -142,8 +136,14 @@ const ProfileSection = ({ userDetails }) => {
             if (status === 200) {
                 // Handle successful signup
                 Notification('success', 'Password changed successfully!');
-
                 changePopupState(false);
+                setOldPassword('');
+                setNewPassword('');
+                setConfirmPassword('');
+                setError('');
+                setShowOldPassword(false);
+                setShowNewPassword(false);
+                setShowConfirmPassword(false);
             } else {
                 Notification('error', 'Please Enter Required Fields');
                 // Additional logic if needed
