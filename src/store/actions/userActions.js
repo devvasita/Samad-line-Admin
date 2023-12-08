@@ -207,7 +207,7 @@ export const verifyOTP = (userData, navigate) => async (dispatch) => {
         const {
             data: { message, data },
             status
-        } = await API.post(`/user/verify-otp`, userData);
+        } = await API.post(`/user/admin/verify-otp`, userData);
         if (status === 200) {
             const { token } = data;
             Notification('success', message);
