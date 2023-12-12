@@ -81,7 +81,7 @@ const CandidateRows = ({ userData, i }) => {
                 {moment(userData.createdAt).format('Do MMMM YYYY ,  h:mm a')}
             </TableCell>
             <TableCell align="center" style={{ paddingLeft: 16 }}>
-                ₹{userData.total}
+                ${userData.total}
             </TableCell>
             <TableCell align="center" style={{ paddingLeft: 16 }}>
                 <Link to={userData._id}>

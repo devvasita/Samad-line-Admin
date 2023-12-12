@@ -45,7 +45,7 @@ const CandidateRows = ({ userData, i }) => {
                 {userData.qty}
             </TableCell>
             <TableCell align="center" style={{ paddingLeft: 16 }}>
-                ₹{userData.price}
+                ${userData.price}
             </TableCell>
         </TableRow>
     );
@@ -119,7 +119,7 @@ const OrderDetails = ({ getCandidateDetails, selectedOrder, loading, updateCandi
                                     <TableCell align="center" style={{ paddingLeft: 16 }}></TableCell>
                                     <TableCell align="center" style={{ paddingLeft: 16 }}></TableCell>
                                     <TableCell align="center" style={{ paddingLeft: 16 }}>
-                                        ₹{selectedOrder.total}
+                                        ${selectedOrder.total}
                                     </TableCell>
                                 </TableRow>
                             </TableBody>
