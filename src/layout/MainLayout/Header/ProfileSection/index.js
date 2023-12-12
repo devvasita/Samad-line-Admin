@@ -144,6 +144,7 @@ const ProfileSection = ({ userDetails }) => {
                 setShowOldPassword(false);
                 setShowNewPassword(false);
                 setShowConfirmPassword(false);
+                setShowChangePasswordPopup(false);
             } else {
                 Notification('error', 'Please Enter Required Fields');
                 // Additional logic if needed
