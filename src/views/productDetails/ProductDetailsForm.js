@@ -101,7 +101,7 @@ export default function ProductDetailsForm({ productDetails, readOnly, updatePro
                 enableReinitialize
                 validationSchema={Yup.object().shape({
                     name: Yup.string().max(255).required('Name is required'),
-                    brand: Yup.string().max(255).required('Brand is required'),
+                    // brand: Yup.string().max(255)
                     category: Yup.string().max(255).required('Category is required'),
                     subCategory: Yup.string().max(255).required('Sub Category is required'),
                     description: Yup.string().required('Description is required'),
@@ -127,11 +127,23 @@ export default function ProductDetailsForm({ productDetails, readOnly, updatePro
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
                         const otherProducts = values.otherProductsData ? values.otherProductsData.map((elem) => elem.id) : [];
+                        console.log(values);
+                        const productData = {
+                            ...values,
+                            otherProducts
+                        };
+
+                        // Check if brand is not empty before setting it
+                        if (productData.brand === '') {
+                            delete productData.brand;
+                            delete values.brand;
+                        }
+                        console.log(productData);
                         if (createNewProduct) {
                             createNewProduct(
                                 {
                                     ...values,
-                                    otherProducts
+                                    ...productData
                                 },
                                 navigate
                             );
@@ -140,7 +152,7 @@ export default function ProductDetailsForm({ productDetails, readOnly, updatePro
                                 productDetails._id,
                                 {
                                     ...values,
-                                    otherProducts
+                                    ...productData
                                 },
                                 navigate
                             );
