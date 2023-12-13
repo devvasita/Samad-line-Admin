@@ -155,6 +155,7 @@ const OrderDetails = ({ getCandidateDetails, selectedOrder, loading, updateCandi
         document.body.innerHTML = printContents;
         window.print();
         document.body.innerHTML = originalContents;
+        window.location.reload();
     };
 
     const handleDownload = async () => {
@@ -182,9 +183,9 @@ const OrderDetails = ({ getCandidateDetails, selectedOrder, loading, updateCandi
         <>
             <MainCard
                 title="Order Details"
-                btnText="Download Invoce"
+                btnText="Download Invoice"
                 btnEvent={handleDownloadpdfformat}
-                btnText1="Print Invoce"
+                btnText1="Print Invoice"
                 btnEvent1={handlePrint}
                 contentSX={{ padding: 0 }}
             >
