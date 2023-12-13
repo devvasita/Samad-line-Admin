@@ -180,7 +180,14 @@ const OrderDetails = ({ getCandidateDetails, selectedOrder, loading, updateCandi
 
     return (
         <>
-            <MainCard title="Order Details" contentSX={{ padding: 0 }}>
+            <MainCard
+                title="Order Details"
+                btnText="Download Invoce"
+                btnEvent={handleDownloadpdfformat}
+                btnText1="Print Invoce"
+                btnEvent1={handlePrint}
+                contentSX={{ padding: 0 }}
+            >
                 {loading ? (
                     <Loading />
                 ) : (
@@ -236,16 +243,15 @@ const OrderDetails = ({ getCandidateDetails, selectedOrder, loading, updateCandi
                         </Box>
                     </>
                 )}
-                <div>
-                    {/* Print Button */}
+                {/* <div>
                     <IconButton color="black" onClick={handlePrint}>
                         <PrintIcon />
                     </IconButton>
-                    {/* Download Button */}
+
                     <IconButton color="black" onClick={handleDownloadpdfformat}>
                         <GetAppIcon />
                     </IconButton>
-                </div>
+                </div> */}
             </MainCard>
             {/* Invoice data */}
             <div className={classes.body} style={{ display: 'none' }}>
@@ -337,7 +343,7 @@ const OrderDetails = ({ getCandidateDetails, selectedOrder, loading, updateCandi
                                     {/* ... table body rows ... */}
                                     {orderItems.map((item, i) => (
                                         <tr key={i}>
-                                            <td>{item.name}</td>
+                                            <td style={{ padding: '10px' }}>{item.name}</td>
                                             <td>${item.price}</td>
                                             <td>{item.qty}</td>
                                             <td>${item.price * item.qty}</td>
