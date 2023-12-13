@@ -1,16 +1,80 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import MainCard from 'ui-component/cards/MainCard';
 import { useParams } from 'react-router';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 import { deleteUserById, getCandidateById, updateCandidateDetails } from 'store/actions/userActions';
-import { Table, TableCell, TableHead, TableRow, TableBody, TablePagination } from '@mui/material';
+import { Table, TableCell, TableHead, TableRow, TableBody, TablePagination, IconButton, Button } from '@mui/material';
 import { useEffect } from 'react';
+import PrintIcon from '@mui/icons-material/Print';
+import GetAppIcon from '@mui/icons-material/GetApp';
 import { connect } from 'react-redux';
 import Loading from 'layout/loader/Loading';
 import OrderForm from './OrderForm';
 import { Box } from '@mui/system';
 import styled from '@emotion/styled';
 import { assignDistributor, getOrderByID } from 'store/actions/orderActions';
+import { makeStyles } from '@material-ui/core';
+import html2pdf from 'html2pdf.js';
+import image from '../../image/logo.png';
+// import html2pdf from 'html2pdf';
+
+const useStyles = makeStyles((theme) => ({
+    body: {
+        margin: 0,
+        padding: 0,
+        boxSizing: 'border-box',
+        fontFamily: 'Arial, Helvetica, sans-serif'
+    },
+    a: {
+        textDecoration: 'none',
+        color: '#000000'
+    },
+    p: {
+        margin: '0rem'
+    },
+    bgWhite: {
+        backgroundColor: '#ffffff !important'
+    },
+    textSize: {
+        fontSize: 15
+    },
+    templateBody: {
+        width: 'min(100% - 0px, 90%)',
+        backgroundColor: '#ffffff',
+        margin: '80px auto'
+    },
+    sectionBody: {
+        display: 'flex',
+        marginTop: 20
+    },
+    addressSection: {
+        display: 'flex',
+        alignItems: 'flex-start'
+    },
+    tableSection: {
+        width: '100%',
+        borderCollapse: 'separate',
+        borderSpacing: '0 4px'
+    },
+    tableCell: {
+        padding: 10
+    },
+    tableHead: {
+        backgroundColor: '#F9DF23'
+    },
+    tableHeadCell: {
+        fontSize: 15,
+        fontWeight: 600
+    },
+    tableBodyRow: {
+        backgroundColor: '#eeeeee'
+    },
+    downloadButton: {
+        marginTop: 20
+    }
+}));
 
 const StyledTable = styled(Table)(() => ({
     whiteSpace: 'pre',
@@ -57,6 +121,7 @@ const OrderDetails = ({ getCandidateDetails, selectedOrder, loading, updateCandi
     const [readOnly, setReadOnly] = useState(false);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
+    const contentRef = useRef();
 
     const handleChangePage = (_, newPage) => {
         setPage(newPage);
@@ -75,6 +140,7 @@ const OrderDetails = ({ getCandidateDetails, selectedOrder, loading, updateCandi
         address: '',
         gstNo: ''
     });
+    console.log(userDetails);
 
     useEffect(() => {
         getCandidateDetails(id);
@@ -83,65 +149,321 @@ const OrderDetails = ({ getCandidateDetails, selectedOrder, loading, updateCandi
     useEffect(() => {
         setUserDetails(selectedOrder);
     }, [selectedOrder]);
+    const handlePrint = () => {
+        const printContents = document.querySelector('.elem').innerHTML;
+        const originalContents = document.body.innerHTML;
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+    };
+
+    const handleDownload = async () => {
+        const content = contentRef.current;
+        // Create a canvas from the HTML content
+        const canvas = await html2canvas(content);
+        // Create a new jsPDF instance
+        const pdf = new jsPDF();
+        // Calculate the width and height of the PDF page
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+        // Add the canvas image to the PDF
+        pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, pdfWidth, pdfHeight);
+        // Save the PDF
+        pdf.save('invoice.pdf');
+    };
+    const classes = useStyles();
+    function handleDownloadpdfformat() {
+        const opt = { filename: 'invoice.pdf', html2canvas: { scale: 1, scrollY: 0 } };
+        const div = document.querySelector('.elem');
+        html2pdf().set(opt).from(div).save();
+    }
 
     return (
-        <MainCard title="Order Details" contentSX={{ padding: 0 }}>
-            {loading ? (
-                <Loading />
-            ) : (
-                <>
-                    <OrderForm
-                        userDetails={userDetails}
-                        setUserDetails={setUserDetails}
-                        readOnly={readOnly}
-                        setReadOnly={setReadOnly}
-                        updateCandidate={updateCandidate}
-                        assignOrder={assignOrder}
-                    />
-                    <Box className="plan" style={{ overflowY: 'auto', minHeight: 'calc(100vh - 365px)' }}>
-                        <StyledTable>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell align="center">No.</TableCell>
-                                    <TableCell align="center">Name</TableCell>
-                                    <TableCell align="center">Qty.</TableCell>
-                                    <TableCell align="center">Price</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody style={{ padding: '10px' }}>
-                                {orderItems.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((userData, i) => (
-                                    <CandidateRows key={userData._id} userData={userData} i={page * rowsPerPage + i} />
-                                ))}
-                                <TableRow>
-                                    <TableCell align="center" style={{ paddingLeft: 16 }}>
-                                        Total
-                                    </TableCell>
-                                    <TableCell align="center" style={{ paddingLeft: 16 }}></TableCell>
-                                    <TableCell align="center" style={{ paddingLeft: 16 }}></TableCell>
-                                    <TableCell align="center" style={{ paddingLeft: 16 }}>
-                                        ${selectedOrder.total}
-                                    </TableCell>
-                                </TableRow>
-                            </TableBody>
-                        </StyledTable>
-
-                        <TablePagination
-                            sx={{ px: 2 }}
-                            page={page}
-                            component="div"
-                            className="page"
-                            rowsPerPage={rowsPerPage}
-                            count={orderItems.length}
-                            onPageChange={handleChangePage}
-                            rowsPerPageOptions={[5, 10, 25]}
-                            onRowsPerPageChange={handleChangeRowsPerPage}
-                            nextIconButtonProps={{ 'aria-label': 'Next Page' }}
-                            backIconButtonProps={{ 'aria-label': 'Previous Page' }}
+        <>
+            <MainCard title="Order Details" contentSX={{ padding: 0 }}>
+                {loading ? (
+                    <Loading />
+                ) : (
+                    <>
+                        <OrderForm
+                            userDetails={userDetails}
+                            setUserDetails={setUserDetails}
+                            readOnly={readOnly}
+                            setReadOnly={setReadOnly}
+                            updateCandidate={updateCandidate}
+                            assignOrder={assignOrder}
                         />
-                    </Box>
-                </>
-            )}
-        </MainCard>
+                        <Box className="plan" style={{ overflowY: 'auto', minHeight: 'calc(100vh - 365px)' }}>
+                            <StyledTable>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell align="center">No.</TableCell>
+                                        <TableCell align="center">Name</TableCell>
+                                        <TableCell align="center">Qty.</TableCell>
+                                        <TableCell align="center">Price</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody style={{ padding: '10px' }}>
+                                    {orderItems.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((userData, i) => (
+                                        <CandidateRows key={userData._id} userData={userData} i={page * rowsPerPage + i} />
+                                    ))}
+                                    <TableRow>
+                                        <TableCell align="center" style={{ paddingLeft: 16 }}>
+                                            Total
+                                        </TableCell>
+                                        <TableCell align="center" style={{ paddingLeft: 16 }}></TableCell>
+                                        <TableCell align="center" style={{ paddingLeft: 16 }}></TableCell>
+                                        <TableCell align="center" style={{ paddingLeft: 16 }}>
+                                            ${selectedOrder.total}
+                                        </TableCell>
+                                    </TableRow>
+                                </TableBody>
+                            </StyledTable>
+
+                            <TablePagination
+                                sx={{ px: 2 }}
+                                page={page}
+                                component="div"
+                                className="page"
+                                rowsPerPage={rowsPerPage}
+                                count={orderItems.length}
+                                onPageChange={handleChangePage}
+                                rowsPerPageOptions={[5, 10, 25]}
+                                onRowsPerPageChange={handleChangeRowsPerPage}
+                                nextIconButtonProps={{ 'aria-label': 'Next Page' }}
+                                backIconButtonProps={{ 'aria-label': 'Previous Page' }}
+                            />
+                        </Box>
+                    </>
+                )}
+                <div>
+                    {/* Print Button */}
+                    <IconButton color="black" onClick={handlePrint}>
+                        <PrintIcon />
+                    </IconButton>
+                    {/* Download Button */}
+                    <IconButton color="black" onClick={handleDownloadpdfformat}>
+                        <GetAppIcon />
+                    </IconButton>
+                </div>
+            </MainCard>
+            {/* Invoice data */}
+            <div className={classes.body} style={{ display: 'none' }}>
+                <div className={`${classes.templateBody} elem`}>
+                    <div className={`${classes.sectionBody}`} style={{ alignItems: 'center' }}>
+                        <div style={{ width: '100%' }}>
+                            <p style={{ fontSize: 30, color: '#504b4b', marginBottom: 10 }}>Espacecarre </p>
+                            <div className={classes.addressSection}>
+                                <div style={{ width: '22%' }}>
+                                    <p className={classes.textSize}>
+                                        20 Margaret st, London <br />
+                                        Great britain, 3NM98-LK{' '}
+                                    </p>
+                                </div>
+                                <div>
+                                    <p className={classes.textSize} style={{ margin: 0, marginTop: '18px' }}>
+                                        877-67-88-99
+                                    </p>
+                                    <p className={classes.textSize} style={{ margin: 0 }}>
+                                        nfo@espacecarre.com
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <img src={image} alt="logo" style={{ height: '70px', width: '120px' }} />
+                        </div>
+                    </div>
+                    <div className={`${classes.sectionBody}`} style={{ marginBottom: 40 }}>
+                        <div style={{ width: '100%' }}>
+                            <p style={{ marginBottom: 10, fontWeight: 600, color: '#9c9c9c' }}>BILLED TO</p>
+                            <div className={`${classes.addressSection}`}>
+                                <div style={{ width: '20%' }}>
+                                    <p style={{ fontWeight: 'bold', margin: 0 }}>
+                                        {/* {userDetails?.billingAddress} */}
+                                        {userDetails?.billingAddress?.firstName} {userDetails?.billingAddress?.lastName}
+                                    </p>
+                                    <p className={classes.textSize} style={{ margin: 0 }}>
+                                        {userDetails?.billingAddress?.addressLine1}
+                                        <br />
+                                        {userDetails?.billingAddress?.addressLine2} <br />
+                                        {userDetails?.billingAddress?.city} <br />
+                                        {userDetails?.billingAddress?.pinCode}
+                                    </p>
+                                </div>
+                                <div>
+                                    <p className={classes.textSize} style={{ margin: 0 }}>
+                                        +{userDetails?.billingAddress?.phoneNo}
+                                        <p className={classes.textSize} style={{ margin: 0 }}>
+                                            {userDetails?.user?.email}
+                                        </p>
+                                    </p>
+                                    {/* <p className={classes.textSize}>
+                                    <a href="/">shrunjal.mehta@gmail.com</a>
+                                </p> */}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className={`${classes.sectionBody}`}>
+                        <div style={{ width: '20%' }}>
+                            <p style={{ fontSize: 40, marginBottom: 10, color: '#504b4b' }}>Invoice </p>
+                            <div style={{ marginBottom: 20 }}>
+                                <p style={{ color: '#9c9c9c', fontSize: 14, fontWeight: 600, margin: 0 }}>INVOICE NUMBER</p>
+                                <p className={classes.textSize} style={{ margin: 0 }}>
+                                    {userDetails?._id}
+                                </p>
+                            </div>
+                            <div>
+                                <p style={{ color: '#9c9c9c', fontSize: 14, fontWeight: 600, margin: 0 }}>DATE OF ISSUE</p>
+                                <p className={classes.textSize} style={{ margin: 0 }}>
+                                    {userDetails?.createdAt?.slice(0, 10)}
+                                </p>
+                            </div>
+                        </div>
+                        <div style={{ width: '80%' }}>
+                            <table width="100%" className={classes.tableSection}>
+                                <thead>
+                                    <tr className={classes.tableHead}>
+                                        <td width="50%" className={classes.tableHeadCell}>
+                                            DESCRIPTION{' '}
+                                        </td>
+                                        <td className={classes.tableHeadCell}>UNIT COST</td>
+                                        <td className={classes.tableHeadCell}> QTY</td>
+                                        <td className={classes.tableHeadCell}>AMOUNT</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {/* ... table body rows ... */}
+                                    {orderItems.map((item, i) => (
+                                        <tr key={i}>
+                                            <td>{item.name}</td>
+                                            <td>${item.price}</td>
+                                            <td>{item.qty}</td>
+                                            <td>${item.price * item.qty}</td>
+                                        </tr>
+                                    ))}
+                                    <tr className={classes.bgWhite}>
+                                        <td colSpan="4" className={classes.bgWhite}>
+                                            <table width="100%">
+                                                <tr className={classes.bgWhite}>
+                                                    <td colSpan="2" width="73%" style={{ padding: 0 }}></td>
+                                                    <td style={{ padding: 0 }}>
+                                                        <table width="100%">
+                                                            <tr className={classes.bgWhite}>
+                                                                <td width="50%" align="right" style={{ padding: '5px 10px' }}>
+                                                                    <span style={{ color: '#9c9c9c', fontWeight: 600, fontSize: 15 }}>
+                                                                        SUBTOTAL
+                                                                    </span>
+                                                                </td>
+                                                                <td style={{ padding: '5px 10px' }}>${userDetails?.subTotal}</td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr className={classes.bgWhite}>
+                                                    <td colSpan="2" width="73%" style={{ padding: 0 }}></td>
+                                                    <td style={{ padding: 0 }}>
+                                                        <table width="100%">
+                                                            <tr className={classes.bgWhite}>
+                                                                <td width="50%" align="right" style={{ padding: '5px 10px' }}>
+                                                                    <span style={{ color: '#9c9c9c', fontWeight: 600, fontSize: 15 }}>
+                                                                        DISCOUNT
+                                                                    </span>
+                                                                </td>
+                                                                <td style={{ padding: '5px 10px' }}>${userDetails.discount}</td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr className={classes.bgWhite}>
+                                                    <td colSpan="2" width="73%"></td>
+                                                    {/* <td style={{ padding: 0 }}>
+                                                        <table width="100%">
+                                                            <tr className={classes.bgWhite}>
+                                                                <td
+                                                                    width="50%"
+                                                                    align="right"
+                                                                    style={{ padding: '5px 10px', width: '50%', textAlign: 'right' }}
+                                                                >
+                                                                    <span
+                                                                        style={{
+                                                                            color: '#9c9c9c',
+                                                                            fontWeight: 600,
+                                                                            fontSize: 15,
+                                                                            whiteSpace: 'nowrap'
+                                                                        }}
+                                                                    >
+                                                                        (TAX RATE)
+                                                                    </span>
+                                                                </td>
+                                                                <td style={{ padding: '5px 10px' }}>0%</td>
+                                                            </tr>
+                                                        </table>
+                                                    </td> */}
+                                                </tr>
+                                                <tr className={classes.bgWhite}>
+                                                    <td colSpan="2" width="73%"></td>
+                                                    <td style={{ padding: 0 }}>
+                                                        <table width="100%">
+                                                            <tr className={classes.bgWhite}>
+                                                                <td width="50%" align="right" style={{ padding: '5px 10px' }}>
+                                                                    <span style={{ color: '#9c9c9c', fontWeight: 600, fontSize: 15 }}>
+                                                                        TAX
+                                                                    </span>
+                                                                </td>
+                                                                <td width="50%" style={{ padding: '5px 10px' }}>
+                                                                    ${userDetails.tax}
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr className={classes.bgWhite}>
+                                                    <td colSpan="2" width="73%"></td>
+                                                    <td style={{ padding: 0 }}>
+                                                        <table width="100%">
+                                                            <tr className={classes.bgWhite}>
+                                                                <td width="50%" align="right" style={{ padding: '5px 10px' }}>
+                                                                    <div style={{ border: '0.5px solid #9c9c9c', width: '50%' }}></div>
+                                                                </td>
+                                                                <td style={{ padding: '5px 10px' }}></td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr className={classes.bgWhite}>
+                                                    <td colSpan="2" width="73%"></td>
+                                                    <td style={{ padding: 0 }}>
+                                                        <table width="100%">
+                                                            <tr className={classes.bgWhite}>
+                                                                <td colSpan="2" width="100%" align="center" style={{ padding: 0 }}>
+                                                                    <span style={{ color: '#9c9c9c', fontWeight: 600, fontSize: 15 }}>
+                                                                        INVOICE TOTAL
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr className={classes.bgWhite}>
+                                                    <td colSpan="2" width="73%"></td>
+                                                    <td style={{ padding: 0, textAlign: 'center' }}>
+                                                        <span style={{ color: '#000000', fontWeight: 500, fontSize: 30 }}>
+                                                            ${userDetails.total}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </>
     );
 };
 
