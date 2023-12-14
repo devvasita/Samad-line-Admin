@@ -342,7 +342,9 @@ const OrderDetails = ({ getCandidateDetails, selectedOrder, loading, updateCandi
                                         </td>
                                         <td className={classes.tableHeadCell}>UNIT COST</td>
                                         <td className={classes.tableHeadCell}> QTY</td>
-                                        <td className={classes.tableHeadCell}>AMOUNT</td>
+                                        <td align="right" className={classes.tableHeadCell} style={{ padding: '10px' }}>
+                                            AMOUNT
+                                        </td>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -354,7 +356,9 @@ const OrderDetails = ({ getCandidateDetails, selectedOrder, loading, updateCandi
                                             </td>
                                             <td>${item.price}</td>
                                             <td>{item.qty}</td>
-                                            <td>${item.price * item.qty}</td>
+                                            <td align="right" style={{ padding: '5px 10px' }}>
+                                                ${item.price * item.qty}
+                                            </td>
                                         </tr>
                                     ))}
                                     <tr className={classes.bgWhite}>
@@ -365,12 +369,14 @@ const OrderDetails = ({ getCandidateDetails, selectedOrder, loading, updateCandi
                                                     <td style={{ padding: 0 }}>
                                                         <table width="100%">
                                                             <tr className={classes.bgWhite}>
-                                                                <td width="50%" align="right" style={{ padding: '5px 10px' }}>
+                                                                <td width="50%" align="right" style={{ padding: '5px 5px' }}>
                                                                     <span style={{ color: '#9c9c9c', fontWeight: 600, fontSize: 15 }}>
                                                                         SUBTOTAL
                                                                     </span>
                                                                 </td>
-                                                                <td style={{ padding: '5px 10px' }}>${userDetails?.subTotal}</td>
+                                                                <td align="right" style={{ padding: '5px 5px' }}>
+                                                                    ${userDetails?.subTotal}
+                                                                </td>
                                                             </tr>
                                                         </table>
                                                     </td>
@@ -380,12 +386,14 @@ const OrderDetails = ({ getCandidateDetails, selectedOrder, loading, updateCandi
                                                     <td style={{ padding: 0 }}>
                                                         <table width="100%">
                                                             <tr className={classes.bgWhite}>
-                                                                <td width="50%" align="right" style={{ padding: '5px 10px' }}>
+                                                                <td width="50%" align="right" style={{ padding: '5px 5px' }}>
                                                                     <span style={{ color: '#9c9c9c', fontWeight: 600, fontSize: 15 }}>
                                                                         DISCOUNT
                                                                     </span>
                                                                 </td>
-                                                                <td style={{ padding: '5px 10px' }}>${userDetails.discount}</td>
+                                                                <td align="right" style={{ padding: '5px 5px' }}>
+                                                                    ${userDetails.discount}
+                                                                </td>
                                                             </tr>
                                                         </table>
                                                     </td>
@@ -398,7 +406,7 @@ const OrderDetails = ({ getCandidateDetails, selectedOrder, loading, updateCandi
                                                                 <td
                                                                     width="50%"
                                                                     align="right"
-                                                                    style={{ padding: '5px 10px', width: '50%', textAlign: 'right' }}
+                                                                    style={{ padding: '5px 5px', width: '50%', textAlign: 'right' }}
                                                                 >
                                                                     <span
                                                                         style={{
@@ -411,7 +419,7 @@ const OrderDetails = ({ getCandidateDetails, selectedOrder, loading, updateCandi
                                                                         (TAX RATE)
                                                                     </span>
                                                                 </td>
-                                                                <td style={{ padding: '5px 10px' }}>0%</td>
+                                                                <td style={{ padding: '5px 5px' }}>0%</td>
                                                             </tr>
                                                         </table>
                                                     </td> */}
@@ -421,12 +429,12 @@ const OrderDetails = ({ getCandidateDetails, selectedOrder, loading, updateCandi
                                                     <td style={{ padding: 0 }}>
                                                         <table width="100%">
                                                             <tr className={classes.bgWhite}>
-                                                                <td width="50%" align="right" style={{ padding: '5px 10px' }}>
+                                                                <td width="50%" align="right" style={{ padding: '5px 5px' }}>
                                                                     <span style={{ color: '#9c9c9c', fontWeight: 600, fontSize: 15 }}>
                                                                         TAX
                                                                     </span>
                                                                 </td>
-                                                                <td width="50%" style={{ padding: '5px 10px' }}>
+                                                                <td align="right" width="50%" style={{ padding: '5px 5px' }}>
                                                                     ${userDetails.tax}
                                                                 </td>
                                                             </tr>
@@ -438,10 +446,10 @@ const OrderDetails = ({ getCandidateDetails, selectedOrder, loading, updateCandi
                                                     <td style={{ padding: 0 }}>
                                                         <table width="100%">
                                                             <tr className={classes.bgWhite}>
-                                                                <td width="50%" align="right" style={{ padding: '5px 10px' }}>
+                                                                <td width="50%" align="right" style={{ padding: '5px 5px' }}>
                                                                     <div style={{ border: '0.5px solid #9c9c9c', width: '50%' }}></div>
                                                                 </td>
-                                                                <td style={{ padding: '5px 10px' }}></td>
+                                                                <td align="right" style={{ padding: '5px 5px' }}></td>
                                                             </tr>
                                                         </table>
                                                     </td>
@@ -459,19 +467,16 @@ const OrderDetails = ({ getCandidateDetails, selectedOrder, loading, updateCandi
                                                                             fontSize: 15
                                                                         }}
                                                                     >
-                                                                        INVOICE TOTAL
+                                                                        TOTAL
+                                                                    </span>
+                                                                </td>
+                                                                <td align="right" style={{ padding: '5px', textAlign: 'center' }}>
+                                                                    <span style={{ color: '#000000', fontWeight: 500 }}>
+                                                                        ${userDetails.total}
                                                                     </span>
                                                                 </td>
                                                             </tr>
                                                         </table>
-                                                    </td>
-                                                </tr>
-                                                <tr className={classes.bgWhite}>
-                                                    <td colSpan="2" width="73%"></td>
-                                                    <td style={{ padding: '5px', textAlign: 'center' }}>
-                                                        <span style={{ color: '#000000', fontWeight: 500, fontSize: 30 }}>
-                                                            ${userDetails.total}
-                                                        </span>
                                                     </td>
                                                 </tr>
                                             </table>
