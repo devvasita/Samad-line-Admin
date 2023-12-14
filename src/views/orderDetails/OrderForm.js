@@ -127,7 +127,7 @@ export default function OrderForm({ userDetails, add, readOnly, setReadOnly, upd
                                             </FormHelperText>
                                         )}
                                     </Grid>
-                                    <Grid component="form" item xs={6} sx={{ '&>div': { marginBottom: '24px' } }}>
+                                    <Grid item xs={6} sx={{ '&>div': { marginBottom: '24px' } }}>
                                         <CustomInput
                                             id="phone"
                                             name="order_id"
@@ -165,7 +165,7 @@ export default function OrderForm({ userDetails, add, readOnly, setReadOnly, upd
                                             )}
                                         </Grid>
                                     </Grid>{' '}
-                                    <Grid component="form" item xs={6} sx={{ '&>div': { marginBottom: '24px' } }}>
+                                    <Grid item xs={6} sx={{ '&>div': { marginBottom: '24px' } }}>
                                         <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>Order Status</label>
                                         <OrderStatusSelect value={values.currentOrderStatus?.status} _id={userDetails._id} />
                                     </Grid>

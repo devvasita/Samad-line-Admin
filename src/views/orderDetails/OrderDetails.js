@@ -261,7 +261,7 @@ const OrderDetails = ({ getCandidateDetails, selectedOrder, loading, updateCandi
                         <div style={{ width: '100%' }}>
                             <p style={{ fontSize: 30, color: '#504b4b', marginBottom: 10 }}>Espacecarre </p>
                             <div className={classes.addressSection}>
-                                <div style={{ width: '22%' }}>
+                                <div style={{ width: '30%' }}>
                                     <p className={classes.textSize}>
                                         20 Margaret st, London <br />
                                         Great britain, 3NM98-LK{' '}
@@ -282,57 +282,62 @@ const OrderDetails = ({ getCandidateDetails, selectedOrder, loading, updateCandi
                         </div>
                     </div>
                     <div className={`${classes.sectionBody}`} style={{ marginBottom: 40 }}>
-                        <div style={{ width: '100%' }}>
-                            <p style={{ marginBottom: 10, fontWeight: 600, color: '#9c9c9c' }}>BILLED TO</p>
-                            <div className={`${classes.addressSection}`}>
-                                <div style={{ width: '20%' }}>
-                                    <p style={{ fontWeight: 'bold', margin: 0 }}>
-                                        {/* {userDetails?.billingAddress} */}
-                                        {userDetails?.billingAddress?.firstName} {userDetails?.billingAddress?.lastName}
-                                    </p>
-                                    <p className={classes.textSize} style={{ margin: 0 }}>
-                                        {userDetails?.billingAddress?.addressLine1}
-                                        <br />
-                                        {userDetails?.billingAddress?.addressLine2} <br />
-                                        {userDetails?.billingAddress?.city} <br />
-                                        {userDetails?.billingAddress?.pinCode}
-                                    </p>
-                                </div>
-                                <div>
-                                    <p className={classes.textSize} style={{ margin: 0 }}>
-                                        +{userDetails?.billingAddress?.phoneNo}
-                                        <p className={classes.textSize} style={{ margin: 0 }}>
-                                            {userDetails?.user?.email}
+                        <div style={{ display: 'flex' }}>
+                            <div style={{ width: '70%' }}>
+                                <p style={{ marginBottom: 10, fontWeight: 600, color: '#9c9c9c' }}>BILLED TO</p>
+                                <div className={`${classes.addressSection}`}>
+                                    <div style={{ width: '45%' }}>
+                                        <p style={{ fontWeight: 'bold', margin: 0 }}>
+                                            {/* {userDetails?.billingAddress} */}
+                                            {userDetails?.billingAddress?.firstName} {userDetails?.billingAddress?.lastName}
                                         </p>
-                                    </p>
-                                    {/* <p className={classes.textSize}>
+                                        <p className={classes.textSize} style={{ margin: 0 }}>
+                                            {userDetails?.billingAddress?.addressLine1}
+                                            <br />
+                                            {userDetails?.billingAddress?.addressLine2} <br />
+                                            {userDetails?.billingAddress?.city} <br />
+                                            {userDetails?.billingAddress?.pinCode}
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p className={classes.textSize} style={{ margin: 0 }}>
+                                            +{userDetails?.billingAddress?.phoneNo}
+                                            <p className={classes.textSize} style={{ margin: 0 }}>
+                                                {userDetails?.user?.email}
+                                            </p>
+                                        </p>
+                                        {/* <p className={classes.textSize}>
                                     <a href="/">shrunjal.mehta@gmail.com</a>
                                 </p> */}
+                                    </div>
+                                </div>
+                            </div>
+                            <div style={{ width: '30%' }}>
+                                {' '}
+                                <div style={{ width: '100%', marginLeft: '20px' }}>
+                                    <p style={{ fontSize: '20px', color: '#504b4b', marginBottom: 10 }}>Invoice </p>
+                                    <div style={{ marginTop: '10px' }}>
+                                        <p style={{ color: '#9c9c9c', fontSize: 14, fontWeight: 600, margin: 0 }}>INVOICE NUMBER</p>
+                                        <p className={classes.textSize} style={{ margin: 0, whiteSpace: 'break-spaces' }}>
+                                            {userDetails?._id}
+                                        </p>
+                                    </div>
+                                    <div style={{ marginTop: '10px' }}>
+                                        <p style={{ color: '#9c9c9c', fontSize: 14, fontWeight: 600, margin: 0 }}>DATE OF ISSUE</p>
+                                        <p className={classes.textSize} style={{ margin: 0 }}>
+                                            {userDetails?.createdAt?.slice(0, 10)}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className={`${classes.sectionBody}`}>
-                        <div style={{ width: '20%' }}>
-                            <p style={{ fontSize: 40, marginBottom: 10, color: '#504b4b' }}>Invoice </p>
-                            <div style={{ marginBottom: 20 }}>
-                                <p style={{ color: '#9c9c9c', fontSize: 14, fontWeight: 600, margin: 0 }}>INVOICE NUMBER</p>
-                                <p className={classes.textSize} style={{ margin: 0 }}>
-                                    {userDetails?._id}
-                                </p>
-                            </div>
-                            <div>
-                                <p style={{ color: '#9c9c9c', fontSize: 14, fontWeight: 600, margin: 0 }}>DATE OF ISSUE</p>
-                                <p className={classes.textSize} style={{ margin: 0 }}>
-                                    {userDetails?.createdAt?.slice(0, 10)}
-                                </p>
-                            </div>
-                        </div>
-                        <div style={{ width: '80%' }}>
+                        <div style={{ width: '100%' }}>
                             <table width="100%" className={classes.tableSection}>
                                 <thead>
                                     <tr className={classes.tableHead}>
-                                        <td width="50%" className={classes.tableHeadCell}>
+                                        <td style={{ padding: '10px' }} width="50%" className={classes.tableHeadCell}>
                                             DESCRIPTION{' '}
                                         </td>
                                         <td className={classes.tableHeadCell}>UNIT COST</td>
@@ -343,8 +348,10 @@ const OrderDetails = ({ getCandidateDetails, selectedOrder, loading, updateCandi
                                 <tbody>
                                     {/* ... table body rows ... */}
                                     {orderItems.map((item, i) => (
-                                        <tr key={i}>
-                                            <td style={{ padding: '10px' }}>{item.name}</td>
+                                        <tr key={i} style={{ backgroundColor: '#eeeeee' }}>
+                                            <td style={{ padding: '10px' }}>
+                                                <p style={{ width: '95%', margin: '0' }}>{item.name}</p>
+                                            </td>
                                             <td>${item.price}</td>
                                             <td>{item.qty}</td>
                                             <td>${item.price * item.qty}</td>
@@ -445,7 +452,13 @@ const OrderDetails = ({ getCandidateDetails, selectedOrder, loading, updateCandi
                                                         <table width="100%">
                                                             <tr className={classes.bgWhite}>
                                                                 <td colSpan="2" width="100%" align="center" style={{ padding: 0 }}>
-                                                                    <span style={{ color: '#9c9c9c', fontWeight: 600, fontSize: 15 }}>
+                                                                    <span
+                                                                        style={{
+                                                                            color: '#9c9c9c',
+                                                                            fontWeight: 600,
+                                                                            fontSize: 15
+                                                                        }}
+                                                                    >
                                                                         INVOICE TOTAL
                                                                     </span>
                                                                 </td>
@@ -455,7 +468,7 @@ const OrderDetails = ({ getCandidateDetails, selectedOrder, loading, updateCandi
                                                 </tr>
                                                 <tr className={classes.bgWhite}>
                                                     <td colSpan="2" width="73%"></td>
-                                                    <td style={{ padding: 0, textAlign: 'center' }}>
+                                                    <td style={{ padding: '5px', textAlign: 'center' }}>
                                                         <span style={{ color: '#000000', fontWeight: 500, fontSize: 30 }}>
                                                             ${userDetails.total}
                                                         </span>
