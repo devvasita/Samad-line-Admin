@@ -114,20 +114,42 @@ const ProfileSection = ({ userDetails }) => {
 
     // change password functionality
 
+    // const handlePasswordChange = () => {
+    //     // Add your password validation logic here
+    //     if (newPassword !== confirmPassword) {
+    //         setError('New password and confirm password do not match');
+    //         Notification('error', 'New Password and confirm password does not match');
+    //     } else {
+    //         // Call your password change API or function here
+    //         // Reset the form and close the modal
+    //         changePassword({ oldPassword, newPassword, email: userDetails.email });
+
+    //         setShowChangePasswordPopup(false);
+    //     }
+    // };
     const handlePasswordChange = () => {
-        // Add your password validation logic here
+        // Check if any field is empty
+        if (!oldPassword || !newPassword || !confirmPassword) {
+            setError('Please fill in all fields');
+            Notification('error', 'Please fill in all fields');
+            return;
+        }
         if (newPassword !== confirmPassword) {
             setError('New password and confirm password do not match');
-            Notification('error', 'New Password and confirm password does not match');
+            Notification('error', 'New Password and confirm password do not match');
         } else {
-            // Call your password change API or function here
-            // Reset the form and close the modal
             changePassword({ oldPassword, newPassword, email: userDetails.email });
 
-            // setShowChangePasswordPopup(false);
+            setShowChangePasswordPopup(false);
+            setOldPassword('');
+            setNewPassword('');
+            setConfirmPassword('');
+            setError('');
+            setShowOldPassword(false);
+            setShowNewPassword(false);
+            setShowConfirmPassword(false);
         }
     };
-
     const changePassword = async (req) => {
         try {
             const res = await API.post('/user/change-password', req);
@@ -156,7 +178,6 @@ const ProfileSection = ({ userDetails }) => {
             // Handle errors or display error messages to the user
         }
     };
-
     return (
         <>
             <Chip
@@ -493,8 +514,8 @@ const ProfileSection = ({ userDetails }) => {
                             margin="normal"
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
-                            error={error !== ''}
-                            helperText={error}
+                            // error={error !== ''}
+                            // helperText={error}
                             InputProps={{
                                 endAdornment: (
                                     <Button onClick={() => togglePasswordVisibility('confirm')} style={{ color: 'black' }}>
