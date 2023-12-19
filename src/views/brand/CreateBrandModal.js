@@ -8,6 +8,7 @@ import { CardMedia, CircularProgress, IconButton } from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Cropper from 'react-cropper';
+import Notification from 'utils/Notification';
 
 const style = {
     position: 'absolute',
@@ -71,12 +72,24 @@ export default function CreateBrandModal({ open, setOpen, saveBrand, selectedBra
 
     const handleUpload = (e) => {
         e.preventDefault();
-
         const formData = new FormData();
         formData.append('name', brandDetails.name);
         formData.append('image', brandDetails.image);
-        if (selectedBrand) updateBrandDetails(formData, selectedBrand._id);
-        else saveBrand(formData);
+        // const formData = new FormData();
+        // formData.append('name', brandDetails.name);
+        // formData.append('image', brandDetails.image);
+        // if (selectedBrand) updateBrandDetails(formData, selectedBrand._id);
+        // else saveBrand(formData);
+        if (!brandDetails.name || !brandDetails.image) {
+            // Notification(error, 'Name and image are required.');
+            Notification('error', 'Please fill required fields ');
+        } else {
+            if (selectedBrand) {
+                updateBrandDetails(formData, selectedBrand._id);
+            } else {
+                saveBrand(formData);
+            }
+        }
     };
 
     return (

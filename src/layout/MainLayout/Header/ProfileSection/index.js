@@ -154,7 +154,7 @@ const ProfileSection = ({ userDetails }) => {
         try {
             const res = await API.post('/user/change-password', req);
             const { status } = res; // Make API call
-            console.log(res.data); // Log the response
+            console.log('response::>>', res.data); // Log the response
             if (status === 200) {
                 // Handle successful signup
                 Notification('success', 'Password changed successfully!');
@@ -168,7 +168,7 @@ const ProfileSection = ({ userDetails }) => {
                 setShowConfirmPassword(false);
                 setShowChangePasswordPopup(false);
             } else {
-                Notification('error', 'Please Enter Required Fields');
+                Notification('error', res.data.error);
                 // Additional logic if needed
             }
             // Handle success or other logic based on the response

@@ -55,6 +55,7 @@ const CustomerMain = ({ getCandidateList, customers, loading, blockUser }) => {
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [keyword, setKeyword] = useState('');
     const [compLoaded, setCompLoaded] = useState(false);
+    const [filteredCustomers, setFilteredCustomers] = useState([]);
 
     useEffect(() => {
         getCandidateList({ params: { userType: 'customer' } });
@@ -70,7 +71,7 @@ const CustomerMain = ({ getCandidateList, customers, loading, blockUser }) => {
             return () => clearTimeout(setData);
         }
     }, [keyword, getCandidateList]);
-
+    // console.log(setData);
     const handleChangePage = (_, newPage) => {
         setPage(newPage);
     };
@@ -79,6 +80,19 @@ const CustomerMain = ({ getCandidateList, customers, loading, blockUser }) => {
         setRowsPerPage(+event.target.value);
         setPage(0);
     };
+
+    useEffect(() => {
+        // Update the filtered customers state
+        setFilteredCustomers(
+            customers.filter(
+                (userData) =>
+                    // userData.firstName.toLowerCase().includes(keyword.toLowerCase()) ||
+                    // userData.lastName.toLowerCase().includes(keyword.toLowerCase()) ||
+                    (userData.firstName + ' ' + userData.lastName).toLowerCase().includes(keyword.toLowerCase()) ||
+                    userData.mobileNo.toLowerCase().includes(keyword.toLowerCase())
+            )
+        );
+    }, [customers, keyword]);
 
     return (
         <MainCard title="Customer">
@@ -112,7 +126,17 @@ const CustomerMain = ({ getCandidateList, customers, loading, blockUser }) => {
                                 </TableRow>
                             </TableHead>
                             <TableBody style={{ padding: '10px' }}>
-                                {customers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((userData, i) => (
+                                {/* {customers
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    .map((userData, i) => (
+                                        <CandidateRows
+                                            key={userData._id}
+                                            userData={userData}
+                                            i={page * rowsPerPage + i}
+                                            blockUser={blockUser}
+                                        />
+                                    ))} */}
+                                {filteredCustomers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((userData, i) => (
                                     <CandidateRows
                                         key={userData._id}
                                         userData={userData}
@@ -129,7 +153,7 @@ const CustomerMain = ({ getCandidateList, customers, loading, blockUser }) => {
                             component="div"
                             className="page"
                             rowsPerPage={rowsPerPage}
-                            count={customers.length}
+                            count={filteredCustomers.length}
                             onPageChange={handleChangePage}
                             rowsPerPageOptions={[5, 10, 25]}
                             onRowsPerPageChange={handleChangeRowsPerPage}
