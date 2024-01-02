@@ -57,17 +57,30 @@ export default function CreateCategoryModal({ open, setOpen, saveCategory, selec
         }
     }, [open]);
 
+    // const onCrop = (e) => {
+    //     e.preventDefault();
+    //     const cropper = cropperRef.current?.cropper;
+    //     if (cropper) {
+    //         cropper.getCroppedCanvas().toBlob((blob) => {
+    //             setCategoryDetails((oldVal) => {
+    //                 return { ...oldVal, image: blob };
+    //             });
+    //         }, 'image/jpeg');
+    //     }
+    // };
+
     const onCrop = (e) => {
         e.preventDefault();
         const cropper = cropperRef.current?.cropper;
         if (cropper) {
-            cropper.getCroppedCanvas().toBlob((blob) => {
+            cropper.getCroppedCanvas({ fillColor: 'white' }).toBlob((blob) => {
                 setCategoryDetails((oldVal) => {
                     return { ...oldVal, image: blob };
                 });
             }, 'image/jpeg');
         }
     };
+
     const handleSaveData = (e) => {
         e.preventDefault();
         const formData = new FormData();
