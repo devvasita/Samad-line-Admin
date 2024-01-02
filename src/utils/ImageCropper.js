@@ -11,7 +11,8 @@ const style = {
     transform: 'translate(-50%, -50%)',
     maxWidth: '400px',
     width: '90%',
-    bgcolor: 'background.paper',
+    // bgcolor: 'background.paper',
+    backgroundColor: 'white',
     borderRadius: '12px',
     boxShadow: 24,
     p: 4
@@ -20,12 +21,23 @@ const style = {
 const ImageCropper = ({ image, CloudUpload, open, setOpen, setImage }) => {
     const cropperRef = useRef(null);
 
+    // const handleUpload = (e) => {
+    //     e.preventDefault();
+    //     setOpen(false);
+    //     const cropper = cropperRef.current?.cropper;
+    //     if (cropper) {
+    //         cropper.getCroppedCanvas().toBlob((blob) => {
+    //             CloudUpload(blob);
+    //         }, 'image/jpeg');
+    //     }
+    // };
     const handleUpload = (e) => {
         e.preventDefault();
         setOpen(false);
         const cropper = cropperRef.current?.cropper;
         if (cropper) {
-            cropper.getCroppedCanvas().toBlob((blob) => {
+            const canvas = cropper.getCroppedCanvas({ fillColor: 'white' }); // Set the desired background color here
+            canvas.toBlob((blob) => {
                 CloudUpload(blob);
             }, 'image/jpeg');
         }
@@ -38,7 +50,14 @@ const ImageCropper = ({ image, CloudUpload, open, setOpen, setImage }) => {
         <div>
             <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
                 <Box sx={style}>
-                    <Cropper aspectRatio={1} ref={cropperRef} src={image} guides={true} style={{ height: '50vh' }} />
+                    <Cropper
+                        aspectRatio={1}
+                        ref={cropperRef}
+                        src={image}
+                        guides={true}
+                        style={{ height: '50vh', backgroundColor: 'white' }}
+                        // background={false}
+                    />
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: '13px' }}>
                         <Button variant="outlined" color="error" sx={{ width: '45%' }} onClick={handleClose}>
                             Cancel
