@@ -28,14 +28,14 @@ const other = {
             icon: CategoryIcon,
             breadcrumbs: false
         },
-        {
-            id: 'brands',
-            title: 'Brands',
-            type: 'item',
-            url: '/dashboard/brands',
-            icon: GridViewIcon,
-            breadcrumbs: false
-        },
+        // {
+        //     id: 'brands',
+        //     title: 'Brands',
+        //     type: 'item',
+        //     url: '/dashboard/brands',
+        //     icon: GridViewIcon,
+        //     breadcrumbs: false
+        // },
         {
             id: 'products',
             title: 'Products',
