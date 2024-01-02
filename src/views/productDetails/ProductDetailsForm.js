@@ -211,7 +211,7 @@ export default function ProductDetailsForm({ productDetails, readOnly, updatePro
                                             </FormHelperText>
                                         )}
                                     </Grid>
-                                    <Grid item xs={6}>
+                                    {/* <Grid item xs={6}>
                                         <CustomInput
                                             select
                                             id="brand"
@@ -233,9 +233,32 @@ export default function ProductDetailsForm({ productDetails, readOnly, updatePro
                                                 {errors.brand}
                                             </FormHelperText>
                                         )}
-                                    </Grid>
+                                    </Grid> */}
+
+                                    {/* <Grid item xs={6}></Grid> */}
 
                                     <Grid item xs={6}>
+                                        <CustomInput
+                                            select
+                                            id="subCategory"
+                                            name="subCategory"
+                                            onBlur={handleBlur}
+                                            onChange={handleChange}
+                                            disabled={readOnly}
+                                            title="Sub Category"
+                                            value={values.subCategory}
+                                            error={touched.subCategory && errors.subCategory}
+                                            content={subCategories.map((option) => (
+                                                <MenuItem value={option.value}>{option.label}</MenuItem>
+                                            ))}
+                                        />{' '}
+                                        {touched.subCategory && errors.subCategory && (
+                                            <FormHelperText error id="standard-weight-helper-text-email-login">
+                                                {errors.subCategory}
+                                            </FormHelperText>
+                                        )}
+                                    </Grid>
+                                    <Grid component="form" item xs={6}>
                                         <CustomInput
                                             select
                                             id="category"
@@ -260,31 +283,7 @@ export default function ProductDetailsForm({ productDetails, readOnly, updatePro
                                             <FormHelperText error id="standard-weight-helper-text-email-login">
                                                 {errors.category}
                                             </FormHelperText>
-                                        )}
-                                    </Grid>
-
-                                    <Grid item xs={6}>
-                                        <CustomInput
-                                            select
-                                            id="subCategory"
-                                            name="subCategory"
-                                            onBlur={handleBlur}
-                                            onChange={handleChange}
-                                            disabled={readOnly}
-                                            title="Sub Category"
-                                            value={values.subCategory}
-                                            error={touched.subCategory && errors.subCategory}
-                                            content={subCategories.map((option) => (
-                                                <MenuItem value={option.value}>{option.label}</MenuItem>
-                                            ))}
-                                        />{' '}
-                                        {touched.subCategory && errors.subCategory && (
-                                            <FormHelperText error id="standard-weight-helper-text-email-login">
-                                                {errors.subCategory}
-                                            </FormHelperText>
-                                        )}
-                                    </Grid>
-                                    <Grid component="form" item xs={6}>
+                                        )}{' '}
                                         <CustomInput
                                             id="productCode"
                                             name="productCode"
