@@ -106,7 +106,7 @@ export default function ProductDetailsForm({ productDetails, readOnly, updatePro
                     subCategory: Yup.string().max(255).required('Sub Category is required'),
                     description: Yup.string().required('Description is required'),
                     productCode: Yup.string().max(255).required('ProductCode is required'),
-                    price: Yup.string().max(255).required('Price is required'),
+                    // price: Yup.string().max(255).required('Price is required'),
                     mrp: Yup.string().max(255).required('MRP is required'),
                     color: Yup.string().max(255).required('Color is required'),
                     images: Yup.lazy((value) => {
@@ -307,15 +307,15 @@ export default function ProductDetailsForm({ productDetails, readOnly, updatePro
                                             // onChange={changeField}
                                             title="Selling Price"
                                             disabled={readOnly}
-                                            error={touched.price && errors.price}
+                                            // error={touched.price && errors.price}
                                             onBlur={handleBlur}
                                             onChange={handleChange}
                                         />
-                                        {touched.price && errors.price && (
+                                        {/* {touched.price && errors.price && (
                                             <FormHelperText error id="standard-weight-helper-text-email-login">
                                                 {errors.price}
                                             </FormHelperText>
-                                        )}
+                                        )} */}
                                         <CustomInput
                                             id="mrp"
                                             name="mrp"
