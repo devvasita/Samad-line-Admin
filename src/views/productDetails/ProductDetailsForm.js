@@ -26,6 +26,7 @@ const quillModules = {
 const quillFormats = ['header', 'bold', 'italic', 'underline', 'strike', 'blockquote', 'list', 'bullet', 'indent', 'link', 'image'];
 
 export default function ProductDetailsForm({ productDetails, readOnly, updateProduct, setProductDetails, createNewProduct }) {
+    console.log(productDetails);
     const navigate = useNavigate();
     const { images, category, subCategory: sub, brand } = productDetails;
 
@@ -126,6 +127,7 @@ export default function ProductDetailsForm({ productDetails, readOnly, updatePro
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
+                        console.log('values', values);
                         const otherProducts = values.otherProductsData ? values.otherProductsData.map((elem) => elem.id) : [];
                         console.log(values);
                         const productData = {
@@ -259,6 +261,23 @@ export default function ProductDetailsForm({ productDetails, readOnly, updatePro
                                         )}
                                     </Grid>
                                     <Grid component="form" item xs={6}>
+                                        <CustomInput
+                                            id="stock"
+                                            name="stock"
+                                            onBlur={handleBlur}
+                                            onChange={(e) => {
+                                                handleChange(e);
+                                            }}
+                                            disabled={readOnly}
+                                            title="Stock"
+                                            value={values.stock}
+                                            error={touched.stock && errors.stock}
+                                        />
+                                        {touched.brand && errors.brand && (
+                                            <FormHelperText error id="standard-weight-helper-text-email-login">
+                                                {errors.brand}
+                                            </FormHelperText>
+                                        )}
                                         <CustomInput
                                             select
                                             id="category"
