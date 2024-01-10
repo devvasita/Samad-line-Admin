@@ -108,6 +108,7 @@ export default function ProductDetailsForm({ productDetails, readOnly, updatePro
                     description: Yup.string().required('Description is required'),
                     productCode: Yup.string().max(255).required('ProductCode is required'),
                     // price: Yup.string().max(255).required('Price is required'),
+                    stock: Yup.string().max(255).required('Stock is required'),
                     mrp: Yup.string().max(255).required('MRP is required'),
                     color: Yup.string().max(255).required('Color is required'),
                     images: Yup.lazy((value) => {
@@ -273,9 +274,9 @@ export default function ProductDetailsForm({ productDetails, readOnly, updatePro
                                             value={values.stock}
                                             error={touched.stock && errors.stock}
                                         />
-                                        {touched.brand && errors.brand && (
+                                        {touched.stock && errors.stock && (
                                             <FormHelperText error id="standard-weight-helper-text-email-login">
-                                                {errors.brand}
+                                                {errors.stock}
                                             </FormHelperText>
                                         )}
                                         <CustomInput

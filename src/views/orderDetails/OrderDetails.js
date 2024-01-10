@@ -263,16 +263,16 @@ const OrderDetails = ({ getCandidateDetails, selectedOrder, loading, updateCandi
                             <div className={classes.addressSection}>
                                 <div style={{ width: '30%' }}>
                                     <p className={classes.textSize}>
-                                        20 Margaret st, London <br />
-                                        Great britain, 3NM98-LK{' '}
+                                        kaslik main street Joünié <br />
+                                        Joünié
                                     </p>
                                 </div>
                                 <div>
                                     <p className={classes.textSize} style={{ margin: 0, marginTop: '18px' }}>
-                                        877-67-88-99
+                                        +961 71-935-735
                                     </p>
                                     <p className={classes.textSize} style={{ margin: 0 }}>
-                                        nfo@espacecarre.com
+                                        info@espacecarre.com
                                     </p>
                                 </div>
                             </div>
