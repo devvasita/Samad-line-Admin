@@ -12,6 +12,7 @@ import { Upload } from 'utils/Upload';
 import API from 'API';
 import ReactQuill from 'react-quill';
 import MultipleSelectWithRemove from 'ui-component/fields/MultipleSelectWithRemove';
+import Notification from 'utils/Notification';
 
 //APP
 
@@ -28,7 +29,8 @@ const quillFormats = ['header', 'bold', 'italic', 'underline', 'strike', 'blockq
 export default function ProductDetailsForm({ productDetails, readOnly, updateProduct, setProductDetails, createNewProduct }) {
     console.log(productDetails);
     const navigate = useNavigate();
-    const { images, category, subCategory: sub, brand } = productDetails;
+    const { images, category, subCategory: sub, brand, stock, mrp } = productDetails;
+    console.log(productDetails);
 
     const [categoryList, setcategoryList] = useState([]);
     const [subCategories, setsubCategories] = useState([]);
@@ -107,7 +109,6 @@ export default function ProductDetailsForm({ productDetails, readOnly, updatePro
                     subCategory: Yup.string().max(255).required('Sub Category is required'),
                     description: Yup.string().required('Description is required'),
                     productCode: Yup.string().max(255).required('ProductCode is required'),
-                    // price: Yup.string().max(255).required('Price is required'),
                     stock: Yup.string().max(255).required('Stock is required'),
                     mrp: Yup.string().max(255).required('MRP is required'),
                     color: Yup.string().max(255).required('Color is required'),
@@ -216,6 +217,23 @@ export default function ProductDetailsForm({ productDetails, readOnly, updatePro
                                     </Grid>
                                     <Grid component="form" item xs={6}>
                                         {' '}
+                                        {/* <CustomInput
+                                            id="stock"
+                                            name="stock"
+                                            onBlur={handleBlur}
+                                            onChange={(e) => {
+                                                handleChange(e);
+                                            }}
+                                            disabled={readOnly}
+                                            title="Stock"
+                                            value={values.stock}
+                                            error={touched.stock && errors.stock}
+                                        />
+                                        {touched.stock && errors.stock && (
+                                            <FormHelperText error id="standard-weight-helper-text-email-login">
+                                                {errors.stock}
+                                            </FormHelperText>
+                                        )}{' '} */}
                                         <CustomInput
                                             id="stock"
                                             name="stock"
@@ -228,11 +246,11 @@ export default function ProductDetailsForm({ productDetails, readOnly, updatePro
                                             value={values.stock}
                                             error={touched.stock && errors.stock}
                                         />
-                                        {touched.brand && errors.brand && (
-                                            <FormHelperText error id="standard-weight-helper-text-email-login">
-                                                {errors.brand}
+                                        {touched.stock && errors.stock && (
+                                            <FormHelperText error id="standard-weight-helper-text-stock-login">
+                                                {errors.stock}
                                             </FormHelperText>
-                                        )}{' '}
+                                        )}
                                     </Grid>
                                     {/* <Grid item xs={6}>
                                         <CustomInput
@@ -260,7 +278,7 @@ export default function ProductDetailsForm({ productDetails, readOnly, updatePro
 
                                     {/* <Grid item xs={6}></Grid> */}
                                     <Grid component="form" item xs={6}>
-                                        <CustomInput
+                                        {/* <CustomInput
                                             id="stock"
                                             name="stock"
                                             onBlur={handleBlur}
@@ -276,7 +294,7 @@ export default function ProductDetailsForm({ productDetails, readOnly, updatePro
                                             <FormHelperText error id="standard-weight-helper-text-email-login">
                                                 {errors.stock}
                                             </FormHelperText>
-                                        )}
+                                        )} */}
                                         <CustomInput
                                             select
                                             id="category"
@@ -358,7 +376,7 @@ export default function ProductDetailsForm({ productDetails, readOnly, updatePro
                                                 {errors.price}
                                             </FormHelperText>
                                         )} */}
-                                        <CustomInput
+                                        {/* <CustomInput
                                             id="mrp"
                                             name="mrp"
                                             type="number"
@@ -369,6 +387,22 @@ export default function ProductDetailsForm({ productDetails, readOnly, updatePro
                                             error={touched.mrp && errors.mrp}
                                             onBlur={handleBlur}
                                             onChange={handleChange}
+                                        />
+                                        {touched.mrp && errors.mrp && (
+                                            <FormHelperText error id="standard-weight-helper-text-mrp-login">
+                                                {errors.mrp}
+                                            </FormHelperText>
+                                        )} */}
+                                        <CustomInput
+                                            id="mrp"
+                                            name="mrp"
+                                            type="number"
+                                            value={values.mrp}
+                                            onBlur={handleBlur}
+                                            onChange={handleChange}
+                                            title="MRP"
+                                            disabled={readOnly}
+                                            error={touched.mrp && errors.mrp}
                                         />
                                         {touched.mrp && errors.mrp && (
                                             <FormHelperText error id="standard-weight-helper-text-mrp-login">
