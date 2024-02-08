@@ -132,10 +132,10 @@ const OrdersMain = ({ getOrders, orders, loading, blockUser }) => {
             btnEvent={() => {
                 exportFactory.exportToExcel(orders);
             }}
-            btnText1="Export CSV"
-            btnEvent1={() => {
-                exportFactory.exportToCsv(orders);
-            }}
+            // btnText1="Export CSV"
+            // btnEvent1={() => {
+            //     exportFactory.exportToCsv(orders);
+            // }}
         >
             <>
                 <Grid container>

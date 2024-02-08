@@ -346,7 +346,7 @@ const ProfileSection = ({ userDetails }) => {
                                                 <ListItemIcon>
                                                     <IconKey stroke={1.5} size="1.3rem" />
                                                 </ListItemIcon>
-                                                <ListItemText primary={<Typography variant="body2">Change Password</Typography>} />
+                                                <ListItemText primary={<Typography>Change Password</Typography>} />
                                             </ListItemButton>
                                         </List>
                                         <List
@@ -373,7 +373,7 @@ const ProfileSection = ({ userDetails }) => {
                                                 <ListItemIcon>
                                                     <IconLogout stroke={1.5} size="1.3rem" />
                                                 </ListItemIcon>
-                                                <ListItemText primary={<Typography variant="body2">Logout</Typography>} />
+                                                <ListItemText primary={<Typography>Logout</Typography>} />
                                             </ListItemButton>
                                         </List>
                                     </Box>

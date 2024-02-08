@@ -16,9 +16,10 @@ const AuthCardWrapper = ({ children, ...other }) => (
             '& > *': {
                 flexGrow: 1,
                 flexBasis: '50%'
-            }
+            },
         }}
         content={false}
+        className="auth-card-wrapper"
         {...other}
     >
         <Box sx={{ p: { xs: 2, sm: 3, xl: 5 } }}>{children}</Box>

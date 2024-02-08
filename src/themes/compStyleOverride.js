@@ -5,7 +5,13 @@ export default function componentStyleOverrides(theme) {
             styleOverrides: {
                 root: {
                     fontWeight: 500,
-                    borderRadius: '4px'
+                    borderRadius: '4px',
+                    color: '#DEDEDE'
+                },
+                outlined: {
+                    fontWeight: 500,
+                    borderRadius: '4px',
+                    color: '#000'
                 }
             }
         },
@@ -50,24 +56,24 @@ export default function componentStyleOverrides(theme) {
         MuiListItemButton: {
             styleOverrides: {
                 root: {
-                    color: theme.darkTextPrimary,
+                    color: theme.colors.secondaryMain,
                     paddingTop: '10px',
                     paddingBottom: '10px',
                     '&.Mui-selected': {
-                        color: theme.menuSelected,
+                        color: theme.paper,
                         backgroundColor: theme.menuSelectedBack,
                         '&:hover': {
                             backgroundColor: theme.menuSelectedBack
                         },
                         '& .MuiListItemIcon-root': {
-                            color: theme.menuSelected
+                            color: theme.paper
                         }
                     },
                     '&:hover': {
                         backgroundColor: theme.menuSelectedBack,
-                        color: theme.menuSelected,
+                        color: theme.paper,
                         '& .MuiListItemIcon-root': {
-                            color: theme.menuSelected
+                            color: theme.paper
                         }
                     }
                 }
@@ -76,7 +82,7 @@ export default function componentStyleOverrides(theme) {
         MuiListItemIcon: {
             styleOverrides: {
                 root: {
-                    color: theme.darkTextPrimary,
+                    color: theme.colors.secondaryMain,
                     minWidth: '36px'
                 }
             }
@@ -153,7 +159,7 @@ export default function componentStyleOverrides(theme) {
         MuiDivider: {
             styleOverrides: {
                 root: {
-                    borderColor: theme.divider,
+                    borderColor: theme?.colors?.secondaryMain,
                     opacity: 1
                 }
             }
@@ -180,6 +186,13 @@ export default function componentStyleOverrides(theme) {
                 tooltip: {
                     color: theme.paper,
                     background: theme.colors?.grey700
+                }
+            }
+        },
+        MuiTableCell: {
+            styleOverrides: {
+                root: {
+                    borderBottom: '1px solid #000 !important'
                 }
             }
         }

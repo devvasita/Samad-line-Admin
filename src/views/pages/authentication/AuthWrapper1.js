@@ -1,6 +1,6 @@
 // material-ui
 import { styled } from '@mui/material/styles';
-import bg from "../../../assets/images/auth/bg.jpg";
+import bg from '../../../assets/images/auth/bg.jpg';
 
 // ==============================|| AUTHENTICATION 1 WRAPPER ||============================== //
 

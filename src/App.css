@@ -1,0 +1,20 @@
+.auth-card-wrapper {
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('../src/assets/images/auth/banner.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.bg-toolbar {
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('../src/assets/images/auth/banner.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 7px 12px !important;
+}
+
+.any {
+    color: #3b3b3bcc;
+}
+
+.MuiInputLabel-root {
+    color: #3b3b3bcc !important; /* Specify your desired label color here */
+}

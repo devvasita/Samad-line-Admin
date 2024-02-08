@@ -33,16 +33,19 @@ const Header = ({ handleLeftDrawerToggle }) => {
                 <Box component="span" sx={{ display: { xs: 'none', md: 'block' }, flexGrow: 1 }}>
                     <LogoSection />
                 </Box>
-                <ButtonBase sx={{
-                    borderRadius: '12px', overflow: 'hidden',
-                }}>
+                <ButtonBase
+                    sx={{
+                        borderRadius: '12px',
+                        overflow: 'hidden'
+                    }}
+                >
                     <Avatar
                         variant="rounded"
                         sx={{
                             ...theme.typography.commonAvatar,
                             ...theme.typography.mediumAvatar,
                             transition: 'all .2s ease-in-out',
-                            background: theme.palette.secondary.light,
+                            background: '#000000',
                             color: theme.palette.secondary.contrastText,
                             '&:hover': {
                                 background: theme.palette.secondary.dark,

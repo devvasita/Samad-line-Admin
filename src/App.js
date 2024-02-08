@@ -6,6 +6,7 @@ import 'react-notifications/lib/notifications.css';
 import 'cropperjs/dist/cropper.css';
 import { NotificationContainer } from 'react-notifications';
 import 'react-quill/dist/quill.snow.css';
+import './App.css';
 
 // routing
 import Routes from 'routes';

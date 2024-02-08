@@ -81,29 +81,26 @@ const NavItem = ({ item, level }) => {
             <ListItemIcon sx={{ my: 'auto', minWidth: !item?.icon ? 18 : 36 }}>{itemIcon}</ListItemIcon>
             <ListItemText
                 primary={
-                    <Typography variant={customization.isOpen.findIndex((id) => id === item.id) > -1 ? 'h5' : 'body1'} sx={{ color: "#000000" }}>
-                        {item.title}
-                    </Typography>
+                    // <Typography variant={customization.isOpen.findIndex((id) => id === item.id) > -1 ? 'h5' : 'body1'}>
+                    <Typography>{item.title}</Typography>
                 }
                 secondary={
                     item.caption && (
-                        <Typography variant="caption" sx={{ ...theme.typography.subMenuCaption }} display="block" gutterBottom>
+                        <Typography variant="caption" display="block" gutterBottom>
                             {item.caption}
                         </Typography>
                     )
                 }
             />
-            {
-                item.chip && (
-                    <Chip
-                        color={item.chip.color}
-                        variant={item.chip.variant}
-                        size={item.chip.size}
-                        label={item.chip.label}
-                        avatar={item.chip.avatar && <Avatar>{item.chip.avatar}</Avatar>}
-                    />
-                )
-            }
+            {item.chip && (
+                <Chip
+                    color={item.chip.color}
+                    variant={item.chip.variant}
+                    size={item.chip.size}
+                    label={item.chip.label}
+                    avatar={item.chip.avatar && <Avatar>{item.chip.avatar}</Avatar>}
+                />
+            )}
         </ListItemButton>
     );
 };

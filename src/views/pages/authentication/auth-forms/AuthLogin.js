@@ -116,7 +116,9 @@ const FirebaseLogin = ({ login, ...others }) => {
                 {({ errors, handleBlur, handleSubmit, handleChange, isSubmitting, touched, values }) => (
                     <form noValidate onSubmit={handleSubmit} {...others}>
                         <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
-                            <InputLabel htmlFor="outlined-adornment-email-login">Email Address</InputLabel>
+                            <InputLabel htmlFor="outlined-adornment-email-login" className="label-login">
+                                Email Address
+                            </InputLabel>
                             <OutlinedInput
                                 id="outlined-adornment-email-login"
                                 type="email"
@@ -139,7 +141,9 @@ const FirebaseLogin = ({ login, ...others }) => {
                             error={Boolean(touched.password && errors.password)}
                             sx={{ ...theme.typography.customInput }}
                         >
-                            <InputLabel htmlFor="outlined-adornment-password-login">Password</InputLabel>
+                            <InputLabel htmlFor="outlined-adornment-password-login" className="label-login">
+                                Password
+                            </InputLabel>
                             <OutlinedInput
                                 id="outlined-adornment-password-login"
                                 type={showPassword ? 'text' : 'password'}
@@ -181,10 +185,8 @@ const FirebaseLogin = ({ login, ...others }) => {
                                 }
                                 label="Remember me"
                             /> */}
-                            <Link to="/forgotpassword">
-                                <Typography variant="subtitle1" color="black" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
-                                    Forgot Password?
-                                </Typography>
+                            <Link to="/forgotpassword" sx={{ textDecoration: 'none !important', cursor: 'pointer' }}>
+                                <Typography variant="subtitle1">Forgot Password?</Typography>
                             </Link>
                         </Stack>
                         {errors.submit && (
