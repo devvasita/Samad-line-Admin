@@ -11,7 +11,11 @@ export default function componentStyleOverrides(theme) {
                 outlined: {
                     fontWeight: 500,
                     borderRadius: '4px',
-                    color: '#000'
+                    color: '#000',
+                    borderColor: '#000000 !important',
+                    '&:hover': {
+                        backgroundColor: '#3b3b3b33'
+                    }
                 }
             }
         },
@@ -159,7 +163,8 @@ export default function componentStyleOverrides(theme) {
         MuiDivider: {
             styleOverrides: {
                 root: {
-                    borderColor: theme?.colors?.secondaryMain,
+                    // borderColor: theme?.colors?.secondaryDark + ' !important',
+                    borderColor: '#3b3b3b',
                     opacity: 1
                 }
             }
@@ -192,7 +197,7 @@ export default function componentStyleOverrides(theme) {
         MuiTableCell: {
             styleOverrides: {
                 root: {
-                    borderBottom: '1px solid #000 !important'
+                    borderBottom: '1px solid #c5bdbd !important'
                 }
             }
         }

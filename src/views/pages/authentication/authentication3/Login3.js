@@ -9,7 +9,7 @@ import AuthWrapper1 from '../AuthWrapper1';
 import AuthCardWrapper from '../AuthCardWrapper';
 import AuthLogin from '../auth-forms/AuthLogin';
 import Logo from 'ui-component/Logo';
-import bg from "../../../../assets/images/auth/bgl.png";
+import bg from '../../../../assets/images/auth/bgl.png';
 // assets
 
 // ================================|| AUTH3 - LOGIN ||================================ //
@@ -34,15 +34,15 @@ const Login = () => {
                                         <AuthLogin />
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <Divider />
+                                        {/* <Divider /> */}
                                     </Grid>
                                 </Grid>
                             </AuthCardWrapper>
                         </Grid>
                     </Grid>
                 </Grid>
-            </Grid >
-        </AuthWrapper1 >
+            </Grid>
+        </AuthWrapper1>
     );
 };
 

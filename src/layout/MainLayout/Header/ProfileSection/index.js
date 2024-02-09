@@ -186,19 +186,19 @@ const ProfileSection = ({ userDetails }) => {
                     alignItems: 'center',
                     borderRadius: '27px',
                     transition: 'all .2s ease-in-out',
-                    borderColor: theme.palette.primary.light,
                     backgroundColor: theme.palette.primary.dark,
                     '&[aria-controls="menu-list-grow"], &:hover': {
-                        borderColor: theme.palette.primary.main,
+                        borderColor: '#3b3b3b',
                         background: `${theme.palette.primary.main}!important`,
                         color: theme.palette.primary.contrastText,
                         '& svg': {
-                            stroke: theme.palette.primary.contrastText
+                            stroke: `#fff`
                         }
                     },
                     '& .MuiChip-label': {
                         lineHeight: 0
-                    }
+                    },
+                    '&:hover': { bgcolor: '#3b3b3b !important' }
                 }}
                 icon={
                     <Avatar

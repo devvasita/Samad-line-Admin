@@ -63,7 +63,7 @@ const Register = () => {
                                         <AuthRegister />
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <Divider />
+                                        {/* <Divider /> */}
                                     </Grid>
                                     <Grid item xs={12}>
                                         <Grid item container direction="column" alignItems="center" xs={12}>

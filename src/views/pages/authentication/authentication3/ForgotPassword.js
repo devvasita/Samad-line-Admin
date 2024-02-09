@@ -171,7 +171,7 @@ const ForgotPassword = ({ login, ...others }) => {
                                             </Formik>
                                         </Grid>
                                         <Grid item xs={12}>
-                                            <Divider />
+                                            {/* <Divider /> */}
                                         </Grid>
                                     </Grid>
                                 </AuthCardWrapper>

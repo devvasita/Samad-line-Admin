@@ -185,7 +185,7 @@ const FirebaseLogin = ({ login, ...others }) => {
                                 }
                                 label="Remember me"
                             /> */}
-                            <Link to="/forgotpassword" sx={{ textDecoration: 'none !important', cursor: 'pointer' }}>
+                            <Link to="/forgotpassword" className="link-underline">
                                 <Typography variant="subtitle1">Forgot Password?</Typography>
                             </Link>
                         </Stack>
