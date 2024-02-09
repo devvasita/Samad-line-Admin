@@ -11,7 +11,10 @@ import {
     MenuItem,
     InputAdornment,
     Grid,
-    Switch
+    Switch,
+    Modal,
+    Typography,
+    Button
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import MainCard from 'ui-component/cards/MainCard';
@@ -27,6 +30,19 @@ import { useNavigate } from 'react-router';
 import CustomInput from 'views/customerDetails/CustomInput';
 import SearchIcon from '@mui/icons-material/Search';
 
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    maxWidth: '400px',
+    width: '90%',
+    bgcolor: 'background.paper',
+    borderRadius: '12px',
+    boxShadow: 24,
+    p: 4
+};
+
 const StyledTable = styled(Table)(() => ({
     whiteSpace: 'pre',
     '& thead': {
@@ -38,6 +54,7 @@ const StyledTable = styled(Table)(() => ({
 }));
 
 const CandidateRows = ({ product, i, navigate, deleteProductById, updateProduct }) => {
+    const [popupState, setPopupState] = useState(false);
     const [checked, setChecked] = useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -47,6 +64,12 @@ const CandidateRows = ({ product, i, navigate, deleteProductById, updateProduct 
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const handleDelete = () => {
+        deleteProductById(product._id);
+        handleClose();
+    };
+
     useEffect(() => {
         setChecked(product.isTrending);
     }, [product]);
@@ -64,61 +87,87 @@ const CandidateRows = ({ product, i, navigate, deleteProductById, updateProduct 
         });
     };
     return (
-        <TableRow>
-            <TableCell align="center" style={{ paddingLeft: 16 }}>
-                {i + 1}
-            </TableCell>
-            <TableCell align="center" style={{ paddingLeft: 16 }}>
-                {product.name}
-            </TableCell>
-            <TableCell align="center" style={{ paddingLeft: 16 }}>
-                {product.color}
-            </TableCell>
-            <TableCell align="center" style={{ paddingLeft: 16 }}>
-                ${product.price ? product.price : product.mrp}
-            </TableCell>
-            <TableCell align="center" style={{ paddingLeft: 16 }}>
-                <Switch color="secondary" checked={checked} onChange={handleChange} inputProps={{ 'aria-label': 'controlled' }} />
-            </TableCell>
-            <TableCell align="center" style={{ paddingLeft: 16 }}>
-                <IconButton onClick={handleClick}>
-                    <MoreVertIcon />
-                </IconButton>
-                <Menu
-                    id="demo-positioned-menu"
-                    aria-labelledby="demo-positioned-button"
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={handleClose}
-                    anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'left'
-                    }}
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'left'
-                    }}
+        <>
+            <TableRow>
+                <TableCell align="center" style={{ paddingLeft: 16 }}>
+                    {i + 1}
+                </TableCell>
+                <TableCell align="center" style={{ paddingLeft: 16 }}>
+                    {product.name}
+                </TableCell>
+                <TableCell align="center" style={{ paddingLeft: 16 }}>
+                    {product.color}
+                </TableCell>
+                <TableCell align="center" style={{ paddingLeft: 16 }}>
+                    ${product.price ? product.price : product.mrp}
+                </TableCell>
+                <TableCell align="center" style={{ paddingLeft: 16 }}>
+                    <Switch color="secondary" checked={checked} onChange={handleChange} inputProps={{ 'aria-label': 'controlled' }} />
+                </TableCell>
+                <TableCell align="center" style={{ paddingLeft: 16 }}>
+                    <IconButton onClick={handleClick}>
+                        <MoreVertIcon />
+                    </IconButton>
+                    <Menu
+                        id="demo-positioned-menu"
+                        aria-labelledby="demo-positioned-button"
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'left'
+                        }}
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'left'
+                        }}
+                    >
+                        <MenuItem
+                            onClick={() => {
+                                setAnchorEl(null);
+                                navigate(product._id);
+                            }}
+                        >
+                            <VisibilityIcon color="secondary" sx={{ mr: 1 }} /> View
+                        </MenuItem>
+                        <MenuItem
+                            onClick={() => {
+                                setPopupState(true);
+                            }}
+                        >
+                            <DeleteIcon color="error" sx={{ mr: 1 }} />
+                            Delete
+                        </MenuItem>
+                    </Menu>
+                </TableCell>
+            </TableRow>
+            <div>
+                <Modal
+                    open={popupState}
+                    onClose={() => setPopupState(false)}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
                 >
-                    <MenuItem
-                        onClick={() => {
-                            setAnchorEl(null);
-                            navigate(product._id);
-                        }}
-                    >
-                        <VisibilityIcon color="secondary" sx={{ mr: 1 }} /> View
-                    </MenuItem>
-                    <MenuItem
-                        onClick={() => {
-                            setAnchorEl(null);
-                            deleteProductById(product._id);
-                        }}
-                    >
-                        <DeleteIcon color="error" sx={{ mr: 1 }} />
-                        Delete
-                    </MenuItem>
-                </Menu>
-            </TableCell>
-        </TableRow>
+                    <Box sx={style}>
+                        <Typography variant="h3">Are you sure to delete?</Typography>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', paddingTop: '30px' }}>
+                            <Button
+                                variant="outlined"
+                                color="error"
+                                sx={{ width: '45%' }}
+                                onClick={() => [setPopupState(false), handleClose()]}
+                            >
+                                No
+                            </Button>
+                            <Button variant="contained" color="secondary" sx={{ width: '45%' }} onClick={() => handleDelete()}>
+                                Yes
+                            </Button>
+                        </Box>
+                    </Box>
+                </Modal>
+            </div>
+        </>
     );
 };
 
