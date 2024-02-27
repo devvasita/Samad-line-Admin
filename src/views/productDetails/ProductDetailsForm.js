@@ -13,6 +13,7 @@ import API from 'API';
 import ReactQuill from 'react-quill';
 import MultipleSelectWithRemove from 'ui-component/fields/MultipleSelectWithRemove';
 import Notification from 'utils/Notification';
+import { Box } from '@mui/system';
 
 //APP
 
@@ -432,19 +433,22 @@ export default function ProductDetailsForm({ productDetails, readOnly, updatePro
                                         <label style={{ fontWeight: 'bold' }} htmlFor={values.description}>
                                             Description
                                         </label>
-                                        <ReactQuill
-                                            theme="snow"
-                                            id="Description"
-                                            name="description"
-                                            value={values.description}
-                                            onChange={(val) => {
-                                                setFieldValue('description', val);
-                                            }}
-                                            modules={quillModules}
-                                            formats={quillFormats}
-                                            style={{ height: 215, width: '100%', maxWidth: 550, marginTop: 6 }}
-                                            readOnly={readOnly}
-                                        />
+                                        <Box sx={{ height: '76%' }}>
+                                            <ReactQuill
+                                                theme="snow"
+                                                id="Description"
+                                                name="description"
+                                                value={values.description}
+                                                onChange={(val) => {
+                                                    setFieldValue('description', val);
+                                                }}
+                                                modules={quillModules}
+                                                formats={quillFormats}
+                                                style={{ height: 215, width: '100%', maxWidth: 550, marginTop: 6 }}
+                                                readOnly={readOnly}
+                                            />
+                                        </Box>
+
                                         {touched.description && errors.description && (
                                             <FormHelperText error id="standard-weight-helper-text-email-login">
                                                 {errors.description}
