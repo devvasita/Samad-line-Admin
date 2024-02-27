@@ -17,7 +17,7 @@ import styled from '@emotion/styled';
 import { assignDistributor, getOrderByID } from 'store/actions/orderActions';
 import { makeStyles } from '@material-ui/core';
 import html2pdf from 'html2pdf.js';
-import image from '../../image/logo.png';
+import image from '../../assets/images/logo/logo.png';
 // import html2pdf from 'html2pdf';
 
 const useStyles = makeStyles((theme) => ({
@@ -25,7 +25,8 @@ const useStyles = makeStyles((theme) => ({
         margin: 0,
         padding: 0,
         boxSizing: 'border-box',
-        fontFamily: 'Arial, Helvetica, sans-serif'
+        fontFamily: 'Arial, Helvetica, sans-serif',
+        backgroundColor: '#e3e3e3'
     },
     a: {
         textDecoration: 'none',
@@ -62,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
         padding: 10
     },
     tableHead: {
-        backgroundColor: '#F9DF23'
+        backgroundColor: '#bfbfbf'
     },
     tableHeadCell: {
         fontSize: 15,
@@ -259,26 +260,26 @@ const OrderDetails = ({ getCandidateDetails, selectedOrder, loading, updateCandi
                 <div className={`${classes.templateBody} elem`}>
                     <div className={`${classes.sectionBody}`} style={{ alignItems: 'center' }}>
                         <div style={{ width: '100%' }}>
-                            <p style={{ fontSize: 30, color: '#504b4b', marginBottom: 10 }}>Espacecarre </p>
+                            <p style={{ fontSize: 30, color: '#504b4b', marginBottom: 10 }}>Samadline </p>
                             <div className={classes.addressSection}>
                                 <div style={{ width: '30%' }}>
                                     <p className={classes.textSize}>
-                                        kaslik main street Joünié <br />
-                                        Joünié
+                                        20 Margaret st,
+                                        <br /> London Great britain, 3NM98-LK
                                     </p>
                                 </div>
                                 <div>
                                     <p className={classes.textSize} style={{ margin: 0, marginTop: '18px' }}>
-                                        +961 71-935-735
+                                        877-67-88-99
                                     </p>
                                     <p className={classes.textSize} style={{ margin: 0 }}>
-                                        info@espacecarre.com
+                                        shop@store.com
                                     </p>
                                 </div>
                             </div>
                         </div>
                         <div>
-                            <img src={image} alt="logo" style={{ height: '70px', width: '120px' }} />
+                            <img src={image} alt="logo" style={{ width: '100px' }} />
                         </div>
                     </div>
                     <div className={`${classes.sectionBody}`} style={{ marginBottom: 40 }}>

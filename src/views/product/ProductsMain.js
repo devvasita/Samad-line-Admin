@@ -101,9 +101,9 @@ const CandidateRows = ({ product, i, navigate, deleteProductById, updateProduct 
                 <TableCell align="center" style={{ paddingLeft: 16 }}>
                     ${product.price ? product.price : product.mrp}
                 </TableCell>
-                <TableCell align="center" style={{ paddingLeft: 16 }}>
+                {/* <TableCell align="center" style={{ paddingLeft: 16 }}>
                     <Switch color="secondary" checked={checked} onChange={handleChange} inputProps={{ 'aria-label': 'controlled' }} />
-                </TableCell>
+                </TableCell> */}
                 <TableCell align="center" style={{ paddingLeft: 16 }}>
                     <IconButton onClick={handleClick}>
                         <MoreVertIcon />
@@ -237,7 +237,7 @@ const ProductsMain = ({ loading, productList, fetchProducts, deleteProductById, 
                                         <TableCell align="center">Name</TableCell>
                                         <TableCell align="center">Color</TableCell>
                                         <TableCell align="center">Price</TableCell>
-                                        <TableCell align="center">Trending</TableCell>
+                                        {/* <TableCell align="center">Trending</TableCell> */}
                                         <TableCell align="center">Actions</TableCell>
                                     </TableRow>
                                 </TableHead>
