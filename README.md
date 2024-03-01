@@ -1,4 +1,10 @@
+
+# Note 
+### This repository Forked from : e-commerce-pro/e-commerce-admin-client:main.
+### And Done changes for samad Line Admin
+
 # Getting Started with Create React App
+
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
